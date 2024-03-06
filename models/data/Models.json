@@ -1,10 +1,9 @@
 {
     "gpt-4": {
         "languages": [
-            "en", "fr", "de", "es", "it",
-            "zh", "ja", "ko",
-            "grc", "la"
-        ]
+            "ja", "af", "ko", "grc", "la", "ar", "lv", "zh", "pl", "en", "ru", 
+            "fr", "es", "de", "sw", "el", "tr", "is", "uk", "id", "cy", "it"
+        ]        
     },
     "gpt-3.5-turbo": {
         "languages": [
