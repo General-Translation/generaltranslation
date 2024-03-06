@@ -1,4 +1,4 @@
-const CodeToLanguage = {
+{
     "ab": "Abkhazian",
     "aa": "Afar",
     "af": "Afrikaans",
@@ -183,5 +183,3 @@ const CodeToLanguage = {
     "za": "Zhuang",
     "zu": "Zulu"
 }
-
-module.exports = { CodeToLanguage }

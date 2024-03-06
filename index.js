@@ -1,11 +1,15 @@
-const { CodeToLanguage } = require('./languages/639-1.js');
-const { CodeToLanguageTriletter } = require('./languages/639-3.js');
+// `generaltranslation` language toolkit
+// © 2024, General Translation, Inc.
 
-// Gets the name of a language from an ISO 639 code
-function getLanguageName(code) {
-    return ((code?.length === 2) ? (CodeToLanguage[code]) : (CodeToLanguageTriletter[code])) || '';
-}
+// ----- IMPORTS ----- //
 
-module.exports = { 
-    getLanguageName
+const { getLanguageName, getLanguageCode } = require('./codes/codes.js');
+
+const { getModelInfo, getModelLanguages, isLanguageSupported } = require('./models/models.js');
+
+// ----- EXPORTS ----- //
+
+module.exports = {
+    getLanguageName, getLanguageCode,
+    getModelInfo, getModelLanguages, isLanguageSupported
 }

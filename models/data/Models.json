@@ -1,0 +1,44 @@
+{
+    "gpt-4": {
+        "languages": [
+            "en", "fr", "de", "es", "it",
+            "zh", "ja", "ko",
+            "grc", "la"
+        ]
+    },
+    "gpt-3.5-turbo": {
+        "languages": [
+            "en", "fr", "de", "es", "it"
+        ]
+    },
+    "mistral-7b": {
+        "languages": ["en"]
+    },
+    "mixtral-8x7b": {
+        "languages": ["en", "fr", "de", "es", "it"]
+    },
+    "mistral-small": {
+        "languages": ["en", "fr", "de", "es", "it"]
+    },
+    "mistral-medium": {
+        "languages": ["en", "fr", "de", "es", "it"]
+    },
+    "mistral-large": {
+        "languages": ["en", "fr", "de", "es", "it"]
+    },
+    "claude-3-sonnet": {
+        "languages": [
+            "en", "fr", "de", "es", "it"
+        ]
+    },
+    "claude-3-opus": {
+        "languages": [
+            "en", "fr", "de", "es", "it"
+        ]
+    },
+    "gemini-pro": {
+        "languages": [
+            "en", "fr", "de", "es", "it"
+        ]
+    }
+}
