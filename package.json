@@ -1,0 +1,26 @@
+{
+  "name": "generaltranslation",
+  "version": "1.0.0",
+  "description": "AI language toolkit in JS",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/General-Translation/js-toolkit.git"
+  },
+  "keywords": [
+    "LLM",
+    "prompting",
+    "language",
+    "translation",
+    "toolkit"
+  ],
+  "author": "General Translation, Inc.",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/General-Translation/js-toolkit/issues"
+  },
+  "homepage": "https://github.com/General-Translation/js-toolkit#readme"
+}
