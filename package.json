@@ -1,7 +1,7 @@
 {
   "name": "generaltranslation",
-  "version": "1.0.1",
-  "description": "AI language toolkit in JS",
+  "version": "1.0.2",
+  "description": "A language toolkit for AI developers",
   "main": "index.js",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1"

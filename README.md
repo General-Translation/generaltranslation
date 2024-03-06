@@ -10,7 +10,7 @@ A language toolkit for AI developers
 npm i generaltranslation
 ```
 
-## Functions
+## Toolkit
 
 ### getLanguageName
 
