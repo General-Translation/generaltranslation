@@ -22,7 +22,7 @@ import { getLanguageName } from 'generaltranslation'
 const language = getLanguageName('en');
 console.log(language) // 'English'
 
-const otherLanguage = getLanguageName('spa') // same result for 'es'
+const otherLanguage = getLanguageName('spa') // 'spa' is equivalent to 'es'
 console.log(otherLanguage) // 'Spanish'
 ```
 
