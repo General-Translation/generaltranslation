@@ -1,43 +1,52 @@
 {
     "gpt-4": {
-        "languages": [
-            "ja", "af", "ko", "grc", "la", "ar", "lv", "zh", "pl", "en", "ru", 
-            "fr", "es", "de", "sw", "el", "tr", "is", "uk", "id", "cy", "it"
-        ]        
+        "languages": ["af", "grc", "ar", "zh", "nl", "en", "fr", "de", "el", "hi", "is", "id", "it", "ja", "ko", "la", "lv", "pl", "pt", "ru", "es", "sw", "tr", "uk", "cy"]
     },
     "gpt-3.5-turbo": {
-        "languages": [
-            "en", "fr", "de", "es", "it"
-        ]
+        "languages": ["af", "ar", "zh", "en", "fr", "de", "el", "is", "id", "it", "ja", "ko", "la", "lv", "pl", "pt", "ru", "es", "sw", "tr", "uk", "cy"]
     },
     "mistral-7b": {
-        "languages": ["en"]
+        "languages": [
+            "en"
+        ]
     },
     "mixtral-8x7b": {
-        "languages": ["en", "fr", "de", "es", "it"]
+        "languages": ["en", "fr", "de", "it", "es"]
     },
     "mistral-small": {
-        "languages": ["en", "fr", "de", "es", "it"]
+        "languages": [
+            "en", "fr", "de", "it", "es"
+        ]
     },
     "mistral-medium": {
-        "languages": ["en", "fr", "de", "es", "it"]
+        "languages": [
+            "en", "fr", "de", "it", "es"
+        ]
     },
     "mistral-large": {
-        "languages": ["en", "fr", "de", "es", "it"]
+        "languages": [
+            "en", "fr", "de", "it", "es"
+        ]
     },
     "claude-3-sonnet": {
         "languages": [
-            "en", "fr", "de", "es", "it"
+            "en", "fr", "de", "it", "ja", "es"
         ]
     },
     "claude-3-opus": {
         "languages": [
-            "en", "fr", "de", "es", "it"
+            "af", "grc", "ar", "zh", "en", "fr", "de", "el", "is", "id", 
+            "it", "ja", "ko", "la", "lv", "pl", "pt", "ru", "es", "sw", 
+            "tr", "uk", "cy"
         ]
     },
     "gemini-pro": {
         "languages": [
-            "en", "fr", "de", "es", "it"
+            "ar", "bn", "bg", "zh", "hr", "cs", "da", "nl", "en", "et", 
+            "fi", "fr", "de", "el", "gu", "he", "hi", "hu", "id", "it", 
+            "ja", "kn", "ko", "lv", "lt", "ml", "mr", "no", "fa", "pl", 
+            "pt", "ro", "ru", "sr", "sk", "sl", "es", "sw", "sv", "ta", 
+            "te", "th", "tr", "uk", "ur", "vi"
         ]
     }
 }
