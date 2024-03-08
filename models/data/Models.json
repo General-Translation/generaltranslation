@@ -1,9 +1,17 @@
 {
     "gpt-4": {
-        "languages": ["af", "grc", "ar", "zh", "nl", "en", "fr", "de", "el", "hi", "is", "id", "it", "ja", "ko", "la", "lv", "pl", "pt", "ru", "es", "sw", "tr", "uk", "cy"]
+        "languages": [
+            "af", "grc", "ar", "zh", "nl", "en", "fr", "de", "el", 
+            "hi", "is", "id", "it", "ja", "ko", "la", "lv", "pl", 
+            "pt", "ru", "es", "sw", "tr", "uk", "cy", "fa"
+        ]
     },
     "gpt-3.5-turbo": {
-        "languages": ["af", "ar", "zh", "en", "fr", "de", "el", "is", "id", "it", "ja", "ko", "la", "lv", "pl", "pt", "ru", "es", "sw", "tr", "uk", "cy"]
+        "languages": [
+            "af", "ar", "zh", "en", "fr", "de", "el", "is", "id", 
+            "it", "ja", "ko", "la", "lv", "pl", "pt", "ru", "es", 
+            "sw", "tr", "uk", "cy"
+        ]
     },
     "mistral-7b": {
         "languages": [
