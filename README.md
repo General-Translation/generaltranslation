@@ -10,7 +10,7 @@ A language toolkit for AI developers
 npm i generaltranslation
 ```
 
-## Toolkit
+## Toolkit Functions
 
 ### getLanguageName(codes)
 
@@ -40,30 +40,38 @@ const codes = getLanguageCodes(['French', 'Spanish'])
 console.log(codes) // ['fr', 'es']
 ```
 
-### getModelLanguages(model)
+## Async Toolkit Functions
 
-<i>in beta!</i>
+As we update m
+
+### async getModelLanguages(model)
 
 Get all languages known to be compatible with a given LLM. Returns an array of languages codes, [] if the model is unknown.
 
 ```
 import { getModelLanguages } from 'generaltranslation'
 
-const languages = getModelLanguages('mixtral-8x7b')
-console.log(languages) // ['en', 'fr', 'de', 'es', 'it']
+async function main() {
+    const languages = await getModelLanguages('mixtral-8x7b')
+    console.log(languages) // ['en', 'fr', 'de', 'es', 'it']
+}
+
+main();
 ```
 
 ### isSupportedLanguage(model, language)
-
-<i>in beta!</i>
 
 Returns true if a model is known to be compatible with a given language, represented by an ISO-639 language code. Returns false otherwise.
 
 ```
 import { isSupportedLanguage } from 'generaltranslation'
 
-const supported = isSupportedLanguage('gpt-4', 'fr')
-console.log(supported) // true
+async function main() {
+    const supported = await isSupportedLanguage('gpt-4', 'fr')
+    console.log(supported) // true
+}
+
+main();
 ```
 
 ## API
