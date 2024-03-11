@@ -57,7 +57,7 @@ async function main() {
 main();
 ```
 
-### isSupportedLanguage(model, language)
+### async isSupportedLanguage(model, language)
 
 Returns true if a model is known to be compatible with a given language, represented by an ISO-639 language code. Returns false otherwise.
 
