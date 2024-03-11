@@ -42,8 +42,6 @@ console.log(codes) // ['fr', 'es']
 
 ## Async Toolkit Functions
 
-As we update m
-
 ### async getModelLanguages(model)
 
 Get all languages known to be compatible with a given LLM. Returns an array of languages codes, [] if the model is unknown.
