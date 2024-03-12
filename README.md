@@ -2,7 +2,9 @@
 
 <a href='https://www.generaltranslation.com' target="_blank">generaltranslation.com</a>
 
-A language toolkit for AI developers
+A language toolkit for AI developers. 
+
+Note: this package is in active development.
 
 ## Getting Started
 
@@ -41,6 +43,22 @@ console.log(codes) // ['fr', 'es']
 ```
 
 ## Async Toolkit Functions
+
+As language models are continuously benchmarked, we update our data in real time. Calling these async functions is completely free and requires no API key.
+
+### async getModelList()
+
+Get the latest list of models for which there is data. Returns an array of model names.
+```
+import { getModelList } from 'generaltranslation'
+
+async function main() {
+    const models = await getModelList();
+    console.log(models) // ['gpt-4', ... ]
+}
+
+main();
+```
 
 ### async getModelLanguages(model)
 

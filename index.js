@@ -11,5 +11,5 @@ const { getModelInfo, getModelLanguages, isLanguageSupported } = require('./mode
 
 module.exports = {
     getLanguageName, getLanguageCode,
-    getModelInfo, getModelLanguages, isLanguageSupported
+    getModelLanguages, isLanguageSupported
 }
