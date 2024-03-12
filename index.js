@@ -5,11 +5,11 @@
 
 const { getLanguageName, getLanguageCode } = require('./codes/codes.js');
 
-const { getModelInfo, getModelLanguages, isLanguageSupported } = require('./models/models.js');
+const { getModelList, getModelLanguages, isLanguageSupported } = require('./models/models.js');
 
 // ----- EXPORTS ----- //
 
 module.exports = {
     getLanguageName, getLanguageCode,
-    getModelLanguages, isLanguageSupported
+    getModelList, getModelLanguages, isLanguageSupported
 }
