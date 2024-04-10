@@ -8,23 +8,32 @@ Note: this package is in active development.
 
 ## Getting Started
 
+In your terminal:
+
 ```
 npm i generaltranslation
 ```
 
-## Toolkit Functions
+In your code:
+
+```
+import GT from 'generaltranslation'
+// or const GT = require('generaltranslation')
+
+const gt = new GT()
+```
+
+## Language Codes
 
 ### getLanguageName(codes)
 
 Returns a language name from a two or three-letter ISO-639 language code, or an array of codes.
 
 ```
-import { getLanguageName } from 'generaltranslation'
-
-const language = getLanguageName('en');
+const language = gt.getLanguageName('en');
 console.log(language) // 'English'
 
-const languages = getLanguageName(['fr', 'es'])
+const languages = gt.getLanguageName(['fr', 'es'])
 console.log(languages) // ['French', 'Spanish']
 ```
 
@@ -33,27 +42,24 @@ console.log(languages) // ['French', 'Spanish']
 Returns an ISO-639 code from a language name or an array of language names.
 
 ```
-import { getLanguageCode } from 'generaltranslation'
-
-const code = getLanguageCode('English');
+const code = gt.getLanguageCode('English');
 console.log(language) // 'en'
 
-const codes = getLanguageCodes(['French', 'Spanish'])
+const codes = gt.getLanguageCodes(['French', 'Spanish'])
 console.log(codes) // ['fr', 'es']
 ```
 
-## Async Toolkit Functions
+## Which AI models are compatible with which languages?
 
-As language models are continuously benchmarked, we update our data in real time. Calling these async functions is completely free and requires no API key.
+We continually benchmark AI models and add new models as they are released. That means these functions have to be <code>async</code>. This information is provided as a public service. It's completely free and requires no API key.
 
 ### async getModelList()
 
 Get the latest list of models for which there is data. Returns an array of model names.
-```
-import { getModelList } from 'generaltranslation'
 
+```
 async function main() {
-    const models = await getModelList();
+    const models = await gt.getModelList();
     console.log(models) // ['gpt-4', ... ]
 }
 
@@ -62,13 +68,11 @@ main();
 
 ### async getModelLanguages(model)
 
-Get all languages known to be compatible with a given LLM. Returns an array of languages codes, [] if the model is unknown.
+Get all languages known to be compatible with a given AI model. Returns an array of languages codes, or [] if the model is unknown.
 
 ```
-import { getModelLanguages } from 'generaltranslation'
-
 async function main() {
-    const languages = await getModelLanguages('mixtral-8x7b')
+    const languages = await gt.getModelLanguages('mixtral-8x7b')
     console.log(languages) // ['en', 'fr', 'de', 'es', 'it']
 }
 
@@ -80,10 +84,8 @@ main();
 Returns true if a model is known to be compatible with a given language, represented by an ISO-639 language code. Returns false otherwise.
 
 ```
-import { isSupportedLanguage } from 'generaltranslation'
-
 async function main() {
-    const supported = await isSupportedLanguage('gpt-4', 'fr')
+    const supported = await gt.isSupportedLanguage('gpt-4', 'fr')
     console.log(supported) // true
 }
 
