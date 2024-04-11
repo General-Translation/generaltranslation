@@ -2,7 +2,7 @@
 
 // Get all models
 // Returns an array of model names
-const __getModelList = async () => {
+const getModelList = async () => {
     try {
         const result = await fetch(`https://models.gtx.dev/models`);
         const models = await result.json();
@@ -44,6 +44,7 @@ const isLanguageSupported = async (model, code) => {
 }
 
 module.exports = {
+    getModelList,
     getModelLanguages,
     isLanguageSupported
 }

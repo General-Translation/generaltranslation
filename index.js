@@ -5,7 +5,7 @@
 
 const { getLanguageName, getLanguageCode } = require('./codes/codes.js');
 
-const { getModelLanguages, isLanguageSupported } = require('./models/models.js');
+const { getModelList, getModelLanguages, isLanguageSupported } = require('./models/models.js');
 
 class GT {
 
@@ -22,6 +22,7 @@ class GT {
     getLanguageCode = getLanguageCode; // e.g. 'English' => 'en'
 
     // Model information functions
+    getModelList = getModelList; // returns array of supported model names
     getModelLanguages = getModelLanguages; // e.g. 'mistral-7b' => ['en']
     isLanguageSupported = isLanguageSupported; // e.g. ('mistral-7b', 'en') => true
 
