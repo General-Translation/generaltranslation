@@ -3,9 +3,9 @@
 
 // ----- IMPORTS ----- //
 
-const { getLanguageName, getLanguageCode } = require('./codes/codes.js');
+const { getLanguageName, getLanguageCode } = require('./codes.js');
 
-const { getModelList, getModelLanguages, isLanguageSupported } = require('./models/models.js');
+const { getModelList, getModelLanguages, isLanguageSupported } = require('./models.js');
 
 class GT {
 

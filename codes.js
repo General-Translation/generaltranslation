@@ -1,11 +1,11 @@
 // ----- IMPORTS ----- //
 
-const CodeToLanguage = require('./639-1/CodeToLanguage.json');
-const LanguageToCode = require('./639-1/LanguageToCode.json');
+const CodeToLanguage = require('./codes/639-1/CodeToLanguage.json');
+const LanguageToCode = require('./codes/639-1/LanguageToCode.json');
 
 // only for languages which have no two-letter code
-const CodeToLanguageTriletter = require('./639-3/CodeToLanguageTriletter.json');
-const LanguageToCodeTriletter = require('./639-3/LanguageToCodeTriletter.json');
+const CodeToLanguageTriletter = require('./codes/639-3/CodeToLanguageTriletter.json');
+const LanguageToCodeTriletter = require('./codes/639-3/LanguageToCodeTriletter.json');
 
 // ----- LANGUAGE CODES ----- //
 
