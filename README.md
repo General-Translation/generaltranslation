@@ -23,7 +23,7 @@ import GT from 'generaltranslation'
 const gt = new GT()
 ```
 
-## Language Codes
+## Convert between languages and ISO-639 codes
 
 ### getLanguageName(codes)
 
@@ -49,7 +49,7 @@ const codes = gt.getLanguageCodes(['French', 'Spanish'])
 console.log(codes) // ['fr', 'es']
 ```
 
-## Which AI models are compatible with which languages?
+## Which languages do AI models speak?
 
 We continually benchmark AI models and add new models as they are released. That means these functions have to be <code>async</code>. This information is provided as a public service. It's completely free and requires no API key.
 
