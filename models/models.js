@@ -4,7 +4,7 @@
 // Returns an array of model names
 const getModelList = async () => {
     try {
-        const result = await fetch(`https://data.gtx.dev/models`);
+        const result = await fetch(`https://models.gtx.dev/models`);
         const models = await result.json();
         return models;
     } catch (error) {
@@ -19,7 +19,7 @@ const _getModelInfo = async model => {
     if (!model) return null;
     model = model?.toLowerCase();
     try {
-        const result = await fetch(`https://data.gtx.dev/model/${model}`);
+        const result = await fetch(`https://models.gtx.dev/model/${model}`);
         const modelInfo = await result.json();
         return modelInfo;
     } catch (error) {
