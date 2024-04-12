@@ -2,7 +2,7 @@
 
 // Get all models
 // Returns an array of model names
-const getModelList = async () => {
+const _getModelList = async () => {
     try {
         const result = await fetch(`https://models.gtx.dev/models`);
         const models = await result.json();
@@ -30,21 +30,21 @@ const _getModelInfo = async model => {
 
 // Get all languages known to be compatible with a given LLM
 // Returns an array of languages codes, or [] if unknown
-const getModelLanguages = async model => {
+const _getModelLanguages = async model => {
     const modelInfo = await _getModelInfo(model);
     return modelInfo?.languages || [];
 }
 
 // Returns true if a model is known to be compatible with a language
 // Returns false otherwise
-const isLanguageSupported = async (model, code) => {
+const _isLanguageSupported = async (model, code) => {
     if (!code) return false;
-    const modelLanguages = await getModelLanguages(model);
+    const modelLanguages = await _getModelLanguages(model);
     return modelLanguages?.includes(code) ? true : false;
 }
 
 module.exports = {
-    getModelList,
-    getModelLanguages,
-    isLanguageSupported
+    _getModelList,
+    _getModelLanguages,
+    _isLanguageSupported
 }

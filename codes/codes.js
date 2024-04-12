@@ -11,7 +11,7 @@ const LanguageToCodeTriletter = require('./639-3/LanguageToCodeTriletter.json');
 
 // Returns the name of a language from an ISO 639 code or an array of codes
 const _mapCodeToLanguage = code => CodeToLanguage[code] || CodeToLanguageTriletter[code] || '';
-const getLanguageName = codes => {
+const _getLanguageName = codes => {
     return Array.isArray(codes) ? codes.map(_mapCodeToLanguage) : _mapCodeToLanguage(codes);
 }
 
@@ -21,10 +21,10 @@ const _mapLanguageToCode = language => {
     const lowerCaseLanguage = language.toLowerCase();
     return LanguageToCode[lowerCaseLanguage] || LanguageToCodeTriletter[lowerCaseLanguage] || '';
 }
-const getLanguageCode = languages => {
+const _getLanguageCode = languages => {
     return Array.isArray(languages) ? languages.map(_mapLanguageToCode) : _mapLanguageToCode(languages);
 }
 
 module.exports = {
-    getLanguageName, getLanguageCode
+    _getLanguageName, _getLanguageCode
 }

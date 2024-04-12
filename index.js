@@ -3,9 +3,11 @@
 
 // ----- IMPORTS ----- //
 
-const { getLanguageName, getLanguageCode } = require('./codes/codes.js');
+const { _getLanguageName, _getLanguageCode } = require('./codes/codes.js');
+const { _getModelList, _getModelLanguages, _isLanguageSupported } = require('./models/models.js');
+const { _getPrompt } = require('./prompts/prompts.js');
 
-const { getModelList, getModelLanguages, isLanguageSupported } = require('./models/models.js');
+// ----- CORE CLASS ----- // 
 
 class GT {
 
@@ -18,21 +20,26 @@ class GT {
     }
 
     // Language code functions
-    getLanguageName = getLanguageName; // e.g. 'en' => 'English'
-    getLanguageCode = getLanguageCode; // e.g. 'English' => 'en'
+    getLanguageName = _getLanguageName; // e.g. 'en' => 'English'
+    getLanguageCode = _getLanguageCode; // e.g. 'English' => 'en'
 
     // Model information functions
-    getModelList = getModelList; // returns array of supported model names
-    getModelLanguages = getModelLanguages; // e.g. 'mistral-7b' => ['en']
-    isLanguageSupported = isLanguageSupported; // e.g. ('mistral-7b', 'en') => true
+    getModelList = _getModelList; // returns array of supported model names
+    getModelLanguages = _getModelLanguages; // e.g. 'mistral-7b' => ['en']
+    isLanguageSupported = _isLanguageSupported; // e.g. ('mistral-7b', 'en') => true
+
+    // Prompt internationalization
+    getPrompt = async (prompt, language) => {
+        return await _getPrompt(prompt, language, this.defaultLanguage, this.apiKey);
+    }
 
 }
 
 // ----- EXPORTS ----- //
 
 module.exports = GT;
-module.exports.getLanguageCode = getLanguageCode;
-module.exports.getLanguageName = getLanguageName;
-module.exports.getModelList = getModelList;
-module.exports.getModelLanguages = getModelLanguages;
-module.exports.isLanguageSupported = isLanguageSupported;
+module.exports.getLanguageCode = _getLanguageCode;
+module.exports.getLanguageName = _getLanguageName;
+module.exports.getModelList = _getModelList;
+module.exports.getModelLanguages = _getModelLanguages;
+module.exports.isLanguageSupported = _isLanguageSupported;
