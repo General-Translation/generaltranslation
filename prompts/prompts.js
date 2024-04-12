@@ -76,7 +76,7 @@ const _getPrompt = async (prompt, language, defaultLanguage, apiKey) => {
         return _constructPrompt(prompt);
     }
     const { processed, redacted } = _processPrompt(prompt);
-    const response = await fetch('https://api.gtx.dev/prompt', {
+    const response = await fetch('https://prompts.gtx.dev/internationalize', {
         method: 'POST',
         headers: {
             'Content-Type': 'application/json',
