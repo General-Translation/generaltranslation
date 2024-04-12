@@ -6,7 +6,7 @@ const _constructPrompt = (prompt, redacted = null) => {
         let final = '';
         for (const item of prompt) {
             if (typeof item === 'string') final += item;
-            else if (!item?.redacted) final += item?.text || '';
+            else if (_shouldTranslate(item)) final += item?.text || '';
             else {
                 if (redacted?.length > 0) {
                     final += redacted?.shift().text || '';
@@ -23,6 +23,7 @@ const _constructPrompt = (prompt, redacted = null) => {
     }
 }
 
+const _shouldTranslate = item => typeof item?.translate === 'boolean' ? item.translate : true;
 // Redacted items are not sent in the API call
 const _processPrompt = (prompt) => {
     const processed = [];
@@ -33,10 +34,10 @@ const _processPrompt = (prompt) => {
                 processed.push({
                     text: item
                 });
-            } else if (!item?.redacted) {
+            } else if (_shouldTranslate(item)) {
                 processed.push(item);
             } else {
-                processed.push({text: '', redacted: true});
+                processed.push({text: '', translate: false});
                 redacted.push(item);
             }
         }
@@ -45,20 +46,20 @@ const _processPrompt = (prompt) => {
             redacted: redacted.length > 0 ? redacted : null
         }
     } else {
-        if (typeof item === 'string') {
+        if (typeof prompt === 'string') {
             processed.push({
-                text: item
+                text: prompt
             });
-        } else if (!item?.redacted) {
-            processed.push(item);
+        } else if (_shouldTranslate(prompt)) {
+            processed.push(prompt);
         } else {
-            processed.push({text: '', redacted: true});
-            redacted.push(item);
+            processed.push({text: '', translate: false});
+            redacted.push(prompt);
         }
     } 
     return {
         processed: processed,
-        redacted: redacted
+        redacted: redacted.length > 0 ? redacted : null
     }
 }
 
@@ -82,11 +83,13 @@ const _getPrompt = async (prompt, language, defaultLanguage, apiKey) => {
             defaultLanguage: defaultLanguage
         })
     })
-    const result = await response.json();
     if (!response.ok) {
-        throw new Error(`${result?.error || response.status}`);
+        const result = await response.text();
+        throw new Error(`${result || response.status}`);
+    } else {
+        const result = await response.json();
+        return _constructPrompt(result, redacted);
     }
-    return _constructPrompt(result, redacted);
 }
 
 module.exports = {
