@@ -24,12 +24,16 @@ const _constructPrompt = (prompt, redacted = null) => {
 }
 
 // Redacted items are not sent in the API call
-const _redactPrompt = (prompt) => {
+const _processPrompt = (prompt) => {
+    const processed = [];
+    const redacted = [];
     if (Array.isArray(prompt)) {
-        const processed = [];
-        const redacted = [];
         for (const item of prompt) {
-            if (typeof item === 'string' || !item?.redacted) {
+            if (typeof item === 'string') {
+                processed.push({
+                    text: item
+                });
+            } else if (!item?.redacted) {
                 processed.push(item);
             } else {
                 processed.push({text: '', redacted: true});
@@ -40,10 +44,22 @@ const _redactPrompt = (prompt) => {
             processed: processed,
             redacted: redacted.length > 0 ? redacted : null
         }
+    } else {
+        if (typeof item === 'string') {
+            processed.push({
+                text: item
+            });
+        } else if (!item?.redacted) {
+            processed.push(item);
+        } else {
+            processed.push({text: '', redacted: true});
+            redacted.push(item);
+        }
     } 
     return {
-        processed: prompt
-    };
+        processed: processed,
+        redacted: redacted
+    }
 }
 
 const _getPrompt = async (prompt, language, defaultLanguage, apiKey) => {
@@ -53,7 +69,7 @@ const _getPrompt = async (prompt, language, defaultLanguage, apiKey) => {
     if (language === defaultLanguage) {
         return _constructPrompt(prompt);
     }
-    const { processed, redacted } = _redactPrompt(prompt);
+    const { processed, redacted } = _processPrompt(prompt);
     const response = await fetch('https://api.gtx.dev/prompt', {
         method: 'POST',
         headers: {
@@ -66,11 +82,10 @@ const _getPrompt = async (prompt, language, defaultLanguage, apiKey) => {
             defaultLanguage: defaultLanguage
         })
     })
+    const result = await response.json();
     if (!response.ok) {
-        const result = await response.json();
         throw new Error(`${result?.error || response.status}`);
     }
-    const result = Array.isArray(prompt) ? await response.json() : await response.text();
     return _constructPrompt(result, redacted);
 }
 
