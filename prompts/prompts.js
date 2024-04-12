@@ -1,30 +1,10 @@
 // ----- PROMPT INTERNATIONALIZATION ----- //
 
-// Turn a prompt (which could be a string, array, or object) into a string
-const _constructPrompt = (prompt, redacted = null) => {
-    if (Array.isArray(prompt)) {
-        let final = '';
-        for (const item of prompt) {
-            if (typeof item === 'string') final += item;
-            else if (_shouldTranslate(item)) final += item?.text || '';
-            else {
-                if (redacted?.length > 0) {
-                    final += redacted?.shift().text || '';
-                } else {
-                    final += item?.text || '';
-                }
-            }
-        }
-        return final;
-    } else if (typeof prompt === 'string') {
-        return prompt;
-    } else {
-        return prompt?.text || '';
-    }
-}
-
+// Decides whether a prompt object should be translated
 const _shouldTranslate = item => typeof item?.translate === 'boolean' ? item.translate : true;
-// Redacted items are not sent in the API call
+
+// Pre-processes prompt to send to the API
+// Separates out text that shouldn't be translated.
 const _processPrompt = (prompt) => {
     const processed = [];
     const redacted = [];
@@ -63,6 +43,31 @@ const _processPrompt = (prompt) => {
     }
 }
 
+// Build prompt string from array or single item
+const _constructPrompt = (translated, redacted = null) => {
+    if (Array.isArray(translated)) {
+        let final = '';
+        for (const item of translated) {
+            if (typeof item === 'string') final += item;
+            else if (_shouldTranslate(item)) final += item?.text || '';
+            else {
+                if (redacted?.length > 0) {
+                    final += redacted?.shift().text || '';
+                } else {
+                    final += item?.text || '';
+                }
+            }
+        }
+        return final;
+    } else if (typeof translated === 'string') {
+        return translated;
+    } else {
+        return translated?.text || '';
+    }
+}
+
+// Get a translated prompt via General Translation API
+// Returns prompt string
 const _getPrompt = async (prompt, language, defaultLanguage, apiKey) => {
     if (!apiKey) {
         throw new Error('Missing API Key!')
