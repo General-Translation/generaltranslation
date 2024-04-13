@@ -9,7 +9,6 @@ const _processPrompt = (prompt) => {
     const processed = [];
     const redacted = [];
     if (Array.isArray(prompt)) {
-        console.log(prompt)
         for (const item of prompt) {
             if (typeof item === 'string') {
                 processed.push({
@@ -73,8 +72,6 @@ const _getPrompt = async (prompt, language, defaultLanguage, apiKey) => {
         return _constructPrompt(prompt);
     }
     const { processed, redacted } = _processPrompt(prompt);
-    console.log(processed)
-    console.log(redacted)
     const response = await fetch('http://prompts.gtx.dev/internationalize', {
         method: 'POST',
         headers: {
