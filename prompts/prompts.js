@@ -9,6 +9,7 @@ const _processPrompt = (prompt) => {
     const processed = [];
     const redacted = [];
     if (Array.isArray(prompt)) {
+        console.log(prompt)
         for (const item of prompt) {
             if (typeof item === 'string') {
                 processed.push({
@@ -20,10 +21,6 @@ const _processPrompt = (prompt) => {
                 processed.push({text: '', translate: false});
                 redacted.push(item);
             }
-        }
-        return {
-            processed: processed,
-            redacted: redacted.length > 0 ? redacted : null
         }
     } else {
         if (typeof prompt === 'string') {
@@ -44,7 +41,7 @@ const _processPrompt = (prompt) => {
 }
 
 // Build prompt string from array or single item
-const _constructPrompt = (translated, redacted = null) => {
+const _constructPrompt = ({translated, redacted = null}) => {
     if (Array.isArray(translated)) {
         let final = '';
         for (const item of translated) {
@@ -76,7 +73,9 @@ const _getPrompt = async (prompt, language, defaultLanguage, apiKey) => {
         return _constructPrompt(prompt);
     }
     const { processed, redacted } = _processPrompt(prompt);
-    const response = await fetch('https://prompts.gtx.dev/internationalize', {
+    console.log(processed)
+    console.log(redacted)
+    const response = await fetch('http://prompts.gtx.dev/internationalize', {
         method: 'POST',
         headers: {
             'Content-Type': 'application/json',
@@ -93,7 +92,7 @@ const _getPrompt = async (prompt, language, defaultLanguage, apiKey) => {
         throw new Error(`${result || response.status}`);
     } else {
         const result = await response.json();
-        return _constructPrompt(result, redacted);
+        return _constructPrompt({translated: result, redacted: redacted});
     }
 }
 
