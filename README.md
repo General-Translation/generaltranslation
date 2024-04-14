@@ -49,7 +49,7 @@ const codes = gt.getLanguageCodes(['French', 'Spanish'])
 console.log(codes) // ['fr', 'es']
 ```
 
-## Which languages do AI models speak?
+## Which languages do AI models understand?
 
 We continually benchmark AI models and add new models as they are released. That means these functions have to be <code>async</code>. This information is provided as a public service. It's completely free and requires no API key.
 
@@ -68,7 +68,7 @@ main();
 
 ### async getModelLanguages(model)
 
-Get all languages known to be compatible with a given AI model. Returns an array of languages codes, or [] if the model is unknown.
+Get all languages known to be compatible with a given AI model. Returns an array of languages codes, or null if the model is unknown.
 
 ```
 async function main() {

@@ -65,31 +65,36 @@ const _constructPrompt = ({translated, redacted = null}) => {
 // Get a translated prompt via General Translation API
 // Returns prompt string
 const _getPrompt = async (prompt, language, defaultLanguage, apiKey) => {
-    if (!apiKey) {
-        throw new Error('Missing API Key!')
-    }
-    if (language === defaultLanguage) {
-        return _constructPrompt(prompt);
-    }
-    const { processed, redacted } = _processPrompt(prompt);
-    const response = await fetch('http://prompts.gtx.dev/internationalize', {
-        method: 'POST',
-        headers: {
-            'Content-Type': 'application/json',
-            'gtx-api-key': apiKey
-        },
-        body: JSON.stringify({
-            prompt: processed,
-            language: language,
-            defaultLanguage: defaultLanguage
+    try {
+        if (!apiKey) {
+            throw new Error('Missing API Key!')
+        }
+        if (language === defaultLanguage) {
+            return _constructPrompt(prompt);
+        }
+        const { processed, redacted } = _processPrompt(prompt);
+        const response = await fetch('http://prompts.gtx.dev/internationalize', {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json',
+                'gtx-api-key': apiKey
+            },
+            body: JSON.stringify({
+                prompt: processed,
+                language: language,
+                defaultLanguage: defaultLanguage
+            })
         })
-    })
-    if (!response.ok) {
-        const result = await response.text();
-        throw new Error(`${result || response.status}`);
-    } else {
-        const result = await response.json();
-        return _constructPrompt({translated: result, redacted: redacted});
+        if (!response.ok) {
+            const result = await response.text();
+            throw new Error(`${result || response.status}`);
+        } else {
+            const result = await response.json();
+            return _constructPrompt({translated: result, redacted: redacted});
+        }
+    } catch (error) {
+        console.error(error)
+        return _constructPrompt({ translated: prompt })
     }
 }
 

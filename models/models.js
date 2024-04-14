@@ -29,10 +29,10 @@ const _getModelInfo = async model => {
 }
 
 // Get all languages known to be compatible with a given LLM
-// Returns an array of languages codes, or [] if unknown
+// Returns an array of languages codes, or null if unknown
 const _getModelLanguages = async model => {
     const modelInfo = await _getModelInfo(model);
-    return modelInfo?.languages || [];
+    return modelInfo?.languages;
 }
 
 // Returns true if a model is known to be compatible with a language
