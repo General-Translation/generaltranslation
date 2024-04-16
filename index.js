@@ -29,8 +29,8 @@ class GT {
     isLanguageSupported = _isLanguageSupported; // e.g. ('mistral-7b', 'en') => true
 
     // Prompt internationalization
-    getPrompt = async (prompt, language) => {
-        return await _getPrompt(prompt, language, this.defaultLanguage, this.apiKey);
+    getPrompt = async (prompt, code) => {
+        return await _getPrompt(prompt, code, this.defaultLanguage, this.apiKey);
     }
 
 }

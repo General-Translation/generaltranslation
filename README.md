@@ -8,19 +8,25 @@ Note: this package is in active development.
 
 ## Getting Started
 
-In your terminal:
+<b>In your terminal:</b>
 
 ```
 npm i generaltranslation
 ```
 
-In your code:
+<b>In your code:</b>
 
 ```
 import GT from 'generaltranslation'
 // or const GT = require('generaltranslation')
 
 const gt = new GT()
+```
+
+or, import functions directly:
+
+```
+import { getLanguageName } from 'generaltranslation'
 ```
 
 ## Convert between languages and ISO-639 codes
@@ -79,7 +85,7 @@ async function main() {
 main();
 ```
 
-### async isSupportedLanguage(model, language)
+### async isSupportedLanguage(model, code)
 
 Returns true if a model is known to be compatible with a given language, represented by an ISO-639 language code. Returns false otherwise.
 
@@ -94,4 +100,62 @@ main();
 
 ## API
 
-Coming soon!
+For these functions, you need to sign up for an API key at <a href='https://generaltranslation.com' target='_blank'>generaltranslation.com</a>.
+
+Add the API key to your code like this:
+
+```
+import GT from 'generaltranslation'
+
+const gt = new GT({
+	apiKey: process.env.GT_API_KEY // looks like 'gtx-XXX'
+});
+```
+
+### async gt.getPrompt(prompt, code)
+
+Translates prompt into the language represented by an ISO-639 language code. Designed for translating prompts into other languages, to internationalize responses from AI models.
+
+Just wrap `gt.getPrompt` around your prompt and go. All of the following are valid:
+
+```
+const translatedPrompt = await gt.getPrompt('Tell me a story', 'es');
+```
+
+```
+const first = 'Tell me a story ';
+const second = 'about a cat'
+
+const translatedPrompt = await gt.getPrompt([
+    first, second
+], 'es');
+```
+
+To mark text that shouldn't be translated, wrap it in `{ text: "", translate: false }`. Items marked as `translate: false` are never sent to our API. For example:
+
+```
+const prompt = 'Tell me a story about ';
+const input = 'gatos con espadas'
+
+const translatedPrompt = await gt.getPrompt([
+    prompt, { text: input, translate: false }
+], 'es');
+```
+
+For type consistency, you can also make everything in the prompt parameter an object:
+
+```
+const prompt = 'Tell me a story about ';
+const input = 'gatos con espadas'
+
+const translatedPrompt = await gt.getPrompt([
+    { text: prompt }, 
+    { text: input, translate: false }
+], 'es');
+```
+
+This also works:
+
+```
+const translatedPrompt = await gt.getPrompt({ text: 'Tell me a story' }, 'es');
+```

@@ -64,12 +64,12 @@ const _constructPrompt = ({translated, redacted = null}) => {
 
 // Get a translated prompt via General Translation API
 // Returns prompt string
-const _getPrompt = async (prompt, language, defaultLanguage, apiKey) => {
+const _getPrompt = async (prompt, code, defaultLanguage, apiKey) => {
     try {
         if (!apiKey) {
             throw new Error('Missing API Key!')
         }
-        if (language === defaultLanguage) {
+        if (code === defaultLanguage) {
             return _constructPrompt(prompt);
         }
         const { processed, redacted } = _processPrompt(prompt);
@@ -81,7 +81,7 @@ const _getPrompt = async (prompt, language, defaultLanguage, apiKey) => {
             },
             body: JSON.stringify({
                 prompt: processed,
-                language: language,
+                language: code,
                 defaultLanguage: defaultLanguage
             })
         })
