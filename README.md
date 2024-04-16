@@ -86,9 +86,9 @@ const supported = await gt.isSupportedLanguage('gpt-4', 'fr')
 console.log(supported) // true
 ```
 
-## API
+## Prompt Internationalization API
 
-For these functions, you need to sign up for an API key at <a href='https://generaltranslation.com' target='_blank'>generaltranslation.com</a>.
+For this function, you need to sign up for an API key at <a href='https://generaltranslation.com' target='_blank'>generaltranslation.com</a>.
 
 There's a small, free allowance to let you test out the API without payment details.
 
