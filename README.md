@@ -2,9 +2,9 @@
 
 <a href='https://www.generaltranslation.com' target="_blank">generaltranslation.com</a>
 
-A language toolkit for AI developers. 
+A language toolkit for AI developers.
 
-Note: this package is in active development.
+Full documentation coming soon!
 
 ## Getting Started
 
