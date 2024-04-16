@@ -102,6 +102,8 @@ main();
 
 For these functions, you need to sign up for an API key at <a href='https://generaltranslation.com' target='_blank'>generaltranslation.com</a>.
 
+There's a small, free allowance to let you test out the API without payment information.
+
 Add the API key to your code like this:
 
 ```
@@ -116,7 +118,9 @@ const gt = new GT({
 
 Translates prompt into the language represented by an ISO-639 language code. Designed for translating prompts into other languages, to internationalize responses from AI models.
 
-Just wrap `gt.getPrompt` around your prompt and go. All of the following are valid:
+Just wrap `gt.getPrompt` around your prompt and go. 
+
+All of the following are valid:
 
 ```
 const translatedPrompt = await gt.getPrompt('Tell me a story', 'es');
