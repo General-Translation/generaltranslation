@@ -90,7 +90,7 @@ console.log(supported) // true
 
 For these functions, you need to sign up for an API key at <a href='https://generaltranslation.com' target='_blank'>generaltranslation.com</a>.
 
-There's a small, free allowance to let you test out the API without payment information.
+There's a small, free allowance to let you test out the API without payment details.
 
 Add the API key to your code like this:
 
@@ -98,7 +98,7 @@ Add the API key to your code like this:
 import GT from 'generaltranslation'
 
 const gt = new GT({
-	apiKey: process.env.GT_API_KEY // looks like 'gtx-XXX'
+    apiKey: process.env.GT_API_KEY // looks like 'gtx-XXX'
 });
 ```
 
