@@ -64,12 +64,8 @@ We continually benchmark AI models and add new models as they are released. That
 Get the latest list of models for which there is data. Returns an array of model names.
 
 ```
-async function main() {
-    const models = await gt.getModelList();
-    console.log(models) // ['gpt-4', ... ]
-}
-
-main();
+const models = await gt.getModelList();
+console.log(models) // ['gpt-4', ... ]
 ```
 
 ### async getModelLanguages(model)
@@ -77,12 +73,8 @@ main();
 Get all languages known to be compatible with a given AI model. Returns an array of languages codes, or null if the model is unknown.
 
 ```
-async function main() {
-    const languages = await gt.getModelLanguages('mixtral-8x7b')
-    console.log(languages) // ['en', 'fr', 'de', 'es', 'it']
-}
-
-main();
+const languages = await gt.getModelLanguages('mixtral-8x7b')
+console.log(languages) // ['en', 'fr', 'de', 'es', 'it']
 ```
 
 ### async isSupportedLanguage(model, code)
@@ -90,12 +82,8 @@ main();
 Returns true if a model is known to be compatible with a given language, represented by an ISO-639 language code. Returns false otherwise.
 
 ```
-async function main() {
-    const supported = await gt.isSupportedLanguage('gpt-4', 'fr')
-    console.log(supported) // true
-}
-
-main();
+const supported = await gt.isSupportedLanguage('gpt-4', 'fr')
+console.log(supported) // true
 ```
 
 ## API
