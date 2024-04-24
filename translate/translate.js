@@ -1,15 +1,15 @@
-// ----- PROMPT INTERNATIONALIZATION ----- //
+// ----- TRANSLATION ----- //
 
-// Decides whether a prompt object should be translated
+// Decides whether an item object should be translated
 const _shouldTranslate = item => typeof item?.translate === 'boolean' ? item.translate : true;
 
-// Pre-processes prompt to send to the API
+// Pre-processes content to send to the API
 // Separates out text that shouldn't be translated.
-const _processPrompt = (prompt) => {
+const _processContent = (content) => {
     const processed = [];
     const redacted = [];
-    if (Array.isArray(prompt)) {
-        for (const item of prompt) {
+    if (Array.isArray(content)) {
+        for (const item of content) {
             if (typeof item === 'string') {
                 processed.push({
                     text: item
@@ -22,15 +22,15 @@ const _processPrompt = (prompt) => {
             }
         }
     } else {
-        if (typeof prompt === 'string') {
+        if (typeof content === 'string') {
             processed.push({
-                text: prompt
+                text: content
             });
-        } else if (_shouldTranslate(prompt)) {
-            processed.push(prompt);
+        } else if (_shouldTranslate(content)) {
+            processed.push(content);
         } else {
             processed.push({text: '', translate: false});
-            redacted.push(prompt);
+            redacted.push(content);
         }
     } 
     return {
@@ -39,8 +39,8 @@ const _processPrompt = (prompt) => {
     }
 }
 
-// Build prompt string from array or single item
-const _constructPrompt = ({translated, redacted = null}) => {
+// Build content string from array or single item
+const _constructContent = ({translated, redacted = null}) => {
     if (Array.isArray(translated)) {
         let final = '';
         for (const item of translated) {
@@ -62,26 +62,26 @@ const _constructPrompt = ({translated, redacted = null}) => {
     }
 }
 
-// Get a translated prompt via General Translation API
-// Returns prompt string
-const _getPrompt = async (prompt, code, defaultLanguage, apiKey) => {
+// Get a translation via General Translation API
+// Returns string
+const _translate = async (content, code, defaultLanguage, apiKey) => {
     try {
         if (!apiKey) {
             throw new Error('Missing API Key!')
         }
         if (code === defaultLanguage) {
-            return _constructPrompt(prompt);
+            return _constructContent(content);
         }
-        const { processed, redacted } = _processPrompt(prompt);
-        const response = await fetch('http://prompts.gtx.dev/internationalize', {
+        const { processed, redacted } = _processContent(content);
+        const response = await fetch('http://localhost:8787', {
             method: 'POST',
             headers: {
                 'Content-Type': 'application/json',
                 'gtx-api-key': apiKey
             },
             body: JSON.stringify({
-                prompt: processed,
-                language: code,
+                content: processed,
+                targetLanguage: code,
                 defaultLanguage: defaultLanguage
             })
         })
@@ -90,14 +90,14 @@ const _getPrompt = async (prompt, code, defaultLanguage, apiKey) => {
             throw new Error(`${result || response.status}`);
         } else {
             const result = await response.json();
-            return _constructPrompt({translated: result, redacted: redacted});
+            return _constructContent({translated: result, redacted: redacted});
         }
     } catch (error) {
         console.error(error)
-        return _constructPrompt({ translated: prompt })
+        return _constructContent({ translated: content })
     }
 }
 
 module.exports = {
-    _getPrompt
+    _translate
 }

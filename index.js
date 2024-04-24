@@ -5,7 +5,7 @@
 
 const { _getLanguageName, _getLanguageCode } = require('./codes/codes.js');
 const { _getModelList, _getModelLanguages, _isLanguageSupported } = require('./models/models.js');
-const { _getPrompt } = require('./prompts/prompts.js');
+const { _translate } = require('./translate/translate.js');
 
 // ----- CORE CLASS ----- // 
 
@@ -30,8 +30,14 @@ class GT {
 
     // Prompt internationalization
     getPrompt = async (prompt, code) => {
-        return await _getPrompt(prompt, code, this.defaultLanguage, this.apiKey);
+        return await _translate(prompt, code, this.defaultLanguage, this.apiKey);
     }
+
+    // Translation (same as prompt internationalization)
+    translate = async (content, code) => {
+        return await _translate(content, code, this.defaultLanguage, this.apiKey);
+    }
+    
 
 }
 
