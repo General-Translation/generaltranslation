@@ -32,7 +32,6 @@ class GT {
     getPrompt = async (prompt, code) => {
         return await _translate(prompt, code, this.defaultLanguage, this.apiKey);
     }
-
     // Translation (same as prompt internationalization)
     translate = async (content, code) => {
         return await _translate(content, code, this.defaultLanguage, this.apiKey);

@@ -7,7 +7,7 @@ const _shouldTranslate = item => typeof item?.translate === 'boolean' ? item.tra
 // Separates out text that shouldn't be translated.
 const _processContent = (content) => {
     const processed = [];
-    const redacted = [];
+    const untranslated = [];
     if (Array.isArray(content)) {
         for (const item of content) {
             if (typeof item === 'string') {
@@ -18,7 +18,7 @@ const _processContent = (content) => {
                 processed.push(item);
             } else {
                 processed.push({text: '', translate: false});
-                redacted.push(item);
+                untranslated.push(item);
             }
         }
     } else {
@@ -30,50 +30,50 @@ const _processContent = (content) => {
             processed.push(content);
         } else {
             processed.push({text: '', translate: false});
-            redacted.push(content);
+            untranslated.push(content);
         }
     } 
     return {
         processed: processed,
-        redacted: redacted.length > 0 ? redacted : null
+        untranslated: untranslated.length > 0 ? untranslated : null
     }
 }
 
 // Build content string from array or single item
-const _constructContent = ({translated, redacted = null}) => {
-    if (Array.isArray(translated)) {
+const _constructContent = ({ content, untranslated = null}) => {
+    if (Array.isArray(content)) {
         let final = '';
-        for (const item of translated) {
+        for (const item of content) {
             if (typeof item === 'string') final += item;
             else if (_shouldTranslate(item)) final += item?.text || '';
             else {
-                if (redacted?.length > 0) {
-                    final += redacted?.shift().text || '';
+                if (untranslated?.length > 0) {
+                    final += untranslated?.shift().text || '';
                 } else {
                     final += item?.text || '';
                 }
             }
         }
         return final;
-    } else if (typeof translated === 'string') {
-        return translated;
+    } else if (typeof content === 'string') {
+        return content;
     } else {
-        return translated?.text || '';
+        return content?.text || '';
     }
 }
 
 // Get a translation via General Translation API
 // Returns string
 const _translate = async (content, code, defaultLanguage, apiKey) => {
+    if (!apiKey) {
+        throw new Error('Missing API Key!')
+    }
+    if (code === defaultLanguage) {
+        return _constructContent({ content: content });
+    }
+    const { processed, untranslated } = _processContent(content);
     try {
-        if (!apiKey) {
-            throw new Error('Missing API Key!')
-        }
-        if (code === defaultLanguage) {
-            return _constructContent(content);
-        }
-        const { processed, redacted } = _processContent(content);
-        const response = await fetch('http://localhost:8787', {
+        const response = await fetch('http://translate.gtx.dev', {
             method: 'POST',
             headers: {
                 'Content-Type': 'application/json',
@@ -90,11 +90,11 @@ const _translate = async (content, code, defaultLanguage, apiKey) => {
             throw new Error(`${result || response.status}`);
         } else {
             const result = await response.json();
-            return _constructContent({translated: result, redacted: redacted});
+            return _constructContent({content: result, untranslated: untranslated });
         }
     } catch (error) {
         console.error(error)
-        return _constructContent({ translated: content })
+        return _constructContent({ content: content })
     }
 }
 
