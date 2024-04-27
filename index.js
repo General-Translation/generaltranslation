@@ -4,7 +4,7 @@
 // ----- IMPORTS ----- //
 
 const { _getLanguageName, _getLanguageCode } = require('./codes/codes.js');
-const { _getModelList, _getModelInfo, _getModelLanguages, _isLanguageSupported } = require('./models/models.js');
+const { _getModelList, _getModelInfo, _getModelLanguages, _isLanguageSupported, _getModelsByDeveloper, _getModelsByLanguage, } = require('./models/models.js');
 const { _translate } = require('./translate/translate.js');
 
 // ----- CORE CLASS ----- // 
@@ -28,6 +28,8 @@ class GT {
     getModelInfo = _getModelInfo; // returns model object
     getModelLanguages = _getModelLanguages; // e.g. 'mistral-7b' => ['en']
     isLanguageSupported = _isLanguageSupported; // e.g. ('mistral-7b', 'en') => true
+    getModelsByLanguage = _getModelsByLanguage;
+    getModelsByDeveloper = _getModelsByDeveloper;
 
     // Prompt internationalization
     getPrompt = async (prompt, code) => {
@@ -50,3 +52,5 @@ module.exports.getModelList = _getModelList;
 module.exports.getModelInfo = _getModelInfo;
 module.exports.getModelLanguages = _getModelLanguages;
 module.exports.isLanguageSupported = _isLanguageSupported;
+module.exports.getModelsByDeveloper = _getModelsByDeveloper;
+module.exports.getModelsByLanguage = _getModelsByLanguage;

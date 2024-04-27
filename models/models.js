@@ -1,5 +1,35 @@
 // ----- MODEL INFORMATION ----- //
 
+// Get all models by a given developer
+// Returns an empty array if none
+const _getModelsByDeveloper = async developer => {
+    if (!developer) return null;
+    developer = developer?.toLowerCase();
+    try {
+        const result = await fetch(`https://models.gtx.dev/developer/${developer}`);
+        const models = await result.json();
+        return models;
+    } catch (error) {
+        console.error(error)
+        return [];
+    }
+}
+
+// Get all models certified for a given language
+// Returns an empty array if none
+const _getModelsByLanguage = async language => {
+    if (!language) return null;
+    language = language?.toLowerCase();
+    try {
+        const result = await fetch(`https://models.gtx.dev/language/${language}`);
+        const models = await result.json();
+        return models;
+    } catch (error) {
+        console.error(error)
+        return [];
+    }
+}
+
 // Get all models
 // Returns an array of model names
 const _getModelList = async () => {
@@ -44,6 +74,8 @@ const _isLanguageSupported = async (model, code) => {
 }
 
 module.exports = {
+    _getModelsByDeveloper,
+    _getModelsByLanguage,
     _getModelList,
     _getModelInfo,
     _getModelLanguages,
