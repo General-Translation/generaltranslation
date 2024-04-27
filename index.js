@@ -28,8 +28,8 @@ class GT {
     getModelInfo = _getModelInfo; // returns model object
     getModelLanguages = _getModelLanguages; // e.g. 'mistral-7b' => ['en']
     isLanguageSupported = _isLanguageSupported; // e.g. ('mistral-7b', 'en') => true
-    getModelsByLanguage = _getModelsByLanguage;
-    getModelsByDeveloper = _getModelsByDeveloper;
+    getModelsByLanguage = _getModelsByLanguage; // returns array of model names
+    getModelsByDeveloper = _getModelsByDeveloper; // returns array of model names
 
     // Prompt internationalization
     getPrompt = async (prompt, code) => {
@@ -40,7 +40,6 @@ class GT {
         return await _translate(content, code, this.defaultLanguage, this.apiKey);
     }
     
-
 }
 
 // ----- EXPORTS ----- //
