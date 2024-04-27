@@ -45,6 +45,7 @@ const _isLanguageSupported = async (model, code) => {
 
 module.exports = {
     _getModelList,
+    _getModelInfo,
     _getModelLanguages,
     _isLanguageSupported
 }

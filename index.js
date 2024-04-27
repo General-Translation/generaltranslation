@@ -4,7 +4,7 @@
 // ----- IMPORTS ----- //
 
 const { _getLanguageName, _getLanguageCode } = require('./codes/codes.js');
-const { _getModelList, _getModelLanguages, _isLanguageSupported } = require('./models/models.js');
+const { _getModelList, _getModelInfo, _getModelLanguages, _isLanguageSupported } = require('./models/models.js');
 const { _translate } = require('./translate/translate.js');
 
 // ----- CORE CLASS ----- // 
@@ -25,6 +25,7 @@ class GT {
 
     // Model information functions
     getModelList = _getModelList; // returns array of supported model names
+    getModelInfo = _getModelInfo; // returns model object
     getModelLanguages = _getModelLanguages; // e.g. 'mistral-7b' => ['en']
     isLanguageSupported = _isLanguageSupported; // e.g. ('mistral-7b', 'en') => true
 
