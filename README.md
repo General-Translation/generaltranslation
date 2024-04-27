@@ -102,7 +102,7 @@ const gt = new GT({
 });
 ```
 
-### async getPrompt(prompt, code)
+### async getPrompt(prompt, language)
 
 Translates prompt into the language represented by an ISO-639 language code. Designed for translating prompts into other languages, to internationalize responses from AI models.
 

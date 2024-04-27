@@ -64,11 +64,11 @@ const _constructContent = ({ content, untranslated = null}) => {
 
 // Get a translation via General Translation API
 // Returns string
-const _translate = async (content, code, defaultLanguage, apiKey) => {
+const _translate = async (content, language, defaultLanguage, apiKey) => {
     if (!apiKey) {
         throw new Error('Missing API Key!')
     }
-    if (code === defaultLanguage) {
+    if (language === defaultLanguage) {
         return _constructContent({ content: content });
     }
     const { processed, untranslated } = _processContent(content);
@@ -81,7 +81,7 @@ const _translate = async (content, code, defaultLanguage, apiKey) => {
             },
             body: JSON.stringify({
                 content: processed,
-                targetLanguage: code,
+                targetLanguage: language,
                 defaultLanguage: defaultLanguage
             })
         })

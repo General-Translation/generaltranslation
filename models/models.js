@@ -1,5 +1,16 @@
 // ----- MODEL INFORMATION ----- //
 
+// Get all info on all models
+const _getAllModelInfo = async () => {
+    try {
+        const result = await fetch(`https://models.gtx.dev/all`);
+        return await result.json();
+    } catch (error) {
+        console.error(error)
+        return null;
+    }
+}
+
 // Get all models by a given developer
 // Returns an empty array if none
 const _getModelsByDeveloper = async developer => {
@@ -74,10 +85,11 @@ const _isLanguageSupported = async (model, code) => {
 }
 
 module.exports = {
-    _getModelsByDeveloper,
-    _getModelsByLanguage,
     _getModelList,
     _getModelInfo,
     _getModelLanguages,
-    _isLanguageSupported
+    _isLanguageSupported,
+    _getModelsByDeveloper,
+    _getModelsByLanguage,
+    _getAllModelInfo
 }
