@@ -47,5 +47,6 @@ module.exports = GT;
 module.exports.getLanguageCode = _getLanguageCode;
 module.exports.getLanguageName = _getLanguageName;
 module.exports.getModelList = _getModelList;
+module.exports.getModelInfo = _getModelInfo;
 module.exports.getModelLanguages = _getModelLanguages;
 module.exports.isLanguageSupported = _isLanguageSupported;
