@@ -5,7 +5,7 @@
 
 const { _getLanguageName, _getLanguageCode } = require('./codes/codes.js');
 const { _getModelList, _getModelInfo, _getAllModelInfo, _getModelLanguages, _isLanguageSupported, _getModelsByDeveloper, _getModelsByLanguage, } = require('./models/models.js');
-const { _translate } = require('./translate/translate.js');
+const { _translatePrompt } = require('./prompts/translate.js');
 
 // ----- CORE CLASS ----- // 
 
@@ -13,10 +13,12 @@ class GT {
 
     constructor({
         apiKey = '', 
-        defaultLanguage = 'en'
+        defaultLanguage = 'en',
+        baseURL = 'https://translate.gtx.dev'
     } = {}) {
         this.apiKey = apiKey;
         this.defaultLanguage = defaultLanguage;
+        this.baseURL = baseURL;
     }
 
     // Language code functions
@@ -32,13 +34,11 @@ class GT {
     getModelsByLanguage = _getModelsByLanguage; // returns array of model names
     getModelsByDeveloper = _getModelsByDeveloper; // returns array of model names
 
-    // Prompt internationalization
+    // Prompt I18N
     getPrompt = async (prompt, language) => {
-        return await _translate(prompt, language, this.defaultLanguage, this.apiKey);
-    }
-    // Translation (same as prompt internationalization)
-    translate = async (content, language) => {
-        return await _translate(content, language, this.defaultLanguage, this.apiKey);
+        return await _translatePrompt({
+            content: prompt, language: language, context: this
+        });
     }
 
 }

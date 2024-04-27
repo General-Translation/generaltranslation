@@ -5,7 +5,7 @@ const _shouldTranslate = item => typeof item?.translate === 'boolean' ? item.tra
 
 // Pre-processes content to send to the API
 // Separates out text that shouldn't be translated.
-const _processContent = (content) => {
+const _processContent = ({ content }) => {
     const processed = [];
     const untranslated = [];
     if (Array.isArray(content)) {
@@ -64,16 +64,24 @@ const _constructContent = ({ content, untranslated = null}) => {
 
 // Get a translation via General Translation API
 // Returns string
-const _translate = async (content, language, defaultLanguage, apiKey) => {
+const _translatePrompt = async ({
+    content, language, context
+}) => {
+    
+    const apiKey = context?.apiKey;
     if (!apiKey) {
         throw new Error('Missing API Key!')
-    }
+    };
+
+    const defaultLanguage = context?.defaultLanguage;
     if (language === defaultLanguage) {
         return _constructContent({ content: content });
-    }
-    const { processed, untranslated } = _processContent(content);
+    };
+
+    const { processed, untranslated } = _processContent({ content });
+    
     try {
-        const response = await fetch('http://translate.gtx.dev', {
+        const response = await fetch(`${context?.baseURL}/prompt`, {
             method: 'POST',
             headers: {
                 'Content-Type': 'application/json',
@@ -96,8 +104,9 @@ const _translate = async (content, language, defaultLanguage, apiKey) => {
         console.error(error)
         return _constructContent({ content: content })
     }
+
 }
 
 module.exports = {
-    _translate
+    _translatePrompt
 }
