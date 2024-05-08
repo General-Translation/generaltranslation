@@ -102,23 +102,23 @@ const gt = new GT({
 });
 ```
 
-### async getPrompt(prompt, language)
+### async translatePrompt(prompt, language)
 
 Translates prompt into the language represented by an ISO-639 language code. Designed for translating prompts into other languages, to internationalize responses from AI models.
 
-Just wrap `getPrompt` around your prompt and go. 
+Just wrap `translatePrompt` around your prompt and go. 
 
 All of the following are valid:
 
 ```
-const translatedPrompt = await gt.getPrompt('Tell me a story', 'es');
+const translatedPrompt = await gt.translatePrompt('Tell me a story', 'es');
 ```
 
 ```
 const first = 'Tell me a story ';
 const second = 'about a cat'
 
-const translatedPrompt = await gt.getPrompt([
+const translatedPrompt = await gt.translatePrompt([
     first, second
 ], 'es');
 ```
@@ -129,7 +129,7 @@ To mark text that shouldn't be translated, wrap it in `{ text: "", translate: fa
 const prompt = 'Tell me a story about ';
 const input = 'gatos con espadas'
 
-const translatedPrompt = await gt.getPrompt([
+const translatedPrompt = await gt.translatePrompt([
     prompt, { text: input, translate: false }
 ], 'es');
 ```
@@ -140,7 +140,7 @@ For type consistency, you can also make everything in the prompt parameter an ob
 const prompt = 'Tell me a story about ';
 const input = 'gatos con espadas'
 
-const translatedPrompt = await gt.getPrompt([
+const translatedPrompt = await gt.translatePrompt([
     { text: prompt }, 
     { text: input, translate: false }
 ], 'es');
@@ -149,5 +149,5 @@ const translatedPrompt = await gt.getPrompt([
 This also works:
 
 ```
-const translatedPrompt = await gt.getPrompt({ text: 'Tell me a story' }, 'es');
+const translatedPrompt = await gt.translatePrompt({ text: 'Tell me a story' }, 'es');
 ```

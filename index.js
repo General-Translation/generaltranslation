@@ -35,7 +35,7 @@ class GT {
     getModelsByDeveloper = _getModelsByDeveloper; // returns array of model names
 
     // Prompt I18N
-    getPrompt = async (prompt, language) => {
+    translatePrompt = async (prompt, language) => {
         return await _translatePrompt({
             content: prompt, language: language, context: this
         });
