@@ -14,18 +14,18 @@ Full documentation coming soon!
 npm i generaltranslation
 ```
 
-<b>In your code:</b>
+<b>In your code, import functions directly</b>
+
+```
+import { getLanguageName } from 'generaltranslation'
+```
+
+or, to initialize a GT API client:
 
 ```
 import GT from 'generaltranslation'
 
 const gt = new GT()
-```
-
-or, import functions directly:
-
-```
-import { getLanguageName } from 'generaltranslation'
 ```
 
 ## Convert between languages and ISO-639 codes
@@ -35,10 +35,10 @@ import { getLanguageName } from 'generaltranslation'
 Returns a language name from a two or three-letter ISO-639 language code, or an array of codes.
 
 ```
-const language = gt.getLanguageName('en');
+const language = getLanguageName('en');
 console.log(language) // 'English'
 
-const languages = gt.getLanguageName(['fr', 'es'])
+const languages = getLanguageName(['fr', 'es'])
 console.log(languages) // ['French', 'Spanish']
 ```
 
@@ -47,10 +47,10 @@ console.log(languages) // ['French', 'Spanish']
 Returns an ISO-639 code from a language name or an array of language names.
 
 ```
-const code = gt.getLanguageCode('English');
+const code = getLanguageCode('English');
 console.log(language) // 'en'
 
-const codes = gt.getLanguageCodes(['French', 'Spanish'])
+const codes = getLanguageCodes(['French', 'Spanish'])
 console.log(codes) // ['fr', 'es']
 ```
 
@@ -58,23 +58,11 @@ console.log(codes) // ['fr', 'es']
 
 ### getUserLanguage() 
 
-Returns a user's default browser language. Meant for use in a web browser.
+Returns a user's default browser language. Meant for use in a web browser (i.e. on the client side).
 
 ```
 const userLanguage = getUserLanguage();
 console.log(userLanguage) // 'en'
-```
-
-If invoked on an instance of the GT class, this function will return the default language of that instance, similar to accessing the `defaultLanguage` property.
-
-```
-import GT from 'generaltranslation'
-
-const gt = new GT({
-    defaultLanguage: 'en'
-});
-
-console.log(gt.getUserLanguage()) // same as gt.defaultLanguage
 ```
 
 ## Prompt Internationalization API
@@ -152,7 +140,7 @@ We continually benchmark AI models and add new models as they are released. That
 Get the latest list of models for which there is data. Returns an array of model names.
 
 ```
-const models = await gt.getModelList();
+const models = await getModelList();
 console.log(models) // ['gpt-4', ... ]
 ```
 
@@ -161,7 +149,7 @@ console.log(models) // ['gpt-4', ... ]
 Get all languages known to be compatible with a given AI model. Returns an array of languages codes, or null if the model is unknown.
 
 ```
-const languages = await gt.getModelLanguages('mixtral-8x7b')
+const languages = await getModelLanguages('mixtral-8x7b')
 console.log(languages) // ['en', 'fr', 'de', 'es', 'it']
 ```
 
@@ -170,6 +158,6 @@ console.log(languages) // ['en', 'fr', 'de', 'es', 'it']
 Returns true if a model is known to be compatible with a given language, represented by an ISO-639 language code. Returns false otherwise.
 
 ```
-const supported = await gt.isSupportedLanguage('gpt-4', 'fr')
+const supported = await isSupportedLanguage('gpt-4', 'fr')
 console.log(supported) // true
 ```

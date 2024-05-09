@@ -22,25 +22,6 @@ export default class GT {
         this.baseURL = baseURL;
     }
 
-    // Language code functions
-    getLanguageName = _getLanguageName; // e.g. 'en' => 'English'
-    getLanguageCode = _getLanguageCode; // e.g. 'English' => 'en'
-
-    // Model information functions
-    getModelList = _getModelList; // returns array of supported model names
-    getModelInfo = _getModelInfo; // returns model object
-    getModelLanguages = _getModelLanguages; // e.g. 'mistral-7b' => ['en']
-    isLanguageSupported = _isLanguageSupported; // e.g. ('mistral-7b', 'en') => true
-    getModelsByLanguage = _getModelsByLanguage; // returns array of model names
-    getModelsByDeveloper = _getModelsByDeveloper; // returns array of model names
-
-    // Get a user's browser language
-    getUserLanguage = () => {
-        return _getUserLanguage({
-            defaultLanguage: this.defaultLanguage
-        });
-    }
-
     // Prompt I18N
     translatePrompt = async (prompt, language) => {
         return await _translatePrompt({
