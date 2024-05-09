@@ -1,4 +1,4 @@
-{
+const CodeToLanguageTriletter = {
     "abk": "Abkhazian",
     "aar": "Afar",
     "afr": "Afrikaans",
@@ -184,3 +184,4 @@
     "zha": "Zhuang",
     "zul": "Zulu"
 }
+export default CodeToLanguageTriletter;

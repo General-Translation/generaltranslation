@@ -3,13 +3,14 @@
 
 // ----- IMPORTS ----- //
 
-const { _getLanguageName, _getLanguageCode } = require('./codes/codes.js');
-const { _getModelList, _getModelInfo, _getAllModelInfo, _getModelLanguages, _isLanguageSupported, _getModelsByDeveloper, _getModelsByLanguage, } = require('./models/models.js');
-const { _translatePrompt } = require('./prompts/translate.js');
+import _getUserLanguage from "./client/getUserLanguage.js";
+import { _getLanguageCode, _getLanguageName } from "./codes/codes.js"
+import { _getModelInfo, _getModelList, _getModelLanguages, _isLanguageSupported, _getModelsByDeveloper, _getModelsByLanguage } from "./models/models.js"
+import _translatePrompt from "./prompts/translate.js"
 
 // ----- CORE CLASS ----- // 
 
-class GT {
+export default class GT {
 
     constructor({
         apiKey = '', 
@@ -28,11 +29,15 @@ class GT {
     // Model information functions
     getModelList = _getModelList; // returns array of supported model names
     getModelInfo = _getModelInfo; // returns model object
-    getAllModelInfo =  _getAllModelInfo; // returns all info on all models
     getModelLanguages = _getModelLanguages; // e.g. 'mistral-7b' => ['en']
     isLanguageSupported = _isLanguageSupported; // e.g. ('mistral-7b', 'en') => true
     getModelsByLanguage = _getModelsByLanguage; // returns array of model names
     getModelsByDeveloper = _getModelsByDeveloper; // returns array of model names
+
+    // Get a user's browser language
+    getUserLanguage = () => {
+        return _getUserLanguage(this.defaultLanguage);
+    }
 
     // Prompt I18N
     translatePrompt = async (prompt, language) => {
@@ -43,15 +48,16 @@ class GT {
 
 }
 
-// ----- EXPORTS ----- //
+// ----- SECONDARY EXPORTS ----- //
 
-module.exports = GT;
-module.exports.getLanguageCode = _getLanguageCode;
-module.exports.getLanguageName = _getLanguageName;
-module.exports.getModelList = _getModelList;
-module.exports.getModelInfo = _getModelInfo;
-module.exports.getAllModelInfo = _getAllModelInfo;
-module.exports.getModelLanguages = _getModelLanguages;
-module.exports.isLanguageSupported = _isLanguageSupported;
-module.exports.getModelsByDeveloper = _getModelsByDeveloper;
-module.exports.getModelsByLanguage = _getModelsByLanguage;
+export {
+    _getLanguageCode as getLanguageCode,
+    _getLanguageName as getLanguageName,
+    _getModelList as getModelList,
+    _getModelInfo as getModelInfo,
+    _getModelLanguages as getModelLanguages,
+    _isLanguageSupported as isLanguageSupported,
+    _getModelsByDeveloper as getModelsByDeveloper,
+    _getModelsByLanguage as getModelsByLanguage,
+    _getUserLanguage as getUserLanguage
+};

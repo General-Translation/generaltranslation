@@ -1,4 +1,4 @@
-{
+const LanguageToCode = {
     "abkhazian": "ab",
     "afar": "aa",
     "afrikaans": "af",
@@ -225,3 +225,4 @@
     "chuang": "za",
     "zulu": "zu"
 }
+export default LanguageToCode;

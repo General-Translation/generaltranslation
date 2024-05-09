@@ -1,11 +1,11 @@
 // ----- IMPORTS ----- //
 
-const CodeToLanguage = require('./639-1/CodeToLanguage.json');
-const LanguageToCode = require('./639-1/LanguageToCode.json');
+import CodeToLanguage from './639-1/CodeToLanguage.js'
+import LanguageToCode from './639-1/LanguageToCode.js'
 
 // only for languages which have no two-letter code
-const CodeToLanguageTriletter = require('./639-3/CodeToLanguageTriletter.json');
-const LanguageToCodeTriletter = require('./639-3/LanguageToCodeTriletter.json');
+import CodeToLanguageTriletter from './639-3/CodeToLanguageTriletter.js'
+import LanguageToCodeTriletter from './639-3/LanguageToCodeTriletter.js'
 
 // ----- LANGUAGE CODES ----- //
 
@@ -21,7 +21,7 @@ const _mapCodeToLanguage = code => {
         return CodeToLanguage[code.slice(0, 2)] || '';
     }
 }
-const _getLanguageName = codes => {
+export const _getLanguageName = codes => {
     return Array.isArray(codes) ? codes.map(_mapCodeToLanguage) : _mapCodeToLanguage(codes);
 }
 
@@ -31,10 +31,6 @@ const _mapLanguageToCode = language => {
     const lowerCaseLanguage = language.toLowerCase();
     return LanguageToCode[lowerCaseLanguage] || LanguageToCodeTriletter[lowerCaseLanguage] || '';
 }
-const _getLanguageCode = languages => {
+export const _getLanguageCode = languages => {
     return Array.isArray(languages) ? languages.map(_mapLanguageToCode) : _mapLanguageToCode(languages);
-}
-
-module.exports = {
-    _getLanguageName, _getLanguageCode
 }

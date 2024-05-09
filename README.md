@@ -18,7 +18,6 @@ npm i generaltranslation
 
 ```
 import GT from 'generaltranslation'
-// or const GT = require('generaltranslation')
 
 const gt = new GT()
 ```

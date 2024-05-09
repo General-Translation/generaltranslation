@@ -5,7 +5,7 @@ const _shouldTranslate = item => typeof item?.translate === 'boolean' ? item.tra
 
 // Pre-processes content to send to the API
 // Separates out text that shouldn't be translated.
-const _processContent = ({ content }) => {
+const _processPrompt = ({ content }) => {
     const processed = [];
     const untranslated = [];
     if (Array.isArray(content)) {
@@ -40,7 +40,7 @@ const _processContent = ({ content }) => {
 }
 
 // Build content string from array or single item
-const _constructContent = ({ content, untranslated = null}) => {
+const _constructPrompt = ({ content, untranslated = null}) => {
     if (Array.isArray(content)) {
         let final = '';
         for (const item of content) {
@@ -75,10 +75,10 @@ const _translatePrompt = async ({
 
     const defaultLanguage = context?.defaultLanguage;
     if (language === defaultLanguage) {
-        return _constructContent({ content: content });
+        return _constructPrompt({ content: content });
     };
 
-    const { processed, untranslated } = _processContent({ content });
+    const { processed, untranslated } = _processPrompt({ content });
     
     try {
         const response = await fetch(`${context?.baseURL}/prompt`, {
@@ -98,15 +98,13 @@ const _translatePrompt = async ({
             throw new Error(`${result || response.status}`);
         } else {
             const result = await response.json();
-            return _constructContent({content: result, untranslated: untranslated });
+            return _constructPrompt({content: result, untranslated: untranslated });
         }
     } catch (error) {
         console.error(error)
-        return _constructContent({ content: content })
+        return _constructPrompt({ content: content })
     }
 
 }
 
-module.exports = {
-    _translatePrompt
-}
+export default _translatePrompt;
