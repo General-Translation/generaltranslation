@@ -17,7 +17,7 @@ export default class GT {
         defaultLanguage = 'en',
         baseURL = 'https://translate.gtx.dev'
     } = {}) {
-        this.apiKey = apiKey;
+        this.apiKey = apiKey || (typeof process !== 'undefined' ? process.env.GT_API_KEY : '');
         this.defaultLanguage = defaultLanguage;
         this.baseURL = baseURL;
     }
@@ -36,7 +36,9 @@ export default class GT {
 
     // Get a user's browser language
     getUserLanguage = () => {
-        return _getUserLanguage(this.defaultLanguage);
+        return _getUserLanguage({
+            defaultLanguage: this.defaultLanguage
+        });
     }
 
     // Prompt I18N
