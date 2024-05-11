@@ -40,7 +40,7 @@ const _createI18N = async ({
         }
     } catch (error) {
         console.error(error)
-        return content;
+        return Object.fromEntries(strings.map(s => [s, s]));
     }
     
 }
