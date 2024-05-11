@@ -5,7 +5,7 @@
 
 import _getUserLanguage from "./client/getUserLanguage.js";
 import { _getLanguageCode, _getLanguageName } from "./codes/codes.js"
-import { _getModelInfo, _getModelList, _getModelLanguages, _isLanguageSupported, _getModelsByDeveloper, _getModelsByLanguage } from "./models/models.js"
+import { _getModelInfo, _getModelList, _getModelLanguages, _isLanguageSupported, _getModelsByDeveloper, _getModelsByLanguage, _getAllModelInfo } from "./models/models.js"
 import _translatePrompt from "./translate/prompts.js"
 import _createI18N from "./translate/html.js";
 
@@ -52,6 +52,7 @@ export {
     _getModelList as getModelList,
     _getModelInfo as getModelInfo,
     _getModelLanguages as getModelLanguages,
+    _getAllModelInfo as _getAllModelInfo,
     _isLanguageSupported as isLanguageSupported,
     _getModelsByDeveloper as getModelsByDeveloper,
     _getModelsByLanguage as getModelsByLanguage,
