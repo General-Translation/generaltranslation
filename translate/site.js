@@ -1,9 +1,9 @@
 const _createI18N = async ({
     projectID,
+    html,
+    strings,
     defaultLanguage,
     userLanguage,
-    content,
-    metadata,
     config
 }) => {
 
@@ -25,10 +25,10 @@ const _createI18N = async ({
             },
             body: JSON.stringify({
                 projectID: projectID,
-                content: content,
+                html: html,
+                strings: strings,
                 defaultLanguage: defaultLanguage,
-                userLanguage: userLanguage,
-                metadata: metadata
+                userLanguage: userLanguage
             })
         })
         if (!response.ok) {
