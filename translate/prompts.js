@@ -81,7 +81,7 @@ const _translatePrompt = async ({
     const { processed, untranslated } = _processPrompt({ content });
     
     try {
-        const response = await fetch(`${config?.baseURL}/prompt`, {
+        const response = await fetch(`${config?.baseURL}/prompts`, {
             method: 'POST',
             headers: {
                 'Content-Type': 'application/json',

@@ -17,7 +17,7 @@ const _createI18N = async ({
     };
 
     try {
-        const response = await fetch(`${config?.baseURL}/site`, {
+        const response = await fetch(`${config?.baseURL}/html`, {
             method: 'POST',
             headers: {
                 'Content-Type': 'application/json',

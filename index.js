@@ -6,8 +6,8 @@
 import _getUserLanguage from "./client/getUserLanguage.js";
 import { _getLanguageCode, _getLanguageName } from "./codes/codes.js"
 import { _getModelInfo, _getModelList, _getModelLanguages, _isLanguageSupported, _getModelsByDeveloper, _getModelsByLanguage } from "./models/models.js"
-import _translatePrompt from "./translate/prompt.js"
-import _createI18N from "./translate/site.js";
+import _translatePrompt from "./translate/prompts.js"
+import _createI18N from "./translate/html.js";
 
 // ----- CORE CLASS ----- // 
 
