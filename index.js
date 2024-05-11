@@ -52,7 +52,7 @@ export {
     _getModelList as getModelList,
     _getModelInfo as getModelInfo,
     _getModelLanguages as getModelLanguages,
-    _getAllModelInfo as _getAllModelInfo,
+    _getAllModelInfo as getAllModelInfo,
     _isLanguageSupported as isLanguageSupported,
     _getModelsByDeveloper as getModelsByDeveloper,
     _getModelsByLanguage as getModelsByLanguage,
