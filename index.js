@@ -6,7 +6,8 @@
 import _getUserLanguage from "./client/getUserLanguage.js";
 import { _getLanguageCode, _getLanguageName } from "./codes/codes.js"
 import { _getModelInfo, _getModelList, _getModelLanguages, _isLanguageSupported, _getModelsByDeveloper, _getModelsByLanguage } from "./models/models.js"
-import _translatePrompt from "./prompts/translate.js"
+import _translatePrompt from "./translate/prompt.js"
+import _createI18N from "./translate/site.js";
 
 // ----- CORE CLASS ----- // 
 
@@ -23,9 +24,21 @@ export default class GT {
     }
 
     // Prompt I18N
-    translatePrompt = async (prompt, language) => {
+    async translatePrompt(prompt, language) {
         return await _translatePrompt({
-            content: prompt, language: language, context: this
+            content: prompt, language: language, config: this
+        });
+    }
+
+    // Site I18N
+    async createI18N({ projectID, html, strings, defaultLanguage, userLanguage }) {
+        return await _createI18N({
+           projectID: projectID,
+           html: html,
+           strings: strings,
+           defaultLanguage: defaultLanguage,
+           userLanguage: userLanguage,
+           config: this
         });
     }
 

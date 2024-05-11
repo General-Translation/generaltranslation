@@ -65,15 +65,15 @@ const _constructPrompt = ({ content, untranslated = null}) => {
 // Get a translation via General Translation API
 // Returns string
 const _translatePrompt = async ({
-    content, language, context
+    content, language, config
 }) => {
     
-    const apiKey = context?.apiKey;
+    const apiKey = config?.apiKey;
     if (!apiKey) {
         throw new Error('Missing API Key!')
     };
 
-    const defaultLanguage = context?.defaultLanguage;
+    const defaultLanguage = config?.defaultLanguage;
     if (language === defaultLanguage) {
         return _constructPrompt({ content: content });
     };
@@ -81,7 +81,7 @@ const _translatePrompt = async ({
     const { processed, untranslated } = _processPrompt({ content });
     
     try {
-        const response = await fetch(`${context?.baseURL}/prompt`, {
+        const response = await fetch(`${config?.baseURL}/prompt`, {
             method: 'POST',
             headers: {
                 'Content-Type': 'application/json',

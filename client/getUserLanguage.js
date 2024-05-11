@@ -2,7 +2,7 @@
 // e.g. 'en-US', not necessarily 'en'
 // generaltranslation handles this well, but other libraries may not
 // (it's a skill issue I'm afraid) 
-export default function _getUserLanguage({defaultLanguage = ''} = {}) {
+export default function _getUserLanguage({ defaultLanguage = '' } = {}) {
     if (typeof window !== 'undefined' && window?.navigator) {
         return navigator?.language || navigator?.userLanguage || defaultLanguage || '';
     } else if (defaultLanguage) {

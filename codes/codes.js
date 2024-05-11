@@ -11,14 +11,14 @@ import LanguageToCodeTriletter from './639-3/LanguageToCodeTriletter.js'
 
 // Returns the name of a language from an ISO 639 code or an array of codes
 const _mapCodeToLanguage = code => {
-    if (code.length === 2) {
+    if (code?.length === 2) {
         return CodeToLanguage[code]
     } 
-    if (code.length === 3) {
+    if (code?.length === 3) {
         CodeToLanguageTriletter[code]
     }
     else {
-        return CodeToLanguage[code.slice(0, 2)] || '';
+        return CodeToLanguage[code?.slice(0, 2)] || '';
     }
 }
 export const _getLanguageName = codes => {
@@ -28,7 +28,7 @@ export const _getLanguageName = codes => {
 // Returns an ISO 639 code from a language name or an array of language names
 // Preferentially returns two-letter codes
 const _mapLanguageToCode = language => {
-    const lowerCaseLanguage = language.toLowerCase();
+    const lowerCaseLanguage = language?.toLowerCase();
     return LanguageToCode[lowerCaseLanguage] || LanguageToCodeTriletter[lowerCaseLanguage] || '';
 }
 export const _getLanguageCode = languages => {
