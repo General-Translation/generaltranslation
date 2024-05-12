@@ -85,7 +85,7 @@ const _translatePrompt = async ({
             method: 'POST',
             headers: {
                 'Content-Type': 'application/json',
-                Authorization: apiKey,
+                'gtx-api-key': apiKey,
             },
             body: JSON.stringify({
                 content: processed,
