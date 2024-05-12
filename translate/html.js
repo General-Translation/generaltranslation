@@ -21,7 +21,7 @@ const _createI18N = async ({
             method: 'POST',
             headers: {
                 'Content-Type': 'application/json',
-                'gtx-api-key': apiKey
+                Authorization: apiKey,
             },
             body: JSON.stringify({
                 projectID: projectID,
