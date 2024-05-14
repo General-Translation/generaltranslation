@@ -11,6 +11,7 @@ import LanguageToCodeTriletter from './639-3/LanguageToCodeTriletter.js'
 
 // Returns the name of a language from an ISO 639 code or an array of codes
 const _mapCodeToLanguage = code => {
+    code = code?.toLowerCase();
     if (code?.length === 2) {
         return CodeToLanguage[code]
     } 
