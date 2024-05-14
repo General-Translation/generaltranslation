@@ -130,34 +130,3 @@ This also works:
 ```
 const translatedPrompt = await gt.translatePrompt({ text: 'Tell me a story' }, 'es');
 ```
-
-## Which languages do AI models understand?
-
-We continually benchmark AI models and add new models as they are released. That means these functions have to be <code>async</code>. This information is provided as a public service. It's completely free and requires no API key.
-
-### async getModelList()
-
-Get the latest list of models for which there is data. Returns an array of model names.
-
-```
-const models = await getModelList();
-console.log(models) // ['gpt-4', ... ]
-```
-
-### async getModelLanguages(model)
-
-Get all languages known to be compatible with a given AI model. Returns an array of languages codes, or null if the model is unknown.
-
-```
-const languages = await getModelLanguages('mixtral-8x7b')
-console.log(languages) // ['en', 'fr', 'de', 'es', 'it']
-```
-
-### async isSupportedLanguage(model, code)
-
-Returns true if a model is known to be compatible with a given language, represented by an ISO-639 language code. Returns false otherwise.
-
-```
-const supported = await isSupportedLanguage('gpt-4', 'fr')
-console.log(supported) // true
-```
