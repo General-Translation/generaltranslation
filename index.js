@@ -3,7 +3,6 @@
 
 // ----- IMPORTS ----- //
 
-import _getUserLanguage from "./client/getUserLanguage.js";
 import { _getLanguageCode, _getLanguageName } from "./codes/codes.js"
 import _translatePrompt from "./translate/prompts.js"
 import _createI18N from "./translate/html.js";
@@ -47,6 +46,5 @@ export default class GT {
 
 export {
     _getLanguageCode as getLanguageCode,
-    _getLanguageName as getLanguageName,
-    _getUserLanguage as getUserLanguage
+    _getLanguageName as getLanguageName
 };
