@@ -18,7 +18,7 @@ export default class GT {
         baseURL = 'https://translate.gtx.dev'
     } = {}) {
         this.apiKey = apiKey || (typeof process !== 'undefined' ? process.env.GT_API_KEY : '');
-        this.defaultLanguage = defaultLanguage;
+        this.defaultLanguage = defaultLanguage?.toLowerCase();
         this.baseURL = baseURL;
     }
 
