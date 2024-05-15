@@ -3,8 +3,8 @@
 // generaltranslation handles this well, but other libraries may not
 // (it's a skill issue I'm afraid) 
 export default function _getUserLanguage({ defaultLanguage = '' } = {}) {
-    if (typeof window !== 'undefined' && window?.navigator) {
-        return (navigator?.language || navigator?.userLanguage || defaultLanguage || '').toLowerCase();
+    if (typeof window !== 'undefined' && (window?.navigator || navigator)) {
+        return (window?.navigator.language || navigator?.language || navigator?.userLanguage || defaultLanguage || '').toLowerCase();
     } else if (defaultLanguage) {
         return defaultLanguage.toLowerCase();
     } else {
