@@ -16,7 +16,7 @@ const _mapCodeToLanguage = code => {
         return CodeToLanguage[code]
     } 
     if (code?.length === 3) {
-        CodeToLanguageTriletter[code]
+        return CodeToLanguageTriletter[code]
     }
     else {
         return CodeToLanguage[code?.slice(0, 2)] || '';
