@@ -5,7 +5,7 @@
 
 import { _getLanguageCode, _getLanguageName } from "./codes/codes.js"
 import _translatePrompt from "./translate/prompts.js"
-import _createI18N from "./translate/html.js";
+import _translateHTML from "./translate/html.js";
 
 // ----- CORE CLASS ----- // 
 
@@ -29,13 +29,12 @@ export default class GT {
     }
 
     // Site I18N
-    async createI18N({ projectID, html, strings, defaultLanguage, userLanguage }) {
-        return await _createI18N({
+    async translateHTML({ projectID, defaultLanguage, userLanguage, content }) {
+        return await _translateHTML({
            projectID: projectID,
-           html: html,
-           strings: strings,
            defaultLanguage: defaultLanguage,
            userLanguage: userLanguage,
+           content: content,
            config: this
         });
     }

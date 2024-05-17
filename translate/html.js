@@ -1,9 +1,8 @@
-const _createI18N = async ({
+const _translateHTML = async ({
     projectID,
-    html,
-    strings,
     defaultLanguage,
     userLanguage,
+    content,
     config
 }) => {
 
@@ -17,7 +16,7 @@ const _createI18N = async ({
     };
 
     try {
-        const response = await fetch(`${config?.baseURL}/html`, {
+        const response = await fetch(`https://html.gtx.dev`, {
             method: 'POST',
             headers: {
                 'Content-Type': 'application/json',
@@ -25,12 +24,11 @@ const _createI18N = async ({
             },
             body: JSON.stringify({
                 projectID: projectID,
-                html: html,
-                strings: strings,
                 defaultLanguage: defaultLanguage,
-                userLanguage: userLanguage
+                userLanguage: userLanguage,
+                content: content
             })
-        })
+        });
         if (!response.ok) {
             const result = await response.text();
             throw new Error(`${result || response.status}`);
@@ -39,9 +37,9 @@ const _createI18N = async ({
             return result;
         }
     } catch (error) {
-        console.error(error)
-        return Object.fromEntries(strings.map(s => [s, s]));
+        console.error(error);
+        return {};
     }
     
 }
-export default _createI18N;
+export default _translateHTML;
