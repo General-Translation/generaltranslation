@@ -184,4 +184,4 @@ const CodeToLanguageTriletter = {
     "zha": "Zhuang",
     "zul": "Zulu"
 }
-export default CodeToLanguageTriletter;
+module.exports = CodeToLanguageTriletter;

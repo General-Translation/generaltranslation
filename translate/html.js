@@ -16,7 +16,7 @@ const _translateHTML = async ({
     };
 
     try {
-        const response = await fetch(`https://html.gtx.dev`, {
+        const response = await fetch('https://html.gtx.dev', {
             method: 'POST',
             headers: {
                 'Content-Type': 'application/json',
@@ -42,4 +42,5 @@ const _translateHTML = async ({
     }
     
 }
-export default _translateHTML;
+
+module.exports = _translateHTML;

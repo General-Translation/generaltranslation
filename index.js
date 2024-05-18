@@ -3,13 +3,13 @@
 
 // ----- IMPORTS ----- //
 
-import { _getLanguageCode, _getLanguageName } from "./codes/codes.js"
-import _translatePrompt from "./translate/prompts.js"
-import _translateHTML from "./translate/html.js";
+const { _getLanguageCode, _getLanguageName } = require('./codes/codes.js');
+const _translatePrompt = require('./translate/prompts.js');
+const _translateHTML = require('./translate/html.js');
 
 // ----- CORE CLASS ----- // 
 
-export default class GT {
+class GT {
 
     constructor({
         apiKey = '', 
@@ -43,7 +43,9 @@ export default class GT {
 
 // ----- SECONDARY EXPORTS ----- //
 
-export {
-    _getLanguageCode as getLanguageCode,
-    _getLanguageName as getLanguageName
-};
+// Export the class
+module.exports = GT;
+
+// Export the functions 
+module.exports.getLanguageCode = _getLanguageCode;
+module.exports.getLanguageName = _getLanguageName;

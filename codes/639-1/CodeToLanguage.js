@@ -183,4 +183,4 @@ const CodeToLanguage = {
     "za": "Zhuang",
     "zu": "Zulu"
 }
-export default CodeToLanguage;
+module.exports = CodeToLanguage;

@@ -225,4 +225,4 @@ const LanguageToCode = {
     "chuang": "za",
     "zulu": "zu"
 }
-export default LanguageToCode;
+module.exports = LanguageToCode;

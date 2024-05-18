@@ -107,4 +107,4 @@ const _translatePrompt = async ({
 
 }
 
-export default _translatePrompt;
+module.exports = _translatePrompt;

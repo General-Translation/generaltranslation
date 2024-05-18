@@ -226,4 +226,4 @@ const LanguageToCodeTriletter = {
     "chuang": "zha",
     "zulu": "zul"
 }
-export default LanguageToCodeTriletter;
+module.exports = LanguageToCodeTriletter;
