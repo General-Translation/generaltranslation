@@ -1,7 +1,8 @@
 const _translateHTML = async ({
     projectID,
-    defaultLanguage,
+    page,
     userLanguage,
+    defaultLanguage,
     content,
     config
 }) => {
@@ -24,8 +25,9 @@ const _translateHTML = async ({
             },
             body: JSON.stringify({
                 projectID: projectID,
-                defaultLanguage: defaultLanguage,
+                page: page,
                 userLanguage: userLanguage,
+                defaultLanguage: defaultLanguage,
                 content: content
             })
         });

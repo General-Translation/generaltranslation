@@ -29,11 +29,12 @@ class GT {
     }
 
     // Site I18N
-    async translateHTML({ projectID, defaultLanguage, userLanguage, content }) {
+    async translateHTML({ projectID, page, userLanguage, defaultLanguage, content }) {
         return await _translateHTML({
            projectID: projectID,
-           defaultLanguage: defaultLanguage,
+           page: page,
            userLanguage: userLanguage,
+           defaultLanguage: defaultLanguage,
            content: content,
            config: this
         });
