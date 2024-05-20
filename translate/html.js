@@ -4,7 +4,8 @@ const _translateHTML = async ({
     userLanguage,
     defaultLanguage,
     content,
-    config
+    config,
+    ...metadata
 }) => {
 
     const apiKey = config?.apiKey;
@@ -28,7 +29,8 @@ const _translateHTML = async ({
                 page: page,
                 userLanguage: userLanguage,
                 defaultLanguage: defaultLanguage,
-                content: content
+                content: content,
+                metadata: { ...metadata }
             })
         });
         if (!response.ok) {
