@@ -5,7 +5,7 @@ const _shouldTranslate = item => typeof item?.translate === 'boolean' ? item.tra
 
 // Pre-processes content to send to the API
 // Separates out text that shouldn't be translated.
-const _processPrompt = ({ content }) => {
+const _processContent = ({ content }) => {
     const processed = [];
     const untranslated = [];
     if (Array.isArray(content)) {
@@ -40,7 +40,7 @@ const _processPrompt = ({ content }) => {
 }
 
 // Build content string from array or single item
-const _constructPrompt = ({ content, untranslated = null}) => {
+const _constructContent = ({ content, untranslated = null}) => {
     if (Array.isArray(content)) {
         let final = '';
         for (const item of content) {
@@ -64,8 +64,8 @@ const _constructPrompt = ({ content, untranslated = null}) => {
 
 // Get a translation via General Translation API
 // Returns string
-const _translatePrompt = async ({
-    content, language, config
+const _translate = async ({
+    content, language, config, ...options
 }) => {
     
     const apiKey = config?.apiKey;
@@ -75,13 +75,13 @@ const _translatePrompt = async ({
 
     const defaultLanguage = config?.defaultLanguage;
     if (language === defaultLanguage) {
-        return _constructPrompt({ content: content });
+        return _constructContent({ content: content });
     };
 
-    const { processed, untranslated } = _processPrompt({ content });
+    const { processed, untranslated } = _processContent({ content });
     
     try {
-        const response = await fetch(`${config?.baseURL}/prompts`, {
+        const response = await fetch(`${config?.baseURL}`, {
             method: 'POST',
             headers: {
                 'Content-Type': 'application/json',
@@ -90,7 +90,8 @@ const _translatePrompt = async ({
             body: JSON.stringify({
                 content: processed,
                 targetLanguage: language,
-                defaultLanguage: defaultLanguage
+                defaultLanguage: defaultLanguage,
+                options: { ...options }
             })
         })
         if (!response.ok) {
@@ -98,13 +99,81 @@ const _translatePrompt = async ({
             throw new Error(`${result || response.status}`);
         } else {
             const result = await response.json();
-            return _constructPrompt({content: result, untranslated: untranslated });
+            return _constructContent({content: result, untranslated: untranslated });
         }
     } catch (error) {
         console.error(error)
-        return _constructPrompt({ content: content })
+        return _constructContent({ content: content })
     }
 
 }
 
-module.exports = _translatePrompt;
+const constructAll = (contentArray) => {
+    const returnArray = [];
+    for (const item of contentArray) {
+        returnArray.push(_constructContent({ content: item }))
+    }
+    return returnArray;
+}
+
+// Get a translation of multiple strings via General Translation API
+// Returns array of strings
+const _translateMany = async ({
+    contentArray, language, config, ...options
+}) => {
+    
+    const apiKey = config?.apiKey;
+    if (!apiKey) {
+        throw new Error('Missing API Key!')
+    };
+
+    const defaultLanguage = config?.defaultLanguage;
+    if (language === defaultLanguage) {
+        return constructAll(contentArray);
+    };
+
+    const processedArray = [];
+    const untranslatedArray = [];
+
+    for (const item of contentArray) {
+        const { processed, untranslated } =  _processContent({ content: item });
+        processedArray.push(processed);
+        untranslatedArray.push(untranslated);
+    };
+    
+    try {
+        const response = await fetch(`${config?.baseURL}/many`, {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json',
+                'gtx-api-key': apiKey,
+            },
+            body: JSON.stringify({
+                content: processedArray,
+                targetLanguage: language,
+                defaultLanguage: defaultLanguage,
+                options: { ...options }
+            })
+        })
+        if (!response.ok) {
+            const result = await response.text();
+            throw new Error(`${result || response.status}`);
+        } else {
+            const result = await response.json();
+            if (!Array.isArray(result)) {
+                throw new Error(`${result || response.status}`);
+            }
+            const returnArray = []
+            for (const [index, item] of result.entries()) {
+                returnArray.push(_constructContent({content: item, untranslated: untranslatedArray[index] }));
+            }
+            return returnArray;
+        }
+    } catch (error) {
+        console.error(error)
+        return constructAll(contentArray);
+    }
+
+}
+
+module.exports = { _translate, _translateMany };

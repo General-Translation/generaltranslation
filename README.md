@@ -54,18 +54,7 @@ const codes = getLanguageCodes(['French', 'Spanish'])
 console.log(codes) // ['fr', 'es']
 ```
 
-## Get a user's language
-
-### getUserLanguage() 
-
-Returns a user's default browser language. Meant for use in a web browser (i.e. on the client side).
-
-```
-const userLanguage = getUserLanguage();
-console.log(userLanguage) // 'en'
-```
-
-## Prompt Internationalization API
+## Translation API
 
 For this function, you need to sign up for an API key at <a href='https://generaltranslation.com' target='_blank'>generaltranslation.com</a>.
 
@@ -81,23 +70,21 @@ const gt = new GT({
 });
 ```
 
-### async translatePrompt(prompt, language)
+### async translate(content, language)
 
-Translates prompt into the language represented by an ISO-639 language code. Designed for translating prompts into other languages, to internationalize responses from AI models.
-
-Just wrap `translatePrompt` around your prompt and go. 
+Translates content into the language represented by an ISO-639 language code. Caches by default. Just wrap `translate` around your content and go.
 
 All of the following are valid:
 
 ```
-const translatedPrompt = await gt.translatePrompt('Tell me a story', 'es');
+const translation = await gt.translate('Tell me a story', 'es'); // returns a string
 ```
 
 ```
-const first = 'Tell me a story ';
-const second = 'about a cat'
+const first = 'Tell me a story';
+const second = ' about a cat'
 
-const translatedPrompt = await gt.translatePrompt([
+const translated = await gt.translate([
     first, second
 ], 'es');
 ```
@@ -108,18 +95,18 @@ To mark text that shouldn't be translated, wrap it in `{ text: "", translate: fa
 const prompt = 'Tell me a story about ';
 const input = 'gatos con espadas'
 
-const translatedPrompt = await gt.translatePrompt([
+const translatedPrompt = await gt.translate([
     prompt, { text: input, translate: false }
 ], 'es');
 ```
 
-For type consistency, you can also make everything in the prompt parameter an object:
+For type consistency, you can also make everything in the content parameter an object:
 
 ```
 const prompt = 'Tell me a story about ';
 const input = 'gatos con espadas'
 
-const translatedPrompt = await gt.translatePrompt([
+const translatedPrompt = await gt.translate([
     { text: prompt }, 
     { text: input, translate: false }
 ], 'es');
@@ -128,5 +115,14 @@ const translatedPrompt = await gt.translatePrompt([
 This also works:
 
 ```
-const translatedPrompt = await gt.translatePrompt({ text: 'Tell me a story' }, 'es');
+const translatedPrompt = await gt.translate({ text: 'Tell me a story' }, 'es');
+```
+
+### async translateMany(contentArray, language)
+
+Translates multiple items of content into the language represented by an ISO-639 language code. Caches by default. Just wrap `translateMany` around an array of what you want to translate and specify a language. For example:
+
+```
+const contentArray = ['You say goodbye', 'And I say hello'];
+const translationArray = await gt.translateMany(contentArray, 'es') // returns an array
 ```

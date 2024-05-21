@@ -4,40 +4,62 @@
 // ----- IMPORTS ----- //
 
 const { _getLanguageCode, _getLanguageName } = require('./codes/codes.js');
-const _translatePrompt = require('./translate/prompts.js');
+const { _translate, _translateMany } = require('./translate/translate.js');
 const _translateHTML = require('./translate/html.js');
 
+// TO DO
+// - Times/dates?
+// - Currency conversion?
+// - Regions (e.g. en-GB)
+
 // ----- CORE CLASS ----- // 
+
+const getDefaultFromEnv = (VARIABLE) => {
+    if (typeof process !== 'undefined') {
+        if (process?.env?.[VARIABLE]) {
+            return process.env[VARIABLE];
+        }
+    }
+    return '';
+}
 
 class GT {
 
     constructor({
         apiKey = '', 
         defaultLanguage = 'en',
+        projectID = '',
         baseURL = 'https://translate.gtx.dev'
     } = {}) {
-        this.apiKey = apiKey || (typeof process !== 'undefined' ? process.env.GT_API_KEY : '');
+        this.apiKey = apiKey || getDefaultFromEnv('GT_API_KEY');
+        this.projectID = projectID || getDefaultFromEnv('GT_PROJECT_ID');
         this.defaultLanguage = defaultLanguage?.toLowerCase();
         this.baseURL = baseURL;
     }
 
-    // Prompt I18N
-    async translatePrompt(prompt, language) {
-        return await _translatePrompt({
-            content: prompt, language: language, config: this
+    // Site I18N
+    async translateHTML({ page, userLanguage, defaultLanguage, content, ...metadata }) {
+        return await _translateHTML({
+            page: page,
+            userLanguage: userLanguage,
+            defaultLanguage: defaultLanguage,
+            content: content,
+            config: this,
+            ...metadata
         });
     }
 
-    // Site I18N
-    async translateHTML({ projectID, page, userLanguage, defaultLanguage, content, ...metadata }) {
-        return await _translateHTML({
-           projectID: projectID,
-           page: page,
-           userLanguage: userLanguage,
-           defaultLanguage: defaultLanguage,
-           content: content,
-           config: this,
-           ...metadata
+    // String translation
+    async translate(content, language, { ... options }) {
+        return await _translate({
+            content: content, language: language, config: this, ...options,
+        });
+    }
+
+    // String translation, of an array of strings
+    async translateMany(contentArray, language, { ... options }) {
+        return await _translateMany({
+            contentArray: contentArray, language: language, config: this, ...options,
         });
     }
 

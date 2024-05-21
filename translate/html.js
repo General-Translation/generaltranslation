@@ -1,5 +1,4 @@
 const _translateHTML = async ({
-    projectID,
     page,
     userLanguage,
     defaultLanguage,
@@ -13,8 +12,9 @@ const _translateHTML = async ({
         throw new Error('Missing API Key!')
     };
 
+    const projectID = config?.projectID;
     if (!projectID) {
-        throw new Error('Missing project ID!')
+        throw new Error('Missing Project ID!')
     };
 
     try {
