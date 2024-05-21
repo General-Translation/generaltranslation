@@ -146,7 +146,6 @@ const _translateMany = async ({
             body: JSON.stringify({
                 processedRequests: processedRequests,
                 targetLanguage: language,
-                defaultLanguage: defaultLanguage,
                 options: { ...options }
             })
         })
