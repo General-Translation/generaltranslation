@@ -119,23 +119,34 @@ const constructAll = (contentArray) => {
 // Get a translation of multiple strings via General Translation API
 // Returns array of strings
 const _translateMany = async ({
-    requestArray, config
+    contentArray, language, config, ...options
 }) => {
-    
+
     const apiKey = config?.apiKey;
     if (!apiKey) {
         throw new Error('Missing API Key!')
     };
 
-    const processedRequests = [];
+    /*
+        // [{content, language,...options}], config 
+        ->
+        [{
+            content: processed,
+            targetLanguage: language,
+            defaultLanguage: defaultLanguage,
+            options: { ...options }
+        }]
+    */
+
+    const requests = [];
     const untranslatedArray = [];
 
-    for (const item of requestArray) {
-        const { processed, untranslated } = _processContent({ content: item?.content });
-        processedRequests.push({ content: processed, language: item.language, options: { ...item.options } });
+    for (const item of contentArray) {
+        const { processed, untranslated } = _processContent({ content: item });
+        requests.push({ content: processed, defaultLanguage: config?.defaultLanguage, targetLanguage: language, options: { ...item.options } });
         untranslatedArray.push(untranslated);
-    };
-    
+    }
+
     try {
         const response = await fetch(`${config?.baseURL}/many`, {
             method: 'POST',
@@ -144,9 +155,7 @@ const _translateMany = async ({
                 'gtx-api-key': apiKey,
             },
             body: JSON.stringify({
-                processedRequests: processedRequests,
-                targetLanguage: language,
-                options: { ...options }
+                requests: requests
             })
         })
         if (!response.ok) {
@@ -154,18 +163,18 @@ const _translateMany = async ({
             throw new Error(`${result || response.status}`);
         } else {
             const result = await response.json();
-            if (!Array.isArray(result)) {
+            if (!Array.isArray(result?.translation)) {
                 throw new Error(`${result || response.status}`);
             }
-            const returnArray = []
-            for (const [index, item] of result.entries()) {
+            const returnArray = [];
+            for (const [index, item] of result.translation.entries()) {
                 returnArray.push(_constructContent({content: item, untranslated: untranslatedArray[index] }));
             }
             return returnArray;
         }
     } catch (error) {
         console.error(error)
-        return constructAll(requestArray.map(item => item.content));
+        return constructAll(contentArray);
     }
 
 }

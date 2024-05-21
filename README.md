@@ -123,15 +123,6 @@ const translatedPrompt = await gt.translate({ text: 'Tell me a story' }, 'es');
 Translates multiple items of content into the language represented by an ISO-639 language code. Caches by default. Just wrap `translateMany` around an array of what you want to translate and specify a language. For example:
 
 ```
-const requests = [
-    {
-        content: "You say goodbye",
-        language: "es"
-    },
-    {
-        content: "And I say hello.",
-        language: "de"
-    }
-];
-const translationArray = await gt.translateMany(requests) // returns an array
+const requests = ["You say goodbye.", "And I say hello."];
+const translationArray = await gt.translateMany(requests, 'es') // returns an array
 ```
