@@ -119,7 +119,7 @@ const constructAll = (contentArray) => {
 // Get a translation of multiple strings via General Translation API
 // Returns array of strings
 const _translateMany = async ({
-    contentArray, language, config, ...options
+    requestArray, config
 }) => {
     
     const apiKey = config?.apiKey;
@@ -127,17 +127,12 @@ const _translateMany = async ({
         throw new Error('Missing API Key!')
     };
 
-    const defaultLanguage = config?.defaultLanguage;
-    if (language === defaultLanguage) {
-        return constructAll(contentArray);
-    };
-
-    const processedArray = [];
+    const processedRequests = [];
     const untranslatedArray = [];
 
-    for (const item of contentArray) {
-        const { processed, untranslated } =  _processContent({ content: item });
-        processedArray.push(processed);
+    for (const item of requestArray) {
+        const { processed, untranslated } = _processContent({ content: item?.content });
+        processedRequests.push({ content: processed, language: item.language, options: { ...item.options } });
         untranslatedArray.push(untranslated);
     };
     
@@ -149,7 +144,7 @@ const _translateMany = async ({
                 'gtx-api-key': apiKey,
             },
             body: JSON.stringify({
-                content: processedArray,
+                processedRequests: processedRequests,
                 targetLanguage: language,
                 defaultLanguage: defaultLanguage,
                 options: { ...options }
@@ -171,7 +166,7 @@ const _translateMany = async ({
         }
     } catch (error) {
         console.error(error)
-        return constructAll(contentArray);
+        return constructAll(requestArray.map(item => item.content));
     }
 
 }
