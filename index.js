@@ -50,7 +50,7 @@ class GT {
     }
 
     // String translation
-    async translate(content, language, { ... options }) {
+    async translate(content, language, ...options) {
         return await _translate({
             content: content, language: language, config: this, ...options,
         });
@@ -58,7 +58,7 @@ class GT {
 
     // String translation, of an array of strings
     // requestArray looks like { content: '', language: '' }
-    async translateMany(contentArray, language, { ...options }) {
+    async translateMany(contentArray, language, ...options) {
         return await _translateMany({
             contentArray, language, config: this, ...options
         });

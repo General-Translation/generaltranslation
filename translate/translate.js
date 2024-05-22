@@ -127,6 +127,11 @@ const _translateMany = async ({
         throw new Error('Missing API Key!')
     };
 
+    const defaultLanguage = config?.defaultLanguage;
+    if (language === defaultLanguage) {
+        return constructAll(contentArray);
+    };
+
     /*
         // [{content, language,...options}], config 
         ->
@@ -138,12 +143,12 @@ const _translateMany = async ({
         }]
     */
 
-    const requests = [];
+    const processedArray = [];
     const untranslatedArray = [];
 
     for (const item of contentArray) {
         const { processed, untranslated } = _processContent({ content: item });
-        requests.push({ content: processed, defaultLanguage: config?.defaultLanguage, targetLanguage: language, options: { ...item.options } });
+        processedArray.push(processed);
         untranslatedArray.push(untranslated);
     }
 
@@ -155,19 +160,23 @@ const _translateMany = async ({
                 'gtx-api-key': apiKey,
             },
             body: JSON.stringify({
-                requests: requests
+                contentArray: processedArray,
+                targetLanguage: language,
+                defaultLanguage: defaultLanguage,
+                options: { ...options }
             })
         })
         if (!response.ok) {
+            
             const result = await response.text();
             throw new Error(`${result || response.status}`);
         } else {
             const result = await response.json();
-            if (!Array.isArray(result?.translation)) {
+            if (!Array.isArray(result)) {
                 throw new Error(`${result || response.status}`);
             }
             const returnArray = [];
-            for (const [index, item] of result.translation.entries()) {
+            for (const [index, item] of result.entries()) {
                 returnArray.push(_constructContent({content: item, untranslated: untranslatedArray[index] }));
             }
             return returnArray;
