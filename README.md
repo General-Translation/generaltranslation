@@ -2,7 +2,7 @@
 
 <a href='https://www.generaltranslation.com' target="_blank">generaltranslation.com</a>
 
-A language toolkit for AI developers.
+A language toolkit for AI developers. Used in `@generaltranslation/react`.
 
 Full documentation coming soon!
 
@@ -32,14 +32,29 @@ const gt = new GT()
 
 ### getLanguageName(codes)
 
-Returns a language name from a two or three-letter ISO-639 language code, or an array of codes.
+Returns a language name from an ISO-639 language code, or an array of codes. Compatible with ISO-3166 regions and ISO-15924 scripts common in browser languages.
 
 ```
-const language = getLanguageName('en');
-console.log(language) // 'English'
+const language1 = getLanguageName('en');
+console.log(language1) // 'English'
 
-const languages = getLanguageName(['fr', 'es'])
-console.log(languages) // ['French', 'Spanish']
+const language2 = getLanguageName('en-GB');
+console.log(language2) // 'British English'
+
+const languages = getLanguageName(['fr', 'zh-Hans'])
+console.log(languages) // ['French', 'Mandarin Chinese']
+```
+
+### getLanguageObject(codes)
+
+Returns a language object, or array of language objects, each containing a language, script, and region from an ISO-639 language code, or an array of codes. Compatible with ISO-3166 regions and ISO-15924 scripts common in browser languages.
+
+```
+const languageObject = getLanguageCode('en');
+console.log(languageObject) // { "language": "English", "script": "", "region": "" }
+
+const languageObjects = getLanguageObject(['zh-Hans', 'en-US'])
+console.log(codes) // [{ "language": "Chinese", "script": "Han (simplified)", "region": "" }, { "language": "English", "script": "", "region": "United States" }]
 ```
 
 ### getLanguageCode(languages)
@@ -48,81 +63,17 @@ Returns an ISO-639 code from a language name or an array of language names.
 
 ```
 const code = getLanguageCode('English');
-console.log(language) // 'en'
+console.log(code) // 'en'
 
-const codes = getLanguageCodes(['French', 'Spanish'])
+const codes = getLanguageCode(['French', 'Spanish'])
 console.log(codes) // ['fr', 'es']
 ```
 
-## Translation API
+### isSameLanguage(...codes)
 
-For this function, you need to sign up for an API key at <a href='https://generaltranslation.com' target='_blank'>generaltranslation.com</a>.
-
-There's a small, free allowance to let you test out the API without payment details.
-
-Add the API key to your code like this:
+Checks if a given set of codes are all equivalent to the same language. Returns a boolean.
 
 ```
-import GT from 'generaltranslation'
-
-const gt = new GT({
-    apiKey: process.env.GT_API_KEY // looks like 'gtx-XXX'
-});
-```
-
-### async translate(content, language)
-
-Translates content into the language represented by an ISO-639 language code. Caches by default. Just wrap `translate` around your content and go.
-
-All of the following are valid:
-
-```
-const translation = await gt.translate('Tell me a story', 'es'); // returns a string
-```
-
-```
-const first = 'Tell me a story';
-const second = ' about a cat'
-
-const translated = await gt.translate([
-    first, second
-], 'es');
-```
-
-To mark text that shouldn't be translated, wrap it in `{ text: "", translate: false }`. Items marked as `translate: false` are never sent to our API. For example:
-
-```
-const prompt = 'Tell me a story about ';
-const input = 'gatos con espadas'
-
-const translatedPrompt = await gt.translate([
-    prompt, { text: input, translate: false }
-], 'es');
-```
-
-For type consistency, you can also make everything in the content parameter an object:
-
-```
-const prompt = 'Tell me a story about ';
-const input = 'gatos con espadas'
-
-const translatedPrompt = await gt.translate([
-    { text: prompt }, 
-    { text: input, translate: false }
-], 'es');
-```
-
-This also works:
-
-```
-const translatedPrompt = await gt.translate({ text: 'Tell me a story' }, 'es');
-```
-
-### async translateMany(contentArray, language)
-
-Translates multiple items of content into the language represented by an ISO-639 language code. Caches by default. Just wrap `translateMany` around an array of what you want to translate and specify a language. For example:
-
-```
-const requests = ["You say goodbye.", "And I say hello."];
-const translationArray = await gt.translateMany(requests, 'es') // returns an array
+const same = isSameLanguage('en', 'en-US', 'en-GB');
+console.log(same) // true
 ```

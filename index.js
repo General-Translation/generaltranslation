@@ -3,14 +3,12 @@
 
 // ----- IMPORTS ----- //
 
-const { _getLanguageCode, _getLanguageName } = require('./codes/codes.js');
-const { _translate, _translateMany } = require('./translate/translate.js');
-const _translateHTML = require('./translate/html.js');
+const { _getLanguageObject, _getLanguageCode, _getLanguageName, _isSameLanguage } = require('./codes/codes.js');
 
 // TO DO
+// - Translation API
 // - Times/dates?
 // - Currency conversion?
-// - Regions (e.g. en-GB)
 
 // ----- CORE CLASS ----- // 
 
@@ -29,7 +27,7 @@ class GT {
         apiKey = '', 
         defaultLanguage = 'en',
         projectID = '',
-        baseURL = 'https://translate.gtx.dev'
+        baseURL = 'https://prod.gtx.dev'
     } = {}) {
         this.apiKey = apiKey || getDefaultFromEnv('GT_API_KEY');
         this.projectID = projectID || getDefaultFromEnv('GT_PROJECT_ID');
@@ -37,32 +35,7 @@ class GT {
         this.baseURL = baseURL;
     }
 
-    // Site I18N
-    async translateHTML({ page, userLanguage, defaultLanguage, content, ...metadata }) {
-        return await _translateHTML({
-            page: page,
-            userLanguage: userLanguage,
-            defaultLanguage: defaultLanguage,
-            content: content,
-            config: this,
-            ...metadata
-        });
-    }
-
-    // String translation
-    async translate(content, language, ...options) {
-        return await _translate({
-            content: content, language: language, config: this, ...options,
-        });
-    }
-
-    // String translation, of an array of strings
-    // requestArray looks like { content: '', language: '' }
-    async translateMany(contentArray, language, ...options) {
-        return await _translateMany({
-            contentArray, language, config: this, ...options
-        });
-    }
+    // TBD
 
 }
 
@@ -72,5 +45,7 @@ class GT {
 module.exports = GT;
 
 // Export the functions 
+module.exports.getLanguageObject = _getLanguageObject;
 module.exports.getLanguageCode = _getLanguageCode;
 module.exports.getLanguageName = _getLanguageName;
+module.exports.isSameLanguage= _isSameLanguage;
