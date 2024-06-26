@@ -1,45 +1,37 @@
 // ----- IMPORTS ----- //
 
-/**
- * Key-value mapping, where each key is a string 
- * and the corresponding value is also a string
-*/
-interface CodeConverter {
-    [key: string]: string;
-}
-
 // Import modules for mapping ISO 639 codes to language names and vice versa
 import CodeToLanguageJSON from './639-1/CodeToLanguage.json';
 import LanguageToCodeJSON from './639-1/LanguageToCode.json';
 
-const CodeToLanguage: CodeConverter = CodeToLanguageJSON as CodeConverter;
-const LanguageToCode: CodeConverter = LanguageToCodeJSON as CodeConverter;
+const CodeToLanguage: Record<string, string> = CodeToLanguageJSON as Record<string, string>;
+const LanguageToCode: Record<string, string> = LanguageToCodeJSON as Record<string, string>;
 
 // Import modules for mapping ISO 639-3 codes (for languages without two-letter codes)
 import CodeToLanguageTriletterJSON from './639-3/CodeToLanguageTriletter.json';
 import LanguageToCodeTriletterJSON from './639-3/LanguageToCodeTriletter.json';
 
-const CodeToLanguageTriletter: CodeConverter = CodeToLanguageTriletterJSON as CodeConverter;
-const LanguageToCodeTriletter: CodeConverter = LanguageToCodeTriletterJSON as CodeConverter;
+const CodeToLanguageTriletter: Record<string, string> = CodeToLanguageTriletterJSON as Record<string, string>;
+const LanguageToCodeTriletter: Record<string, string> = LanguageToCodeTriletterJSON as Record<string, string>;
 
 // Import module for mapping ISO 15924 script codes to script names
 import ScriptToCodeJSON from './15924/ScriptToCode.json';
 import CodeToScriptJSON from './15924/CodeToScript.json';
 
-const ScriptToCode: CodeConverter = ScriptToCodeJSON as CodeConverter;
-const CodeToScript: CodeConverter = CodeToScriptJSON as CodeConverter;
+const ScriptToCode: Record<string, string> = ScriptToCodeJSON as Record<string, string>;
+const CodeToScript: Record<string, string> = CodeToScriptJSON as Record<string, string>;
 
 // Import module for mapping ISO 3166 region codes to region names
 import RegionToCodeJSON from './3166/RegionToCode.json';
 import CodeToRegionJSON from './3166/CodeToRegion.json';
 
-const RegionToCode: CodeConverter = RegionToCodeJSON as CodeConverter;
-const CodeToRegion: CodeConverter = CodeToRegionJSON as CodeConverter;
+const RegionToCode: Record<string, string> = RegionToCodeJSON as Record<string, string>;
+const CodeToRegion: Record<string, string> = CodeToRegionJSON as Record<string, string>;
 
 // Import predefined common regions
 import PredefinedJSON from './predefined/Predefined.json';
 
-const Predefined: CodeConverter = PredefinedJSON as CodeConverter;
+const Predefined: Record<string, string> = PredefinedJSON as Record<string, string>;
 
 // ----- FORMATTING HELPER FUNCTIONS ----- //
 
