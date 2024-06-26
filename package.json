@@ -1,6 +1,6 @@
 {
   "name": "generaltranslation",
-  "version": "2.0.0",
+  "version": "2.0.1",
   "description": "A language toolkit for AI developers",
   "main": "dist/index.js",
   "scripts": {
