@@ -9,7 +9,7 @@
   },
   "repository": {
     "type": "git",
-    "url": "git+https://github.com/General-Translation/js-toolkit.git"
+    "url": "git+https://github.com/General-Translation/generaltranslation.git"
   },
   "keywords": [
     "LLM",
