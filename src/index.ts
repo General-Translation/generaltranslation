@@ -70,8 +70,8 @@ class GT {
     * 
     * @returns {Promise<any>} - A promise that resolves to the translated content.
     */
-    async translateReactChildren({ content, targetLanguage, ...metadata }: { content: any; targetLanguage: string; metadata: { [key: string]: any } }): Promise<any> {
-        return await _translateReactChildren.call(this, content, targetLanguage, metadata);
+    async translateReactChildren({ content, targetLanguage, metadata }: { content: any; targetLanguage: string; metadata: { [key: string]: any } }): Promise<any> {
+        return await _translateReactChildren.call(this, content, targetLanguage, { projectID: this.projectID, defaultLanguage: this.defaultLanguage, ...metadata });
     }
 }
 

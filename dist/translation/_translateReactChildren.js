@@ -18,7 +18,7 @@ exports.default = _translateReactChildren;
  * @param {string} targetLanguage - The target language code (e.g., 'en', 'fr') for the translation.
  * @param {Object} metadata - Additional metadata to be sent with the translation request.
  *
- * @returns {Promise<Object | null>} - A promise that resolves to the translated content as an object, or null if an error occurs.
+ * @returns {Promise<JSON | null>} - A promise that resolves to the translated content as an object, or null if an error occurs.
  *
  * @throws {Error} - Throws an error if the response from the API is not ok (status code not in the range 200-299).
  *

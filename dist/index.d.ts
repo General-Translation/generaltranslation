@@ -36,7 +36,7 @@ declare class GT {
     *
     * @returns {Promise<any>} - A promise that resolves to the translated content.
     */
-    translateReactChildren({ content, targetLanguage, ...metadata }: {
+    translateReactChildren({ content, targetLanguage, metadata }: {
         content: any;
         targetLanguage: string;
         metadata: {
