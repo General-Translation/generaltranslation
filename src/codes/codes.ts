@@ -279,7 +279,6 @@ const _handleGetLanguageCodeFromObject = (languageObject: LanguageObject): strin
  * @param codes - The language codes, either as separate arguments or as an array.
  * @returns {boolean} True if all codes represent the same language, false otherwise.
  */
-
 // Function overloads
 function _isSameLanguage(...codes: string[]): boolean;
 function _isSameLanguage(codes: string[]): boolean;
