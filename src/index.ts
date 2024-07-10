@@ -4,6 +4,7 @@
 // ----- IMPORTS ----- //
 
 import { _getLanguageObject, _getLanguageCode, _getLanguageName, _isSameLanguage } from './codes/codes';
+import _translate, { _translateMany, Content } from './translation/_translate';
 import _translateReactChildren from './translation/_translateReactChildren';
 
 // TO DO
@@ -60,6 +61,13 @@ class GT {
         this.baseURL = baseURL;
     }
 
+    async translate({ content, targetLanguage, metadata }: { content: Content; targetLanguage: string; metadata: { [key: string]: any } }): Promise<{ translation: string, error?: Error | unknown }> {
+        return await _translate(this, content, targetLanguage, { projectID: this.projectID, defaultLanguage: this.defaultLanguage, ...metadata})
+    }
+    async translateMany({ contentArray, targetLanguage, metadata }: { contentArray: Content[]; targetLanguage: string; metadata: { [key: string]: any } }): Promise<Array<{ translation: string, error?: Error | unknown }>> {
+        return await _translateMany(this, contentArray, targetLanguage, { projectID: this.projectID, defaultLanguage: this.defaultLanguage, ...metadata})
+    }
+
     /**
     * Translates the content of React children elements.
     * 
@@ -70,8 +78,8 @@ class GT {
     * 
     * @returns {Promise<any>} - A promise that resolves to the translated content.
     */
-    async translateReactChildren({ content, targetLanguage, metadata }: { content: any; targetLanguage: string; metadata: { [key: string]: any } }): Promise<any> {
-        return await _translateReactChildren.call(this, content, targetLanguage, { projectID: this.projectID, defaultLanguage: this.defaultLanguage, ...metadata });
+    async translateReactChildren({ content, targetLanguage, metadata }: { content: any; targetLanguage: string; metadata: { [key: string]: any } }): Promise<{ translation: any | null, error?: Error | unknown }> {
+        return await _translateReactChildren(this, content, targetLanguage, { projectID: this.projectID, defaultLanguage: this.defaultLanguage, ...metadata });
     }
 }
 

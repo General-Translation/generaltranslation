@@ -17,6 +17,7 @@ Object.defineProperty(exports, "__esModule", { value: true });
 exports.isSameLanguage = exports.getLanguageName = exports.getLanguageCode = exports.getLanguageObject = void 0;
 // ----- IMPORTS ----- //
 const codes_1 = require("./codes/codes");
+const _translate_1 = __importDefault(require("./translation/_translate"));
 const _translateReactChildren_1 = __importDefault(require("./translation/_translateReactChildren"));
 // TO DO
 // - Translation API
@@ -48,6 +49,11 @@ class GT {
         this.defaultLanguage = defaultLanguage.toLowerCase();
         this.baseURL = baseURL;
     }
+    translate(_a) {
+        return __awaiter(this, arguments, void 0, function* ({ content, targetLanguage, metadata }) {
+            return yield (0, _translate_1.default)(this, content, targetLanguage, Object.assign({ projectID: this.projectID, defaultLanguage: this.defaultLanguage }, metadata));
+        });
+    }
     /**
     * Translates the content of React children elements.
     *
@@ -60,7 +66,7 @@ class GT {
     */
     translateReactChildren(_a) {
         return __awaiter(this, arguments, void 0, function* ({ content, targetLanguage, metadata }) {
-            return yield _translateReactChildren_1.default.call(this, content, targetLanguage, Object.assign({ projectID: this.projectID, defaultLanguage: this.defaultLanguage }, metadata));
+            return yield (0, _translateReactChildren_1.default)(this, content, targetLanguage, Object.assign({ projectID: this.projectID, defaultLanguage: this.defaultLanguage }, metadata));
         });
     }
 }

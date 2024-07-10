@@ -1,4 +1,5 @@
 import { _getLanguageObject, _isSameLanguage } from './codes/codes';
+import { Content } from './translation/_translate';
 /**
  * Interface representing the constructor parameters for the GT class.
  */
@@ -26,6 +27,16 @@ declare class GT {
      * @param {string} [params.baseURL='https://prod.gtx.dev'] - The base URL for the translation service.
      */
     constructor({ apiKey, defaultLanguage, projectID, baseURL }?: GTConstructorParams);
+    translate({ content, targetLanguage, metadata }: {
+        content: Content;
+        targetLanguage: string;
+        metadata: {
+            [key: string]: any;
+        };
+    }): Promise<{
+        translation: string;
+        error?: Error | unknown;
+    }>;
     /**
     * Translates the content of React children elements.
     *
@@ -42,7 +53,10 @@ declare class GT {
         metadata: {
             [key: string]: any;
         };
-    }): Promise<any>;
+    }): Promise<{
+        translation: any | null;
+        error?: Error | unknown;
+    }>;
 }
 export default GT;
 export declare const getLanguageObject: typeof _getLanguageObject;
