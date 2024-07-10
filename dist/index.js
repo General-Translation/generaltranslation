@@ -1,29 +1,6 @@
 "use strict";
 // `generaltranslation` language toolkit
 // © 2024, General Translation, Inc.
-var __createBinding = (this && this.__createBinding) || (Object.create ? (function(o, m, k, k2) {
-    if (k2 === undefined) k2 = k;
-    var desc = Object.getOwnPropertyDescriptor(m, k);
-    if (!desc || ("get" in desc ? !m.__esModule : desc.writable || desc.configurable)) {
-      desc = { enumerable: true, get: function() { return m[k]; } };
-    }
-    Object.defineProperty(o, k2, desc);
-}) : (function(o, m, k, k2) {
-    if (k2 === undefined) k2 = k;
-    o[k2] = m[k];
-}));
-var __setModuleDefault = (this && this.__setModuleDefault) || (Object.create ? (function(o, v) {
-    Object.defineProperty(o, "default", { enumerable: true, value: v });
-}) : function(o, v) {
-    o["default"] = v;
-});
-var __importStar = (this && this.__importStar) || function (mod) {
-    if (mod && mod.__esModule) return mod;
-    var result = {};
-    if (mod != null) for (var k in mod) if (k !== "default" && Object.prototype.hasOwnProperty.call(mod, k)) __createBinding(result, mod, k);
-    __setModuleDefault(result, mod);
-    return result;
-};
 var __awaiter = (this && this.__awaiter) || function (thisArg, _arguments, P, generator) {
     function adopt(value) { return value instanceof P ? value : new P(function (resolve) { resolve(value); }); }
     return new (P || (P = Promise))(function (resolve, reject) {
@@ -40,10 +17,11 @@ Object.defineProperty(exports, "__esModule", { value: true });
 exports.isSameLanguage = exports.getLanguageName = exports.getLanguageCode = exports.getLanguageObject = void 0;
 // ----- IMPORTS ----- //
 const codes_1 = require("./codes/codes");
-const _translate_1 = __importStar(require("./translation/_translate"));
+const _bundleRequests_1 = __importDefault(require("./translation/_bundleRequests"));
+const _intl_1 = __importDefault(require("./translation/_intl"));
+const _translate_1 = __importDefault(require("./translation/_translate"));
 const _translateReactChildren_1 = __importDefault(require("./translation/_translateReactChildren"));
 // TO DO
-// - Translation API
 // - Times/dates?
 // - Currency conversion?
 // ----- CORE CLASS ----- // 
@@ -72,14 +50,29 @@ class GT {
         this.defaultLanguage = defaultLanguage.toLowerCase();
         this.baseURL = baseURL;
     }
-    translate(_a) {
-        return __awaiter(this, arguments, void 0, function* ({ content, targetLanguage, metadata }) {
+    /**
+    * Translates a string, caching it for re-use.
+    * @param {Content} content - The content to translate.
+    * @param {string} targetLanguage - The target language for the translation.
+    * @param {{ [key: string]: any }} metadata - Additional metadata for the translation request.
+    * @returns {Promise<{ translation: string, error?: Error | unknown }>} - The translated content with optional error information.
+    */
+    translate(content, targetLanguage, metadata) {
+        return __awaiter(this, void 0, void 0, function* () {
             return yield (0, _translate_1.default)(this, content, targetLanguage, Object.assign({ projectID: this.projectID, defaultLanguage: this.defaultLanguage }, metadata));
         });
     }
-    translateMany(_a) {
-        return __awaiter(this, arguments, void 0, function* ({ contentArray, targetLanguage, metadata }) {
-            return yield (0, _translate_1._translateMany)(this, contentArray, targetLanguage, Object.assign({ projectID: this.projectID, defaultLanguage: this.defaultLanguage }, metadata));
+    /**
+    * Translates a single piece of content and caches for use in a public project.
+    * @param {Content} content - The content to translate.
+    * @param {string} targetLanguage - The target language for the translation.
+    * @param {string} projectID - The ID of the project
+    * @param {{ [key: string]: any }} metadata - Additional metadata for the translation request.
+    * @returns {Promise<{ translation: string, error?: Error | unknown }>} The translated content with optional error information.
+    */
+    intl(content, targetLanguage, projectID, metadata) {
+        return __awaiter(this, void 0, void 0, function* () {
+            return yield (0, _intl_1.default)(this, content, targetLanguage, projectID || this.projectID, Object.assign({ projectID: projectID || this.projectID, defaultLanguage: this.defaultLanguage }, metadata));
         });
     }
     /**
@@ -92,9 +85,19 @@ class GT {
     *
     * @returns {Promise<any>} - A promise that resolves to the translated content.
     */
-    translateReactChildren(_a) {
-        return __awaiter(this, arguments, void 0, function* ({ content, targetLanguage, metadata }) {
+    translateReactChildren(content, targetLanguage, metadata) {
+        return __awaiter(this, void 0, void 0, function* () {
             return yield (0, _translateReactChildren_1.default)(this, content, targetLanguage, Object.assign({ projectID: this.projectID, defaultLanguage: this.defaultLanguage }, metadata));
+        });
+    }
+    /**
+    * Bundles multiple requests and sends them to the server.
+    * @param requests - Array of requests to be processed and sent.
+    * @returns A promise that resolves to an array of processed results.
+    */
+    bundleRequests(requests) {
+        return __awaiter(this, void 0, void 0, function* () {
+            return (0, _bundleRequests_1.default)(this, requests);
         });
     }
 }

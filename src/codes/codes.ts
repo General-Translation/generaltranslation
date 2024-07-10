@@ -116,10 +116,10 @@ const _mapRegionToCode = (region: string): string => {
 
 // ----- LANGUAGE OBJECTS FROM CODES ----- //
 
-interface LanguageObject {
+type LanguageObject = {
     language: string;
-    script: string;
-    region: string;
+    script?: string;
+    region?: string;
 }
 
 /**

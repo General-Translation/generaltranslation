@@ -1,8 +1,8 @@
-interface LanguageObject {
+type LanguageObject = {
     language: string;
-    script: string;
-    region: string;
-}
+    script?: string;
+    region?: string;
+};
 /**
  * Returns a language object from an array of codes or a single code.
  * Returns null if there's no matching language.

@@ -1,68 +1,85 @@
-type ContentObject = {
+// TYPE DEFINITIONS
+
+export type ContentObject = {
     text: string,
-    exclude?: boolean,
-    cache?: boolean,
-    label?: string
-};
-type ContentItem = string | ContentObject;
+    exclude?: boolean,          
+    cache?: boolean          
+}
+type ContentItem = ContentObject | string;
 export type Content = ContentItem | ContentItem[];
 
-// also handles errors
-const _combine = (contentArray: ContentItem[], redactedArray?: ContentObject[]): string => {
-    let result = '';
-    const _handleItem = (contentItem: ContentItem) => {
-        if (typeof contentItem === 'string') result += contentItem;
-        else if (contentItem?.text && typeof contentItem.text === 'string') result += contentItem.text;
-        else if (contentItem?.exclude && redactedArray && redactedArray.length > 0) {
-            const redactedItem = redactedArray.shift();
-            if (redactedItem && redactedItem?.text) {
-                result += redactedItem.text;
-            }
+// PROCESSING
+
+export const _process = (content: Content): {
+    array: ContentObject[],
+    excludedArray: string[]
+} => {
+    let array: ContentObject[] = [];
+    let excludedArray: string[] = [];
+    const handleSingleItem = (contentItem: ContentItem) => {
+        if (typeof contentItem === 'string') {
+            array.push({ text: contentItem });
+        }
+        else if (typeof contentItem === 'object' && contentItem.exclude) {
+            array.push({ ...contentItem, text: '' })
+            excludedArray.push(contentItem.text);
+        }
+        else if (typeof contentItem === 'object' && contentItem.text) {
+            array.push(contentItem)
         }
     }
-    contentArray.forEach(item => _handleItem(item));
+    if (Array.isArray(content)) content.map(handleSingleItem);
+    else handleSingleItem(content);
+    return { array, excludedArray };
+}
+
+export const _recombine = (translatedContent: ContentObject[], excludedArray: string[]): string => {
+    let result = '';
+    for (const object of translatedContent) {
+        if (object.exclude && excludedArray.length < 0) {
+            result += excludedArray.shift();
+        }
+        else if (object.text) {
+            result += object.text;
+        }
+    }
     return result;
 }
 
-const _redact = (content: Content): { contentArray: ContentObject[], redactedArray: ContentObject[] } => {
-    
-    let contentArray: ContentObject[] = [];
-    let redactedArray: ContentObject[] = [];
+// REQUEST
 
-    const _handleItem = (contentItem: ContentItem) => {
-        if (typeof contentItem === 'string') contentArray.push({
-            text: contentItem
-        });
-        else {
-            if (contentItem.exclude) {
-                contentArray.push({ ...contentItem, text: '', exclude: true })
-                redactedArray.push(contentItem)
-            }
-            else {
-                contentArray.push(contentItem)
-            }
+export const _createTranslation = async (content: Content, f: Function) => {
+    const { array, excludedArray } = _process(content);
+    try {
+        const result = await f(content);
+        return {
+            translation: _recombine(result, excludedArray)
         }
     }
-
-    if (Array.isArray(content)) content.forEach(item => _handleItem(item))
-    else _handleItem(content);
-
-    return {
-        contentArray, redactedArray
+    catch (error) {
+        console.error(error);
+        return {
+            translation: _recombine(array, excludedArray),
+            error: error
+        }
     }
-
 }
 
-export async function _translateMany(
+/**
+ * Translates a single piece of content.
+ * @param {{ baseURL: string, apiKey: string }} gt - The translation service configuration.
+ * @param {Content} content - The content to translate.
+ * @param {string} targetLanguage - The target language for the translation.
+ * @param {{ [key: string]: any }} metadata - Additional metadata for the translation request.
+ * @returns {Promise<{ translation: string, error?: Error | unknown }>} - The translated content with optional error information.
+ */
+export default async function _translate(
     gt: { baseURL: string; apiKey: string },
-    array: Content[],
+    content: Content,
     targetLanguage: string,
     metadata: { [key: string]: any }
-) {
-
-    const processed = array.map(_redact);
-
-    try {
+): Promise<{ translation: string, error?: Error | unknown }> {
+    const f = async (array: ContentObject[]) => {
         const response = await fetch(`${gt.baseURL}/text`, {
             method: 'POST',
             headers: {
@@ -70,7 +87,7 @@ export async function _translateMany(
                 'gtx-api-key': gt.apiKey,
             },
             body: JSON.stringify({
-                contentArray: processed.map(item => item.contentArray),
+                content: array,
                 targetLanguage: targetLanguage,
                 metadata: metadata
             })
@@ -78,32 +95,9 @@ export async function _translateMany(
         if (!response.ok) {
             throw new Error(`${response.status}: ${await response.text()}`);
         }
-        const resultArray = await response.json();
-        let finalArray = [];
-        for (const [index, item] of resultArray.entries()) {
-            finalArray.push({
-                translation: _combine(item.translation, processed[index].redactedArray)
-            })
-        }
-        return finalArray;
-    } catch (error) {
-        console.error(error);
-        return processed.map(item => ({
-            translation: _combine(item.contentArray, item.redactedArray),
-            error: error
-        }));
+        const result = await response.json();
+        return result.translation;
     }
-    
+    return _createTranslation(content, f);
 }
 
-export default async function _translate(
-    gt: { baseURL: string; apiKey: string },
-    content: Content,
-    targetLanguage: string,
-    metadata: { [key: string]: any }
-): Promise<{ translation: string, error?: Error | unknown }> {
-
-    const finalArray = await _translateMany(gt, [content], targetLanguage, metadata);
-    return finalArray[0];
-    
-}

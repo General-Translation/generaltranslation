@@ -11,7 +11,7 @@
  * @throws {Error} - Throws an error if the response from the API is not ok (status code not in the range 200-299).
  * 
 **/
-export default async function translateReactChildren(
+export default async function _translateReactChildren(
     gt: { baseURL: string, apiKey: string },
     content: any,
     targetLanguage: string,

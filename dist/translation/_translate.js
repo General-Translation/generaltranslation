@@ -1,4 +1,5 @@
 "use strict";
+// TYPE DEFINITIONS
 var __awaiter = (this && this.__awaiter) || function (thisArg, _arguments, P, generator) {
     function adopt(value) { return value instanceof P ? value : new P(function (resolve) { resolve(value); }); }
     return new (P || (P = Promise))(function (resolve, reject) {
@@ -9,56 +10,73 @@ var __awaiter = (this && this.__awaiter) || function (thisArg, _arguments, P, ge
     });
 };
 Object.defineProperty(exports, "__esModule", { value: true });
-exports._translateMany = _translateMany;
+exports._createTranslation = exports._recombine = exports._process = void 0;
 exports.default = _translate;
-// also handles errors
-const _combine = (contentArray, redactedArray) => {
-    let result = '';
-    const _handleItem = (contentItem) => {
-        if (typeof contentItem === 'string')
-            result += contentItem;
-        else if ((contentItem === null || contentItem === void 0 ? void 0 : contentItem.text) && typeof contentItem.text === 'string')
-            result += contentItem.text;
-        else if ((contentItem === null || contentItem === void 0 ? void 0 : contentItem.exclude) && redactedArray && redactedArray.length > 0) {
-            const redactedItem = redactedArray.shift();
-            if (redactedItem && (redactedItem === null || redactedItem === void 0 ? void 0 : redactedItem.text)) {
-                result += redactedItem.text;
-            }
+// PROCESSING
+const _process = (content) => {
+    let array = [];
+    let excludedArray = [];
+    const handleSingleItem = (contentItem) => {
+        if (typeof contentItem === 'string') {
+            array.push({ text: contentItem });
         }
-    };
-    contentArray.forEach(item => _handleItem(item));
-    return result;
-};
-const _redact = (content) => {
-    let contentArray = [];
-    let redactedArray = [];
-    const _handleItem = (contentItem) => {
-        if (typeof contentItem === 'string')
-            contentArray.push({
-                text: contentItem
-            });
-        else {
-            if (contentItem.exclude) {
-                contentArray.push(Object.assign(Object.assign({}, contentItem), { text: '', exclude: true }));
-                redactedArray.push(contentItem);
-            }
-            else {
-                contentArray.push(contentItem);
-            }
+        else if (typeof contentItem === 'object' && contentItem.exclude) {
+            array.push(Object.assign(Object.assign({}, contentItem), { text: '' }));
+            excludedArray.push(contentItem.text);
+        }
+        else if (typeof contentItem === 'object' && contentItem.text) {
+            array.push(contentItem);
         }
     };
     if (Array.isArray(content))
-        content.forEach(item => _handleItem(item));
+        content.map(handleSingleItem);
     else
-        _handleItem(content);
-    return {
-        contentArray, redactedArray
-    };
+        handleSingleItem(content);
+    return { array, excludedArray };
 };
-function _translateMany(gt, array, targetLanguage, metadata) {
+exports._process = _process;
+const _recombine = (translatedContent, excludedArray) => {
+    let result = '';
+    for (const object of translatedContent) {
+        if (object.exclude && excludedArray.length < 0) {
+            result += excludedArray.shift();
+        }
+        else if (object.text) {
+            result += object.text;
+        }
+    }
+    return result;
+};
+exports._recombine = _recombine;
+// REQUEST
+const _createTranslation = (content, f) => __awaiter(void 0, void 0, void 0, function* () {
+    const { array, excludedArray } = (0, exports._process)(content);
+    try {
+        const result = yield f(content);
+        return {
+            translation: (0, exports._recombine)(result, excludedArray)
+        };
+    }
+    catch (error) {
+        console.error(error);
+        return {
+            translation: (0, exports._recombine)(array, excludedArray),
+            error: error
+        };
+    }
+});
+exports._createTranslation = _createTranslation;
+/**
+ * Translates a single piece of content.
+ * @param {{ baseURL: string, apiKey: string }} gt - The translation service configuration.
+ * @param {Content} content - The content to translate.
+ * @param {string} targetLanguage - The target language for the translation.
+ * @param {{ [key: string]: any }} metadata - Additional metadata for the translation request.
+ * @returns {Promise<{ translation: string, error?: Error | unknown }>} - The translated content with optional error information.
+ */
+function _translate(gt, content, targetLanguage, metadata) {
     return __awaiter(this, void 0, void 0, function* () {
-        const processed = array.map(_redact);
-        try {
+        const f = (array) => __awaiter(this, void 0, void 0, function* () {
             const response = yield fetch(`${gt.baseURL}/text`, {
                 method: 'POST',
                 headers: {
@@ -66,7 +84,7 @@ function _translateMany(gt, array, targetLanguage, metadata) {
                     'gtx-api-key': gt.apiKey,
                 },
                 body: JSON.stringify({
-                    contentArray: processed.map(item => item.contentArray),
+                    content: array,
                     targetLanguage: targetLanguage,
                     metadata: metadata
                 })
@@ -74,27 +92,9 @@ function _translateMany(gt, array, targetLanguage, metadata) {
             if (!response.ok) {
                 throw new Error(`${response.status}: ${yield response.text()}`);
             }
-            const resultArray = yield response.json();
-            let finalArray = [];
-            for (const [index, item] of resultArray.entries()) {
-                finalArray.push({
-                    translation: _combine(item.translation, processed[index].redactedArray)
-                });
-            }
-            return finalArray;
-        }
-        catch (error) {
-            console.error(error);
-            return processed.map(item => ({
-                translation: _combine(item.contentArray, item.redactedArray),
-                error: error
-            }));
-        }
-    });
-}
-function _translate(gt, content, targetLanguage, metadata) {
-    return __awaiter(this, void 0, void 0, function* () {
-        const finalArray = yield _translateMany(gt, [content], targetLanguage, metadata);
-        return finalArray[0];
+            const result = yield response.json();
+            return result.translation;
+        });
+        return (0, exports._createTranslation)(content, f);
     });
 }

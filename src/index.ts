@@ -4,11 +4,12 @@
 // ----- IMPORTS ----- //
 
 import { _getLanguageObject, _getLanguageCode, _getLanguageName, _isSameLanguage } from './codes/codes';
-import _translate, { _translateMany, Content } from './translation/_translate';
+import _bundleRequests from './translation/_bundleRequests';
+import _intl from './translation/_intl';
+import _translate, { Content } from './translation/_translate';
 import _translateReactChildren from './translation/_translateReactChildren';
 
 // TO DO
-// - Translation API
 // - Times/dates?
 // - Currency conversion?
 
@@ -22,7 +23,7 @@ const getDefaultFromEnv = (VARIABLE: string): string => {
 }
 
 /**
- * Interface representing the constructor parameters for the GT class.
+ * Type representing the constructor parameters for the GT class.
  */
 type GTConstructorParams = {
     apiKey?: string;
@@ -61,13 +62,29 @@ class GT {
         this.baseURL = baseURL;
     }
 
-    async translate({ content, targetLanguage, metadata }: { content: Content; targetLanguage: string; metadata: { [key: string]: any } }): Promise<{ translation: string, error?: Error | unknown }> {
+    /**
+    * Translates a string, caching it for re-use.
+    * @param {Content} content - The content to translate.
+    * @param {string} targetLanguage - The target language for the translation.
+    * @param {{ [key: string]: any }} metadata - Additional metadata for the translation request.
+    * @returns {Promise<{ translation: string, error?: Error | unknown }>} - The translated content with optional error information.
+    */
+    async translate(content: Content, targetLanguage: string, metadata?: { [key: string]: any }): Promise<{ translation: string, error?: Error | unknown }> {
         return await _translate(this, content, targetLanguage, { projectID: this.projectID, defaultLanguage: this.defaultLanguage, ...metadata})
     }
-    async translateMany({ contentArray, targetLanguage, metadata }: { contentArray: Content[]; targetLanguage: string; metadata: { [key: string]: any } }): Promise<Array<{ translation: string, error?: Error | unknown }>> {
-        return await _translateMany(this, contentArray, targetLanguage, { projectID: this.projectID, defaultLanguage: this.defaultLanguage, ...metadata})
-    }
 
+    /**
+    * Translates a single piece of content and caches for use in a public project.
+    * @param {Content} content - The content to translate.
+    * @param {string} targetLanguage - The target language for the translation.
+    * @param {string} projectID - The ID of the project
+    * @param {{ [key: string]: any }} metadata - Additional metadata for the translation request.
+    * @returns {Promise<{ translation: string, error?: Error | unknown }>} The translated content with optional error information.
+    */
+    async intl(content: Content, targetLanguage: string, projectID?: string, metadata?: { [key:string]: any }): Promise<{ translation: string; error?: Error | unknown; }> {
+        return await _intl(this, content, targetLanguage, projectID || this.projectID, { projectID: projectID || this.projectID, defaultLanguage: this.defaultLanguage, ...metadata })
+    }
+   
     /**
     * Translates the content of React children elements.
     * 
@@ -78,9 +95,19 @@ class GT {
     * 
     * @returns {Promise<any>} - A promise that resolves to the translated content.
     */
-    async translateReactChildren({ content, targetLanguage, metadata }: { content: any; targetLanguage: string; metadata: { [key: string]: any } }): Promise<{ translation: any | null, error?: Error | unknown }> {
+    async translateReactChildren(content: any, targetLanguage: string, metadata?: { [key: string]: any }): Promise<{ translation: any | null, error?: Error | unknown }> {
         return await _translateReactChildren(this, content, targetLanguage, { projectID: this.projectID, defaultLanguage: this.defaultLanguage, ...metadata });
     }
+
+    /**
+    * Bundles multiple requests and sends them to the server.
+    * @param requests - Array of requests to be processed and sent.
+    * @returns A promise that resolves to an array of processed results.
+    */
+    async bundleRequests(requests: any[]): Promise<Array<any | null>> {
+        return _bundleRequests(this, requests);
+    }
+
 }
 
 
