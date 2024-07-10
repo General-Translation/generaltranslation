@@ -37,6 +37,16 @@ declare class GT {
         translation: string;
         error?: Error | unknown;
     }>;
+    translateMany({ contentArray, targetLanguage, metadata }: {
+        contentArray: Content[];
+        targetLanguage: string;
+        metadata: {
+            [key: string]: any;
+        };
+    }): Promise<Array<{
+        translation: string;
+        error?: Error | unknown;
+    }>>;
     /**
     * Translates the content of React children elements.
     *

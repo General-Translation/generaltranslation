@@ -9,6 +9,7 @@ var __awaiter = (this && this.__awaiter) || function (thisArg, _arguments, P, ge
     });
 };
 Object.defineProperty(exports, "__esModule", { value: true });
+exports._translateMany = _translateMany;
 exports.default = _translate;
 // also handles errors
 const _combine = (contentArray, redactedArray) => {
@@ -39,7 +40,7 @@ const _redact = (content) => {
         else {
             if (contentItem.exclude) {
                 contentArray.push(Object.assign(Object.assign({}, contentItem), { text: '', exclude: true }));
-                redactedArray.push(Object.assign({}, contentItem));
+                redactedArray.push(contentItem);
             }
             else {
                 contentArray.push(contentItem);
@@ -54,9 +55,9 @@ const _redact = (content) => {
         contentArray, redactedArray
     };
 };
-function _translate(gt, content, targetLanguage, metadata) {
+function _translateMany(gt, array, targetLanguage, metadata) {
     return __awaiter(this, void 0, void 0, function* () {
-        const { contentArray, redactedArray } = _redact(content);
+        const processed = array.map(_redact);
         try {
             const response = yield fetch(`${gt.baseURL}/text`, {
                 method: 'POST',
@@ -65,7 +66,7 @@ function _translate(gt, content, targetLanguage, metadata) {
                     'gtx-api-key': gt.apiKey,
                 },
                 body: JSON.stringify({
-                    content: content,
+                    contentArray: processed.map(item => item.contentArray),
                     targetLanguage: targetLanguage,
                     metadata: metadata
                 })
@@ -74,16 +75,26 @@ function _translate(gt, content, targetLanguage, metadata) {
                 throw new Error(`${response.status}: ${yield response.text()}`);
             }
             const resultArray = yield response.json();
-            return {
-                translation: _combine(resultArray, redactedArray)
-            };
+            let finalArray = [];
+            for (const [index, item] of resultArray.entries()) {
+                finalArray.push({
+                    translation: _combine(item.translation, processed[index].redactedArray)
+                });
+            }
+            return finalArray;
         }
         catch (error) {
             console.error(error);
-            return {
-                translation: _combine(contentArray, redactedArray),
+            return processed.map(item => ({
+                translation: _combine(item.contentArray, item.redactedArray),
                 error: error
-            };
+            }));
         }
+    });
+}
+function _translate(gt, content, targetLanguage, metadata) {
+    return __awaiter(this, void 0, void 0, function* () {
+        const finalArray = yield _translateMany(gt, [content], targetLanguage, metadata);
+        return finalArray[0];
     });
 }
