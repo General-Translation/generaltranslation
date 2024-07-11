@@ -53,6 +53,8 @@ const _postprocess = (result, additional) => {
         }
     }
     if (additional === null || additional === void 0 ? void 0 : additional.error) {
+        if (!additional)
+            return null;
         result.error = additional.error;
     }
     return result;
