@@ -80,7 +80,7 @@ export default async function _translate(
     metadata: { [key: string]: any }
 ): Promise<{ translation: string, error?: Error | unknown }> {
     const f = async (array: ContentObject[]) => {
-        const response = await fetch(`${gt.baseURL}/text`, {
+        const response = await fetch(`${gt.baseURL}/translate`, {
             method: 'POST',
             headers: {
                 'Content-Type': 'application/json',
