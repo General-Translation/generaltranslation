@@ -51,10 +51,10 @@ class GT {
         this.baseURL = baseURL;
     }
     /**
-    * Translates a string, caching it for re-use.
-    * @param {Content} content - The content to translate.
+    * Translates a string into a target language.
+    * @param {string} content - A string to translate.
     * @param {string} targetLanguage - The target language for the translation.
-    * @param {{ [key: string]: any }} metadata - Additional metadata for the translation request.
+    * @param {{ notes?: string, [key: string]: any }} metadata - Additional metadata for the translation request.
     * @returns {Promise<{ translation: string, error?: Error | unknown }>} - The translated content with optional error information.
     */
     translate(content, targetLanguage, metadata) {
@@ -63,11 +63,11 @@ class GT {
         });
     }
     /**
-    * Translates a single piece of content and caches for use in a public project.
-    * @param {Content} content - The content to translate.
+    * Translates a string and caches for use in a public project.
+    * @param {string} content - A string to translate.
     * @param {string} targetLanguage - The target language for the translation.
-    * @param {string} projectID - The ID of the project
-    * @param {{ [key: string]: any }} metadata - Additional metadata for the translation request.
+    * @param {string} projectID - The ID of the project.
+    * @param {{ page?: string, notes?: string, [key: string]: any }} metadata - Additional metadata for the translation request.
     * @returns {Promise<{ translation: string, error?: Error | unknown }>} The translated content with optional error information.
     */
     intl(content, targetLanguage, projectID, metadata) {
