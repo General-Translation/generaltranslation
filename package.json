@@ -12,10 +12,12 @@
     "url": "git+https://github.com/General-Translation/generaltranslation.git"
   },
   "keywords": [
-    "LLM",
-    "prompting",
     "language",
     "translation",
+    "internationalization",
+    "localization",
+    "translate",
+    "i18n",
     "toolkit"
   ],
   "author": "General Translation, Inc.",
