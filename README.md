@@ -2,7 +2,7 @@
 
 <a href='https://www.generaltranslation.com' target="_blank">generaltranslation.com</a>
 
-A language toolkit for AI developers. Used in `@generaltranslation/react`.
+A language toolkit for AI developers. Used in `gt-react`.
 
 Full documentation coming soon!
 
