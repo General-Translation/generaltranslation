@@ -42,14 +42,11 @@ const Predefined: Record<string, string> = PredefinedJSON as Record<string, stri
  * @returns {boolean} - Returns true if valid, false otherwise.
  */
 function _isValidLanguageCode(code: string): boolean {
-    if (!code) return false;
+    if (!code || typeof code !== 'string') return false;
     try {
+        if (!_mapCodeToLanguage(code.split('-')[0])) return false;
         const locale = new Intl.Locale(code);
         const { language, script, region } = locale;
-        if (!language) return false;
-        if (!_mapCodeToLanguage(language)) return false;
-        if (script && !_mapCodeToScript(script)) return false;
-        if (region && !_mapCodeToRegion(region)) return false;
         const constructedCode = `${language}${script ? '-' + script : ''}${region ? '-' + region : ''}`;
         return constructedCode === code;
     } catch (error) {
