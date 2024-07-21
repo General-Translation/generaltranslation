@@ -14,9 +14,10 @@ var __importDefault = (this && this.__importDefault) || function (mod) {
     return (mod && mod.__esModule) ? mod : { "default": mod };
 };
 Object.defineProperty(exports, "__esModule", { value: true });
-exports.isSameLanguage = exports.getLanguageName = exports.getLanguageCode = exports.getLanguageObject = exports.isValidLanguageCode = void 0;
+exports.isSameLanguage = exports.getLanguageName = exports.getLanguageCode = exports.getLanguageObject = exports.isValidLanguageCode = exports.getLanguageDirection = void 0;
 // ----- IMPORTS ----- //
 const codes_1 = require("./codes/codes");
+const getLanguageDirection_1 = __importDefault(require("./codes/getLanguageDirection"));
 const _bundleRequests_1 = __importDefault(require("./translation/_bundleRequests"));
 const _intl_1 = __importDefault(require("./translation/_intl"));
 const _translate_1 = __importDefault(require("./translation/_translate"));
@@ -105,6 +106,7 @@ class GT {
 // Export the class
 exports.default = GT;
 // Export the functions 
+exports.getLanguageDirection = getLanguageDirection_1.default;
 exports.isValidLanguageCode = codes_1._isValidLanguageCode;
 exports.getLanguageObject = codes_1._getLanguageObject;
 exports.getLanguageCode = codes_1._getLanguageCode;
