@@ -1,3 +1,9 @@
+/**
+ * Check if a given language-country-script code is valid.
+ * @param {string} code - The language-country-script code to validate.
+ * @returns {boolean} - Returns true if valid, false otherwise.
+ */
+declare function _isValidLanguageCode(code: string): boolean;
 type LanguageObject = {
     language: string;
     script?: string;
@@ -31,4 +37,4 @@ declare const _getLanguageCode: (languages: string | string[]) => string | strin
  */
 declare function _isSameLanguage(...codes: string[]): boolean;
 declare function _isSameLanguage(codes: string[]): boolean;
-export { _getLanguageObject, _getLanguageName, _getLanguageCode, _isSameLanguage };
+export { _isValidLanguageCode, _getLanguageObject, _getLanguageName, _getLanguageCode, _isSameLanguage };

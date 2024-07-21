@@ -1,4 +1,4 @@
-import { _getLanguageObject, _isSameLanguage } from './codes/codes';
+import { _isValidLanguageCode, _getLanguageObject, _isSameLanguage } from './codes/codes';
 /**
  * Type representing the constructor parameters for the GT class.
  */
@@ -80,6 +80,7 @@ declare class GT {
     bundleRequests(requests: any[]): Promise<Array<any | null>>;
 }
 export default GT;
+export declare const isValidLanguageCode: typeof _isValidLanguageCode;
 export declare const getLanguageObject: typeof _getLanguageObject;
 export declare const getLanguageCode: (languages: string | string[]) => string | string[];
 export declare const getLanguageName: (codes: string | string[]) => string | string[];

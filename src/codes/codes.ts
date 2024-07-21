@@ -33,6 +33,24 @@ import PredefinedJSON from './predefined/Predefined.json';
 
 const Predefined: Record<string, string> = PredefinedJSON as Record<string, string>;
 
+
+// ----- VALIDITY CHECKS ----- //
+
+/**
+ * Check if a given language-country-script code is valid.
+ * @param {string} code - The language-country-script code to validate.
+ * @returns {boolean} - Returns true if valid, false otherwise.
+ */
+function _isValidLanguageCode(code: string): boolean {
+    if (!code) return false;
+    try {
+        const locale = new Intl.Locale(code);
+        return locale.baseName === code; // The baseName includes only the canonical language, script, and region
+    } catch (error) {
+        return false;
+    }
+}
+
 // ----- FORMATTING HELPER FUNCTIONS ----- //
 
 /**
@@ -140,38 +158,18 @@ function _getLanguageObject(codes: string | string[]): (LanguageObject | null) |
  * @returns {LanguageObject|null} The language object.
  */
 const _handleGetLanguageObject = (code: string): LanguageObject | null => {
-    if (!code) return null;
-    let languageObject: LanguageObject = {
-        language: '',
-        script: '',
-        region: ''
-    };
-    const subtags = code.split('-');
-    // Look for language
-    const languageCode = subtags[0];
-    languageObject.language = _mapCodeToLanguage(languageCode);
-    // Look for script and region
-    if (subtags.length === 3) { // language-script-region
-        languageObject.script = _mapCodeToScript(subtags[1]);
-        languageObject.region = _mapCodeToRegion(subtags[2]);
-    } else if (subtags.length === 2) { // either language-script or language-region
-        if (_isScriptCode(subtags[1])) {
-            languageObject.script = _mapCodeToScript(subtags[1]);
-        } else {
-            languageObject.region = _mapCodeToRegion(subtags[1]);
-        }
+    try {
+        const locale = new Intl.Locale(code);
+        let languageObject = {
+            language: _mapCodeToLanguage(locale.language) || '',
+            script: locale.script ? _mapCodeToScript(locale.script) : '' || '',
+            region: locale.region ? _mapCodeToRegion(locale.region) : '' || ''
+        };
+        return languageObject.language ? languageObject : null;
+    } catch (error) {
+        // If the code is not a valid locale, return null
+        return null;
     }
-    return languageObject.language ? languageObject : null;
-}
-
-/**
- * Helper function to determine if a code is a script code.
- * @param {string} code - The code to check.
- * @returns {boolean} True if the code is a script code, false otherwise.
- */
-const _isScriptCode = (code: string): boolean => { // if not assume region
-    if (code.length !== 4) return false;
-    return true;
 }
 
 // ----- LANGUAGE NAMES FROM CODES ----- //
@@ -191,7 +189,7 @@ const _getLanguageName = (codes: string | string[]): string | string[] => {
  * @returns {string} The language name.
  */
 const _handleGetLanguageName = (code: string): string => {
-    if (!code) return '';
+    if (!_isValidLanguageCode(code)) return '';
     if (Predefined[code]) return Predefined[code];
     const languageObject = _getLanguageObject(code);
     if (!languageObject) return '';
@@ -268,7 +266,7 @@ const _handleGetLanguageCodeFromObject = (languageObject: LanguageObject): strin
     if (languageObject.region) {
         code += `-${languageObject.region.toUpperCase()}`;
     }
-    return code;
+    return _isValidLanguageCode(code) ? code : '';
 }
 
 // ----- COMPARISON FUNCTION ----- //
@@ -311,6 +309,7 @@ function _isSameLanguage(...codes: (string | string[])[]): boolean {
 
 // Export functions for external use
 export {
+    _isValidLanguageCode,
     _getLanguageObject,
     _getLanguageName,
     _getLanguageCode,
