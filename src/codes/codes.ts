@@ -46,6 +46,10 @@ function _isValidLanguageCode(code: string): boolean {
     try {
         const locale = new Intl.Locale(code);
         const { language, script, region } = locale;
+        if (!language) return false;
+        if (!_mapCodeToLanguage(language)) return false;
+        if (script && !_mapCodeToScript(script)) return false;
+        if (region && !_mapCodeToRegion(region)) return false;
         const constructedCode = `${language}${script ? '-' + script : ''}${region ? '-' + region : ''}`;
         return constructedCode === code;
     } catch (error) {
