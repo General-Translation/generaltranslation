@@ -45,7 +45,9 @@ function _isValidLanguageCode(code: string): boolean {
     if (!code) return false;
     try {
         const locale = new Intl.Locale(code);
-        return locale.baseName === code; // The baseName includes only the canonical language, script, and region
+        const { language, script, region } = locale;
+        const constructedCode = `${language}${script ? '-' + script : ''}${region ? '-' + region : ''}`;
+        return constructedCode === code;
     } catch (error) {
         return false;
     }
