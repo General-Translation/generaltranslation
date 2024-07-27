@@ -4,7 +4,7 @@
     * @param {string} content - The content to translate.
     * @param {string} targetLanguage - The target language for the translation.
     * @param {string} projectID - The ID of the project
-    * @param {{ page?: string, notes?: string, [key: string]: any }} metadata - Additional metadata for the translation request.
+    * @param {{ dictionaryName?: string, notes?: string, [key: string]: any }} metadata - Additional metadata for the translation request.
     * @returns {Promise<{ translation: string, error?: Error | unknown }>} - The translated content with optional error information.
 */
 export default async function _translate(
@@ -12,7 +12,7 @@ export default async function _translate(
     content: string,
     targetLanguage: string,
     projectID: string,
-    metadata: { page?:string, notes?: string, [key: string]: any }
+    metadata: { dictionaryName?:string, context?: string, [key: string]: any }
 ): Promise<{ translation: string, error?: Error | unknown }> {
     try {
         const response = await fetch(`${gt.baseURL}/translate`, {

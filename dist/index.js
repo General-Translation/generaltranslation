@@ -68,7 +68,7 @@ class GT {
     * @param {string} content - A string to translate.
     * @param {string} targetLanguage - The target language for the translation.
     * @param {string} projectID - The ID of the project.
-    * @param {{ page?: string, notes?: string, [key: string]: any }} metadata - Additional metadata for the translation request.
+    * @param {dictionaryName?: string, context?: string, [key: string]: any }} metadata - Additional metadata for the translation request.
     * @returns {Promise<{ translation: string, error?: Error | unknown }>} The translated content with optional error information.
     */
     intl(content, targetLanguage, projectID, metadata) {

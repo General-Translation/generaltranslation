@@ -165,8 +165,8 @@ const _handleGetLanguageObject = (code: string): LanguageObject | null => {
         const locale = new Intl.Locale(code);
         let languageObject = {
             language: _mapCodeToLanguage(locale.language) || '',
-            script: locale.script ? _mapCodeToScript(locale.script) : '' || '',
-            region: locale.region ? _mapCodeToRegion(locale.region) : '' || ''
+            script: locale.script ? _mapCodeToScript(locale.script) ?? '' : '',
+            region: locale.region ? _mapCodeToRegion(locale.region) ?? '' : ''
         };
         return languageObject.language ? languageObject : null;
     } catch (error) {

@@ -147,7 +147,7 @@ console.log(result.translation); // 'Hola'
 
 - A promise that resolves to an object containing the translated content and optional error information.
 
-#### `intl(content: string, targetLanguage: string, projectID?: string, metadata?: { page?: string, notes?: string, [key: string]: any }): Promise<{ translation: string, error?: Error | unknown }>`
+#### `intl(content: string, targetLanguage: string, projectID?: string, metadata?: { dictionaryName?: string, notes?: string, [key: string]: any }): Promise<{ translation: string, error?: Error | unknown }>`
 
 Translates a string and caches it for use in a public project.
 

@@ -134,12 +134,13 @@ function _getLanguageObject(codes) {
  * @returns {LanguageObject|null} The language object.
  */
 const _handleGetLanguageObject = (code) => {
+    var _a, _b;
     try {
         const locale = new Intl.Locale(code);
         let languageObject = {
             language: _mapCodeToLanguage(locale.language) || '',
-            script: locale.script ? _mapCodeToScript(locale.script) : '' || '',
-            region: locale.region ? _mapCodeToRegion(locale.region) : '' || ''
+            script: locale.script ? (_a = _mapCodeToScript(locale.script)) !== null && _a !== void 0 ? _a : '' : '',
+            region: locale.region ? (_b = _mapCodeToRegion(locale.region)) !== null && _b !== void 0 ? _b : '' : ''
         };
         return languageObject.language ? languageObject : null;
     }
