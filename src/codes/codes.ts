@@ -37,6 +37,20 @@ const Predefined: Record<string, string> = PredefinedJSON as Record<string, stri
 // ----- VALIDITY CHECKS ----- //
 
 /**
+ * Standardizes a given language code.
+*/
+function _standardizeLanguageCode(code: string): string {
+    if (!code || typeof code !== 'string') return '';
+    try {
+        const locale = new Intl.Locale(code);
+        const { language, script, region } = locale;
+        return `${language}${script ? '-' + script : ''}${region ? '-' + region : ''}`;
+    } catch (error) {
+        return '';
+    }
+}
+
+/**
  * Check if a given language-country-script code is valid.
  * @param {string} code - The language-country-script code to validate.
  * @returns {boolean} - Returns true if valid, false otherwise.
@@ -313,6 +327,7 @@ function _isSameLanguage(...codes: (string | string[])[]): boolean {
 // Export functions for external use
 export {
     _isValidLanguageCode,
+    _standardizeLanguageCode,
     _getLanguageObject,
     _getLanguageName,
     _getLanguageCode,

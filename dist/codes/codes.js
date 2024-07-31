@@ -6,6 +6,7 @@ var __importDefault = (this && this.__importDefault) || function (mod) {
 Object.defineProperty(exports, "__esModule", { value: true });
 exports._getLanguageCode = exports._getLanguageName = void 0;
 exports._isValidLanguageCode = _isValidLanguageCode;
+exports._standardizeLanguageCode = _standardizeLanguageCode;
 exports._getLanguageObject = _getLanguageObject;
 exports._isSameLanguage = _isSameLanguage;
 // Import modules for mapping ISO 639 codes to language names and vice versa
@@ -32,6 +33,21 @@ const CodeToRegion = CodeToRegion_json_1.default;
 const Predefined_json_1 = __importDefault(require("./predefined/Predefined.json"));
 const Predefined = Predefined_json_1.default;
 // ----- VALIDITY CHECKS ----- //
+/**
+ * Standardizes a given language code.
+*/
+function _standardizeLanguageCode(code) {
+    if (!code || typeof code !== 'string')
+        return '';
+    try {
+        const locale = new Intl.Locale(code);
+        const { language, script, region } = locale;
+        return `${language}${script ? '-' + script : ''}${region ? '-' + region : ''}`;
+    }
+    catch (error) {
+        return '';
+    }
+}
 /**
  * Check if a given language-country-script code is valid.
  * @param {string} code - The language-country-script code to validate.

@@ -3,7 +3,7 @@
 
 // ----- IMPORTS ----- //
 
-import { _isValidLanguageCode, _getLanguageObject, _getLanguageCode, _getLanguageName, _isSameLanguage } from './codes/codes';
+import { _isValidLanguageCode, _standardizeLanguageCode, _getLanguageObject, _getLanguageCode, _getLanguageName, _isSameLanguage } from './codes/codes';
 import _getLanguageDirection from './codes/getLanguageDirection';
 import _bundleRequests from './translation/_bundleRequests';
 import _intl from './translation/_intl';
@@ -120,6 +120,7 @@ export default GT;
 // Export the functions 
 export const getLanguageDirection = _getLanguageDirection;
 export const isValidLanguageCode = _isValidLanguageCode;
+export const standardizeLanguageCode = _standardizeLanguageCode;
 export const getLanguageObject = _getLanguageObject;
 export const getLanguageCode = _getLanguageCode;
 export const getLanguageName = _getLanguageName;
