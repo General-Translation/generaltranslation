@@ -34,7 +34,9 @@ const Predefined_json_1 = __importDefault(require("./predefined/Predefined.json"
 const Predefined = Predefined_json_1.default;
 // ----- VALIDITY CHECKS ----- //
 /**
- * Standardizes a given language code.
+ * Ensures correct capitalization and formatting of a language code.
+ * @param {string} code - The language-country-script code to standardize.
+ * @returns {string} A BCP 47 language code.
 */
 function _standardizeLanguageCode(code) {
     if (!code || typeof code !== 'string')
