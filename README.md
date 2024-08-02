@@ -28,11 +28,11 @@ import GT from 'generaltranslation'
 const gt = new GT()
 ```
 
-## Convert between languages and ISO-639 codes
+## Convert between languages and BCP 47 language tags
 
 ### getLanguageName(codes)
 
-Returns a language name from an ISO-639 language code, or an array of codes. Compatible with ISO-3166 regions and ISO-15924 scripts common in browser languages.
+Returns a language name from a BCP 47 language tag, or an array of tags.
 
 ```
 const language1 = getLanguageName('en');
@@ -47,7 +47,7 @@ console.log(languages) // ['French', 'Mandarin Chinese']
 
 ### getLanguageObject(codes)
 
-Returns a language object, or array of language objects, each containing a language, script, and region from an ISO-639 language code, or an array of codes. Compatible with ISO-3166 regions and ISO-15924 scripts common in browser languages.
+Returns a language object, or array of language objects, each containing the English name of a language, script, and region.
 
 ```
 const languageObject = getLanguageCode('en');
@@ -59,7 +59,7 @@ console.log(codes) // [{ "language": "Chinese", "script": "Han (simplified)", "r
 
 ### getLanguageCode(languages)
 
-Returns an ISO-639 code from a language name or an array of language names.
+Returns a BCP 47 language tag from a language name or an array of language names.
 
 ```
 const code = getLanguageCode('English');

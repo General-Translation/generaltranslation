@@ -1,7 +1,7 @@
 /**
  * Ensures correct capitalization and formatting of a language code.
  * @param {string} code - The language-country-script code to standardize.
- * @returns {string} A BCP 47 language code.
+ * @returns {string} A BCP 47 language tag.
 */
 declare function _standardizeLanguageCode(code: string): string;
 /**

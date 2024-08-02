@@ -36,7 +36,7 @@ const Predefined = Predefined_json_1.default;
 /**
  * Ensures correct capitalization and formatting of a language code.
  * @param {string} code - The language-country-script code to standardize.
- * @returns {string} A BCP 47 language code.
+ * @returns {string} A BCP 47 language tag.
 */
 function _standardizeLanguageCode(code) {
     if (!code || typeof code !== 'string')
@@ -98,10 +98,10 @@ const _mapCodeToLanguage = (code) => {
     return '';
 };
 /**
- * Returns an ISO 639 code from a language name.
+ * Returns a BCP 47 language tag from a language name.
  * Preferentially returns two-letter codes.
  * @param {string} language - The language name.
- * @returns {string} The ISO 639 code.
+ * @returns {string} BCP 47 language tag.
  */
 const _mapLanguageToCode = (language) => {
     language = language === null || language === void 0 ? void 0 : language.toLowerCase();

@@ -39,7 +39,7 @@ const Predefined: Record<string, string> = PredefinedJSON as Record<string, stri
 /**
  * Ensures correct capitalization and formatting of a language code.
  * @param {string} code - The language-country-script code to standardize.
- * @returns {string} A BCP 47 language code.
+ * @returns {string} A BCP 47 language tag.
 */
 function _standardizeLanguageCode(code: string): string {
     if (!code || typeof code !== 'string') return '';
@@ -101,10 +101,10 @@ const _mapCodeToLanguage = (code: string): string => {
 }
 
 /**
- * Returns an ISO 639 code from a language name.
+ * Returns a BCP 47 language tag from a language name.
  * Preferentially returns two-letter codes.
  * @param {string} language - The language name.
- * @returns {string} The ISO 639 code.
+ * @returns {string} BCP 47 language tag.
  */
 const _mapLanguageToCode = (language: string): string => {
     language = language?.toLowerCase();
