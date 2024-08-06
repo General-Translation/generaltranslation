@@ -37,8 +37,8 @@ const Predefined = Predefined_json_1.default;
  * Ensures correct capitalization and formatting of a language code.
  * @param {string} code - The language-country-script code to standardize.
  * @returns {string} A BCP 47 language tag.
-*/
-/** @internal */
+ * @internal
+ */
 function _standardizeLanguageCode(code) {
     if (!code || typeof code !== 'string')
         return '';
@@ -55,8 +55,8 @@ function _standardizeLanguageCode(code) {
  * Check if a given language-country-script code is valid.
  * @param {string} code - The language-country-script code to validate.
  * @returns {boolean} - Returns true if valid, false otherwise.
+ * @internal
  */
-/** @internal */
 function _isValidLanguageCode(code) {
     if (!code || typeof code !== 'string')
         return false;
@@ -77,8 +77,8 @@ function _isValidLanguageCode(code) {
  * Capitalizes the first letter of a code and converts the rest to lowercase.
  * @param {string} code - The code to capitalize.
  * @returns {string} The capitalized code.
+ * @internal
  */
-/** @internal */
 const _capitalize = (code) => {
     if (code.length === 0)
         return code;
@@ -89,8 +89,8 @@ const _capitalize = (code) => {
  * Returns the name of a language from an ISO 639 code.
  * @param {string} code - The ISO 639 code.
  * @returns {string} The language name.
+ * @internal
  */
-/** @internal */
 const _mapCodeToLanguage = (code) => {
     code = code === null || code === void 0 ? void 0 : code.toLowerCase();
     if ((code === null || code === void 0 ? void 0 : code.length) === 2) {
@@ -106,8 +106,8 @@ const _mapCodeToLanguage = (code) => {
  * Preferentially returns two-letter codes.
  * @param {string} language - The language name.
  * @returns {string} BCP 47 language tag.
+ * @internal
  */
-/** @internal */
 const _mapLanguageToCode = (language) => {
     language = language === null || language === void 0 ? void 0 : language.toLowerCase();
     return LanguageToCode[language] || LanguageToCodeTriletter[language] || '';
@@ -116,8 +116,8 @@ const _mapLanguageToCode = (language) => {
  * Returns the name of a script from an ISO 15924 code.
  * @param {string} code - The ISO 15924 code.
  * @returns {string} The script name.
+ * @internal
  */
-/** @internal */
 const _mapCodeToScript = (code) => {
     code = _capitalize(code);
     return CodeToScript[code] || '';
@@ -126,8 +126,8 @@ const _mapCodeToScript = (code) => {
  * Returns an ISO 15924 code from a script name.
  * @param {string} script - The script name.
  * @returns {string} The ISO 15924 code.
+ * @internal
  */
-/** @internal */
 const _mapScriptToCode = (script) => {
     script = script === null || script === void 0 ? void 0 : script.toLowerCase();
     return ScriptToCode[script] || '';
@@ -136,8 +136,8 @@ const _mapScriptToCode = (script) => {
  * Returns the name of a region from an ISO 3166 code.
  * @param {string} code - The ISO 3166 code.
  * @returns {string} The region name.
+ * @internal
  */
-/** @internal */
 const _mapCodeToRegion = (code) => {
     code = code === null || code === void 0 ? void 0 : code.toUpperCase();
     return CodeToRegion[code] || '';
@@ -146,8 +146,8 @@ const _mapCodeToRegion = (code) => {
  * Returns an ISO 3166 code from a region name.
  * @param {string} region - The region name.
  * @returns {string} The ISO 3166 code.
+ * @internal
  */
-/** @internal */
 const _mapRegionToCode = (region) => {
     region = region === null || region === void 0 ? void 0 : region.toLowerCase();
     return RegionToCode[region] || '';
@@ -159,8 +159,8 @@ function _getLanguageObject(codes) {
  * Helper function to create a language object from a code.
  * @param {string} code - The language code.
  * @returns {LanguageObject|null} The language object.
+ * @internal
  */
-/** @internal */
 const _handleGetLanguageObject = (code) => {
     var _a, _b;
     try {
@@ -182,8 +182,8 @@ const _handleGetLanguageObject = (code) => {
  * Returns the language name(s) from an array of codes or a single code.
  * @param {string|string[]} codes - The code or array of codes.
  * @returns {string|string[]} The language name(s).
+ * @internal
  */
-/** @internal */
 const _getLanguageName = (codes) => {
     return Array.isArray(codes) ? codes.map(_handleGetLanguageName) : _handleGetLanguageName(codes);
 };
@@ -192,8 +192,8 @@ exports._getLanguageName = _getLanguageName;
  * Helper function to get the language name from a code.
  * @param {string} code - The language code.
  * @returns {string} The language name.
+ * @internal
  */
-/** @internal */
 const _handleGetLanguageName = (code) => {
     if (!_isValidLanguageCode(code))
         return '';
@@ -216,8 +216,8 @@ const _handleGetLanguageName = (code) => {
  * Returns the language code(s) from an array of language names or a single name.
  * @param {string|string[]} languages - The language name or array of language names.
  * @returns {string|string[]} The language code(s).
+ * @internal
  */
-/** @internal */
 const _getLanguageCode = (languages) => {
     return Array.isArray(languages) ? languages.map(_handleGetLanguageCode) : _handleGetLanguageCode(languages);
 };
@@ -226,8 +226,8 @@ exports._getLanguageCode = _getLanguageCode;
  * Helper function to get the language code from a language name.
  * @param {string|Object} language - The language name or object.
  * @returns {string} The language code.
+ * @internal
  */
-/** @internal */
 const _handleGetLanguageCode = (language) => {
     if (typeof language === 'string')
         return _handleGetLanguageCodeFromString(language);
@@ -237,8 +237,8 @@ const _handleGetLanguageCode = (language) => {
  * Helper function to get the language code from a language name string.
  * @param {string} language - The language name.
  * @returns {string} The language code.
+ * @internal
  */
-/** @internal */
 const _handleGetLanguageCodeFromString = (language) => {
     const subtagStrings = language.split(',').map(string => string.trim());
     let code = _mapLanguageToCode(subtagStrings[0]);
@@ -268,6 +268,7 @@ const _handleGetLanguageCodeFromString = (language) => {
  * Helper function to get the language code from a language object.
  * @param {LanguageObject} languageObject - The language object.
  * @returns {string} The language code.
+ * @internal
  */
 const _handleGetLanguageCodeFromObject = (languageObject) => {
     if (!(languageObject === null || languageObject === void 0 ? void 0 : languageObject.language))

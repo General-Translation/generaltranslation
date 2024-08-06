@@ -18,8 +18,8 @@ exports.default = _translate;
    * @param {string} projectID - The ID of the project
    * @param {{ dictionaryName?: string, notes?: string, [key: string]: any }} metadata - Additional metadata for the translation request.
    * @returns {Promise<{ translation: string, error?: Error | unknown }>} - The translated content with optional error information.
+   * @internal
 */
-/** @internal */
 function _translate(gt, content, targetLanguage, projectID, metadata) {
     return __awaiter(this, void 0, void 0, function* () {
         try {

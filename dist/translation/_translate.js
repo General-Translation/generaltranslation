@@ -17,8 +17,8 @@ exports.default = _translate;
  * @param {string} targetLanguage - The target language for the translation.
  * @param {{ notes?: string, [key: string]: any }} metadata - Additional metadata for the translation request.
  * @returns {Promise<{ translation: string, error?: Error | unknown }>} - The translated content with optional error information.
+ * @internal
  */
-/** @internal */
 function _translate(gt, content, targetLanguage, metadata) {
     return __awaiter(this, void 0, void 0, function* () {
         try {

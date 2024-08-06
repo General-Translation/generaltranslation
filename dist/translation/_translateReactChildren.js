@@ -21,9 +21,8 @@ exports.default = _translateReactChildren;
  * @returns {Promise<any | null>} - A promise that resolves to the translated content as an object, or null if an error occurs.
  *
  * @throws {Error} - Throws an error if the response from the API is not ok (status code not in the range 200-299).
- *
+ * @internal
 **/
-/** @internal */
 function _translateReactChildren(gt, content, targetLanguage, metadata) {
     return __awaiter(this, void 0, void 0, function* () {
         try {
