@@ -59,6 +59,7 @@ import { _getLanguageObject, _isSameLanguage } from "./codes";
  * @param {string} code - The language code to check.
  * @returns {string} - 'rtl' if the language is right-to-left, otherwise 'ltr'.
  */
+/** @internal */
 export default function _getLanguageDirection(code: string): string {
     return rtlLanguages.some(language => {
         const lo = _getLanguageObject(language);

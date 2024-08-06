@@ -57,6 +57,7 @@ const codes_1 = require("./codes");
  * @param {string} code - The language code to check.
  * @returns {string} - 'rtl' if the language is right-to-left, otherwise 'ltr'.
  */
+/** @internal */
 function _getLanguageDirection(code) {
     return rtlLanguages.some(language => {
         const lo = (0, codes_1._getLanguageObject)(language);

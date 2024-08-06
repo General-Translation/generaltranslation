@@ -23,6 +23,7 @@ exports.default = _translateReactChildren;
  * @throws {Error} - Throws an error if the response from the API is not ok (status code not in the range 200-299).
  *
 **/
+/** @internal */
 function _translateReactChildren(gt, content, targetLanguage, metadata) {
     return __awaiter(this, void 0, void 0, function* () {
         try {

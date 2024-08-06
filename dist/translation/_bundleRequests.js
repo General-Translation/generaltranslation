@@ -15,7 +15,9 @@ exports.default = _bundleRequests;
  * @param gt - Contains the baseURL and apiKey for the server request.
  * @param requests - Array of requests to be processed and sent.
  * @returns A promise that resolves to an array of processed results.
- */
+ 
+*/
+/** @internal */
 function _bundleRequests(gt, requests) {
     return __awaiter(this, void 0, void 0, function* () {
         try {

@@ -9,7 +9,9 @@ type Request = {
  * @param gt - Contains the baseURL and apiKey for the server request.
  * @param requests - Array of requests to be processed and sent.
  * @returns A promise that resolves to an array of processed results.
- */
+ 
+*/
+/** @internal */
 export default async function _bundleRequests(
     gt: { baseURL: string, apiKey: string },
     requests: Request[]
