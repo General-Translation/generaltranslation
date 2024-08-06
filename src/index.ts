@@ -10,10 +10,6 @@ import _intl from './translation/_intl';
 import _translate from './translation/_translate';
 import _translateReactChildren from './translation/_translateReactChildren';
 
-// TO DO
-// - Times/dates?
-// - Currency conversion?
-
 // ----- CORE CLASS ----- // 
 
 const getDefaultFromEnv = (VARIABLE: string): string => {

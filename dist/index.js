@@ -22,9 +22,6 @@ const _bundleRequests_1 = __importDefault(require("./translation/_bundleRequests
 const _intl_1 = __importDefault(require("./translation/_intl"));
 const _translate_1 = __importDefault(require("./translation/_translate"));
 const _translateReactChildren_1 = __importDefault(require("./translation/_translateReactChildren"));
-// TO DO
-// - Times/dates?
-// - Currency conversion?
 // ----- CORE CLASS ----- // 
 const getDefaultFromEnv = (VARIABLE) => {
     if (typeof process !== 'undefined' && process.env) {
