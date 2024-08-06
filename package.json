@@ -1,17 +1,11 @@
 {
   "name": "generaltranslation",
-  "version": "2.0.24",
+  "version": "2.0.23",
   "description": "A language toolkit for AI developers",
   "main": "dist/index.js",
-  "types": "dist/index.d.ts",
-  "files": [
-    "dist/index.js",
-    "dist/index.d.ts"
-  ],
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
-    "build": "tsc && node scripts/cleanup.js",
-    "prepublishOnly": "npm run build"
+    "build": "tsc"
   },
   "repository": {
     "type": "git",
