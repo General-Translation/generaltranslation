@@ -1,10 +1,12 @@
 {
   "name": "generaltranslation",
-  "version": "2.0.25",
+  "version": "2.0.26",
   "description": "A language toolkit for AI developers",
   "main": "dist/index.js",
   "types": "dist/index.d.ts",
-  "files": ["dist"],
+  "files": [
+    "dist"
+  ],
   "scripts": {
     "build": "tsc",
     "prepublishOnly": "npm run build"
