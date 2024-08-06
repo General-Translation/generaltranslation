@@ -9,7 +9,7 @@
     "outDir": "./dist",
     "resolveJsonModule": true,
     "declaration": true,
-    "declarationDir": "./dist",
+    "declarationDir": "./dist/types",
     "removeComments": false,
     "rootDir": "./src",
     "baseUrl": "./src",
