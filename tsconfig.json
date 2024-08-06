@@ -10,7 +10,11 @@
     "resolveJsonModule": true,
     "declaration": true,
     "removeComments": false,
-    "stripInternal": true
+    "stripInternal": true, 
+    "baseUrl": "./",
+    "paths": {
+      "generaltranslation": ["src/index.ts"]
+    }
   },
   "include": ["src/index.ts"],
   "exclude": ["node_modules", "dist"]

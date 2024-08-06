@@ -292,7 +292,6 @@ const _handleGetLanguageCodeFromString = (language: string): string => {
  * @param {LanguageObject} languageObject - The language object.
  * @returns {string} The language code.
  */
-/** @internal */
 const _handleGetLanguageCodeFromObject = (languageObject: LanguageObject): string => {
     if (!languageObject?.language) return '';
     let code = languageObject.language.toLowerCase();

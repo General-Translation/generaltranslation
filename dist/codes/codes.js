@@ -269,7 +269,6 @@ const _handleGetLanguageCodeFromString = (language) => {
  * @param {LanguageObject} languageObject - The language object.
  * @returns {string} The language code.
  */
-/** @internal */
 const _handleGetLanguageCodeFromObject = (languageObject) => {
     if (!(languageObject === null || languageObject === void 0 ? void 0 : languageObject.language))
         return '';
