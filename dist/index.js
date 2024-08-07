@@ -14,7 +14,11 @@ var __importDefault = (this && this.__importDefault) || function (mod) {
     return (mod && mod.__esModule) ? mod : { "default": mod };
 };
 Object.defineProperty(exports, "__esModule", { value: true });
-exports.isSameLanguage = exports.getLanguageName = exports.getLanguageCode = exports.getLanguageObject = exports.standardizeLanguageCode = exports.isValidLanguageCode = exports.getLanguageDirection = void 0;
+exports.standardizeLanguageCode = exports.isValidLanguageCode = exports.getLanguageDirection = void 0;
+exports.getLanguageObject = getLanguageObject;
+exports.getLanguageCode = getLanguageCode;
+exports.getLanguageName = getLanguageName;
+exports.isSameLanguage = isSameLanguage;
 // ----- IMPORTS ----- //
 const codes_1 = require("./codes/codes");
 const getLanguageDirection_1 = __importDefault(require("./codes/getLanguageDirection"));
@@ -105,43 +109,40 @@ exports.default = GT;
 // Export the functions 
 /**
  * Gets the writing direction for a given BCP 47 language code.
- * @param {string} languageCode - The BCP 47 language code to check.
+ * @param {string} code - The BCP 47 language code to check.
  * @returns {string} The language direction ('ltr' for left-to-right or 'rtl' for right-to-left).
  */
-exports.getLanguageDirection = getLanguageDirection_1.default;
+const getLanguageDirection = (code) => (0, getLanguageDirection_1.default)(code);
+exports.getLanguageDirection = getLanguageDirection;
 /**
  * Checks if a given BCP 47 language code is valid.
  * @param {string} code - The BCP 47 language code to validate.
  * @returns {boolean} True if the BCP 47 code is valid, false otherwise.
  */
-exports.isValidLanguageCode = codes_1._isValidLanguageCode;
+const isValidLanguageCode = (code) => (0, codes_1._isValidLanguageCode)(code);
+exports.isValidLanguageCode = isValidLanguageCode;
 /**
  * Standardizes a BCP 47 language code to ensure correct formatting.
  * @param {string} code - The BCP 47 language code to standardize.
  * @returns {string} The standardized BCP 47 language code.
  */
-exports.standardizeLanguageCode = codes_1._standardizeLanguageCode;
-/**
- * Gets a language object from a BCP 47 language code.
- * @param {string|string[]} codes - The BCP 47 language code(s) to convert.
- * @returns {LanguageObject|null|(LanguageObject|null)[]} The language object(s) or null if the BCP 47 code is invalid.
- */
-exports.getLanguageObject = codes_1._getLanguageObject;
-/**
- * Gets a BCP 47 language code from a language name.
- * @param {string|string[]} languages - The language name(s) to convert.
- * @returns {string|string[]} The corresponding BCP 47 language code(s).
- */
-exports.getLanguageCode = codes_1._getLanguageCode;
-/**
- * Gets a language name from a BCP 47 language code.
- * @param {string|string[]} codes - The BCP 47 language code(s) to convert.
- * @returns {string|string[]} The corresponding language name(s).
- */
-exports.getLanguageName = codes_1._getLanguageName;
+const standardizeLanguageCode = (code) => (0, codes_1._standardizeLanguageCode)(code);
+exports.standardizeLanguageCode = standardizeLanguageCode;
+function getLanguageObject(codes) {
+    return Array.isArray(codes) ? (0, codes_1._getLanguageObject)(codes) : (0, codes_1._getLanguageObject)([codes]);
+}
+function getLanguageCode(languageOrLanguages) {
+    return (0, codes_1._getLanguageCode)(languageOrLanguages);
+}
+function getLanguageName(codes) {
+    return (0, codes_1._getLanguageName)(codes);
+}
 /**
  * Checks if multiple BCP 47 language codes represent the same language.
- * @param {...string|string[]} codes - The BCP 47 language codes to compare.
+ * @param {string[]} codes - The BCP 47 language codes to compare.
  * @returns {boolean} True if all BCP 47 codes represent the same language, false otherwise.
  */
-exports.isSameLanguage = codes_1._isSameLanguage;
+function isSameLanguage(...codes) {
+    return (0, codes_1._isSameLanguage)(...codes);
+}
+;

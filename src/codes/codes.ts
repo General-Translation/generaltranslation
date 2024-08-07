@@ -162,7 +162,7 @@ const _mapRegionToCode = (region: string): string => {
 
 // ----- LANGUAGE OBJECTS FROM CODES ----- //
 
-type LanguageObject = {
+export type LanguageObject = {
     language: string;
     script?: string;
     region?: string;

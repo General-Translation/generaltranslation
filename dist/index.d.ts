@@ -1,5 +1,4 @@
-import { _isValidLanguageCode, _standardizeLanguageCode, _getLanguageObject, _isSameLanguage } from './codes/codes';
-import _getLanguageDirection from './codes/getLanguageDirection';
+import { LanguageObject } from './codes/codes';
 /**
  * Type representing the constructor parameters for the GT class.
  */
@@ -83,43 +82,61 @@ declare class GT {
 export default GT;
 /**
  * Gets the writing direction for a given BCP 47 language code.
- * @param {string} languageCode - The BCP 47 language code to check.
+ * @param {string} code - The BCP 47 language code to check.
  * @returns {string} The language direction ('ltr' for left-to-right or 'rtl' for right-to-left).
  */
-export declare const getLanguageDirection: typeof _getLanguageDirection;
+export declare const getLanguageDirection: (code: string) => string;
 /**
  * Checks if a given BCP 47 language code is valid.
  * @param {string} code - The BCP 47 language code to validate.
  * @returns {boolean} True if the BCP 47 code is valid, false otherwise.
  */
-export declare const isValidLanguageCode: typeof _isValidLanguageCode;
+export declare const isValidLanguageCode: (code: string) => boolean;
 /**
  * Standardizes a BCP 47 language code to ensure correct formatting.
  * @param {string} code - The BCP 47 language code to standardize.
  * @returns {string} The standardized BCP 47 language code.
  */
-export declare const standardizeLanguageCode: typeof _standardizeLanguageCode;
+export declare const standardizeLanguageCode: (code: string) => string;
 /**
  * Gets a language object from a BCP 47 language code.
- * @param {string|string[]} codes - The BCP 47 language code(s) to convert.
- * @returns {LanguageObject|null|(LanguageObject|null)[]} The language object(s) or null if the BCP 47 code is invalid.
+ * @param {string} code - The BCP 47 language code to convert.
+ * @returns {LanguageObject | null} The language object or null if the BCP 47 code is invalid.
  */
-export declare const getLanguageObject: typeof _getLanguageObject;
+export declare function getLanguageObject(code: string): LanguageObject | null;
+/**
+ * Gets language objects from multiple BCP 47 language codes.
+ * @param {string[]} codes - The BCP 47 language codes to convert.
+ * @returns {(LanguageObject | null)[]} An array of language objects or null for each invalid BCP 47 code.
+ */
+export declare function getLanguageObject(codes: string[]): (LanguageObject | null)[];
 /**
  * Gets a BCP 47 language code from a language name.
- * @param {string|string[]} languages - The language name(s) to convert.
- * @returns {string|string[]} The corresponding BCP 47 language code(s).
+ * @param {string} language - The language name to convert.
+ * @returns {string} The corresponding BCP 47 language code.
  */
-export declare const getLanguageCode: (languages: string | string[]) => string | string[];
+export declare function getLanguageCode(language: string): string;
+/**
+ * Gets BCP 47 language codes from multiple language names.
+ * @param {string[]} languages - The language names to convert.
+ * @returns {string[]} The corresponding BCP 47 language codes.
+ */
+export declare function getLanguageCode(languages: string[]): string[];
 /**
  * Gets a language name from a BCP 47 language code.
- * @param {string|string[]} codes - The BCP 47 language code(s) to convert.
- * @returns {string|string[]} The corresponding language name(s).
+ * @param {string} code - The BCP 47 language code to convert.
+ * @returns {string} The corresponding language name.
  */
-export declare const getLanguageName: (codes: string | string[]) => string | string[];
+export declare function getLanguageName(code: string): string;
+/**
+ * Gets language names from multiple BCP 47 language codes.
+ * @param {string[]} codes - The BCP 47 language codes to convert.
+ * @returns {string[]} The corresponding language names.
+ */
+export declare function getLanguageName(codes: string[]): string[];
 /**
  * Checks if multiple BCP 47 language codes represent the same language.
- * @param {...string|string[]} codes - The BCP 47 language codes to compare.
+ * @param {string[]} codes - The BCP 47 language codes to compare.
  * @returns {boolean} True if all BCP 47 codes represent the same language, false otherwise.
  */
-export declare const isSameLanguage: typeof _isSameLanguage;
+export declare function isSameLanguage(...codes: string[]): boolean;
