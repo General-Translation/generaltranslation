@@ -116,50 +116,50 @@ export default GT;
 // Export the functions 
 
 /**
- * Gets the writing direction for a given language code.
- * @param {string} languageCode - The language code to check.
- * @returns {string} The language direction ('ltr' or 'rtl').
+ * Gets the writing direction for a given BCP 47 language code.
+ * @param {string} languageCode - The BCP 47 language code to check.
+ * @returns {string} The language direction ('ltr' for left-to-right or 'rtl' for right-to-left).
  */
 export const getLanguageDirection = _getLanguageDirection;
 
 /**
- * Checks if a given language code is valid.
- * @param {string} code - The language code to validate.
- * @returns {boolean} True if the code is valid, false otherwise.
+ * Checks if a given BCP 47 language code is valid.
+ * @param {string} code - The BCP 47 language code to validate.
+ * @returns {boolean} True if the BCP 47 code is valid, false otherwise.
  */
 export const isValidLanguageCode = _isValidLanguageCode;
 
 /**
- * Standardizes a language code to ensure correct formatting.
- * @param {string} code - The language code to standardize.
- * @returns {string} The standardized language code.
+ * Standardizes a BCP 47 language code to ensure correct formatting.
+ * @param {string} code - The BCP 47 language code to standardize.
+ * @returns {string} The standardized BCP 47 language code.
  */
 export const standardizeLanguageCode = _standardizeLanguageCode;
 
 /**
- * Gets a language object from a language code.
- * @param {string|string[]} codes - The language code(s) to convert.
- * @returns {LanguageObject|null|(LanguageObject|null)[]} The language object(s) or null if invalid.
+ * Gets a language object from a BCP 47 language code.
+ * @param {string|string[]} codes - The BCP 47 language code(s) to convert.
+ * @returns {LanguageObject|null|(LanguageObject|null)[]} The language object(s) or null if the BCP 47 code is invalid.
  */
 export const getLanguageObject = _getLanguageObject;
 
 /**
- * Gets a language code from a language name.
+ * Gets a BCP 47 language code from a language name.
  * @param {string|string[]} languages - The language name(s) to convert.
- * @returns {string|string[]} The corresponding language code(s).
+ * @returns {string|string[]} The corresponding BCP 47 language code(s).
  */
 export const getLanguageCode = _getLanguageCode;
 
 /**
- * Gets a language name from a language code.
- * @param {string|string[]} codes - The language code(s) to convert.
+ * Gets a language name from a BCP 47 language code.
+ * @param {string|string[]} codes - The BCP 47 language code(s) to convert.
  * @returns {string|string[]} The corresponding language name(s).
  */
 export const getLanguageName = _getLanguageName;
 
 /**
- * Checks if multiple language codes represent the same language.
- * @param {...string|string[]} codes - The language codes to compare.
- * @returns {boolean} True if all codes represent the same language, false otherwise.
+ * Checks if multiple BCP 47 language codes represent the same language.
+ * @param {...string|string[]} codes - The BCP 47 language codes to compare.
+ * @returns {boolean} True if all BCP 47 codes represent the same language, false otherwise.
  */
 export const isSameLanguage = _isSameLanguage;
