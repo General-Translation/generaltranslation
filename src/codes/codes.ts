@@ -42,7 +42,7 @@ const Predefined: Record<string, string> = PredefinedJSON as Record<string, stri
  * @returns {string} A BCP 47 language tag.
  * @internal
  */
-function _standardizeLanguageCode(code: string): string {
+export function _standardizeLanguageCode(code: string): string {
     if (!code || typeof code !== 'string') return '';
     try {
         const locale = new Intl.Locale(code);
@@ -59,7 +59,7 @@ function _standardizeLanguageCode(code: string): string {
  * @returns {boolean} - Returns true if valid, false otherwise.
  * @internal
  */
-function _isValidLanguageCode(code: string): boolean {
+export function _isValidLanguageCode(code: string): boolean {
     if (!code || typeof code !== 'string') return false;
     try {
         if (!_mapCodeToLanguage(code.split('-')[0])) return false;
@@ -175,9 +175,9 @@ type LanguageObject = {
  * @returns {(LanguageObject|null) | (LanguageObject|null)[]} The language object(s).
  * @internal
  */
-function _getLanguageObject(codes: string): LanguageObject | null;
-function _getLanguageObject(codes: string[]): (LanguageObject | null)[];
-function _getLanguageObject(codes: string | string[]): (LanguageObject | null) | (LanguageObject | null)[] {
+export function _getLanguageObject(codes: string): LanguageObject | null;
+export function _getLanguageObject(codes: string[]): (LanguageObject | null)[];
+export function _getLanguageObject(codes: string | string[]): (LanguageObject | null) | (LanguageObject | null)[] {
     return Array.isArray(codes) ? codes.map(_handleGetLanguageObject) : _handleGetLanguageObject(codes);
 }
 
@@ -210,7 +210,7 @@ const _handleGetLanguageObject = (code: string): LanguageObject | null => {
  * @returns {string|string[]} The language name(s).
  * @internal
  */
-const _getLanguageName = (codes: string | string[]): string | string[] => {
+export const _getLanguageName = (codes: string | string[]): string | string[] => {
     return Array.isArray(codes) ? codes.map(_handleGetLanguageName) : _handleGetLanguageName(codes);
 }
 
@@ -243,7 +243,7 @@ const _handleGetLanguageName = (code: string): string => {
  * @returns {string|string[]} The language code(s).
  * @internal
  */
-const _getLanguageCode = (languages: string | string[]): string | string[] => {
+export const _getLanguageCode = (languages: string | string[]): string | string[] => {
     return Array.isArray(languages) ? languages.map(_handleGetLanguageCode) : _handleGetLanguageCode(languages);
 }
 
@@ -314,9 +314,9 @@ const _handleGetLanguageCodeFromObject = (languageObject: LanguageObject): strin
  * @returns {boolean} True if all codes represent the same language, false otherwise.
  * @internal
  */
-function _isSameLanguage(...codes: string[]): boolean;
-function _isSameLanguage(codes: string[]): boolean;
-function _isSameLanguage(...codes: (string | string[])[]): boolean {
+export function _isSameLanguage(...codes: string[]): boolean;
+export function _isSameLanguage(codes: string[]): boolean;
+export function _isSameLanguage(...codes: (string | string[])[]): boolean {
     // Flatten the array in case the codes are provided as an array
     if (codes.length === 1 && Array.isArray(codes[0])) {
         codes = codes[0] as string[];
@@ -339,16 +339,3 @@ function _isSameLanguage(...codes: (string | string[])[]): boolean {
     }
     return true;
 }
-
-
-// ----- EXPORTS ----- //
-
-// Export functions for external use
-export {
-    _isValidLanguageCode,
-    _standardizeLanguageCode,
-    _getLanguageObject,
-    _getLanguageName,
-    _getLanguageCode,
-    _isSameLanguage
-};

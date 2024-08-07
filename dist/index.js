@@ -103,10 +103,45 @@ class GT {
 // Export the class
 exports.default = GT;
 // Export the functions 
+/**
+ * Gets the writing direction for a given language code.
+ * @param {string} languageCode - The language code to check.
+ * @returns {string} The language direction ('ltr' or 'rtl').
+ */
 exports.getLanguageDirection = getLanguageDirection_1.default;
+/**
+ * Checks if a given language code is valid.
+ * @param {string} code - The language code to validate.
+ * @returns {boolean} True if the code is valid, false otherwise.
+ */
 exports.isValidLanguageCode = codes_1._isValidLanguageCode;
+/**
+ * Standardizes a language code to ensure correct formatting.
+ * @param {string} code - The language code to standardize.
+ * @returns {string} The standardized language code.
+ */
 exports.standardizeLanguageCode = codes_1._standardizeLanguageCode;
+/**
+ * Gets a language object from a language code.
+ * @param {string|string[]} codes - The language code(s) to convert.
+ * @returns {LanguageObject|null|(LanguageObject|null)[]} The language object(s) or null if invalid.
+ */
 exports.getLanguageObject = codes_1._getLanguageObject;
+/**
+ * Gets a language code from a language name.
+ * @param {string|string[]} languages - The language name(s) to convert.
+ * @returns {string|string[]} The corresponding language code(s).
+ */
 exports.getLanguageCode = codes_1._getLanguageCode;
+/**
+ * Gets a language name from a language code.
+ * @param {string|string[]} codes - The language code(s) to convert.
+ * @returns {string|string[]} The corresponding language name(s).
+ */
 exports.getLanguageName = codes_1._getLanguageName;
+/**
+ * Checks if multiple language codes represent the same language.
+ * @param {...string|string[]} codes - The language codes to compare.
+ * @returns {boolean} True if all codes represent the same language, false otherwise.
+ */
 exports.isSameLanguage = codes_1._isSameLanguage;

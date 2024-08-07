@@ -81,10 +81,45 @@ declare class GT {
     bundleRequests(requests: any[]): Promise<Array<any | null>>;
 }
 export default GT;
+/**
+ * Gets the writing direction for a given language code.
+ * @param {string} languageCode - The language code to check.
+ * @returns {string} The language direction ('ltr' or 'rtl').
+ */
 export declare const getLanguageDirection: typeof _getLanguageDirection;
+/**
+ * Checks if a given language code is valid.
+ * @param {string} code - The language code to validate.
+ * @returns {boolean} True if the code is valid, false otherwise.
+ */
 export declare const isValidLanguageCode: typeof _isValidLanguageCode;
+/**
+ * Standardizes a language code to ensure correct formatting.
+ * @param {string} code - The language code to standardize.
+ * @returns {string} The standardized language code.
+ */
 export declare const standardizeLanguageCode: typeof _standardizeLanguageCode;
+/**
+ * Gets a language object from a language code.
+ * @param {string|string[]} codes - The language code(s) to convert.
+ * @returns {LanguageObject|null|(LanguageObject|null)[]} The language object(s) or null if invalid.
+ */
 export declare const getLanguageObject: typeof _getLanguageObject;
+/**
+ * Gets a language code from a language name.
+ * @param {string|string[]} languages - The language name(s) to convert.
+ * @returns {string|string[]} The corresponding language code(s).
+ */
 export declare const getLanguageCode: (languages: string | string[]) => string | string[];
+/**
+ * Gets a language name from a language code.
+ * @param {string|string[]} codes - The language code(s) to convert.
+ * @returns {string|string[]} The corresponding language name(s).
+ */
 export declare const getLanguageName: (codes: string | string[]) => string | string[];
+/**
+ * Checks if multiple language codes represent the same language.
+ * @param {...string|string[]} codes - The language codes to compare.
+ * @returns {boolean} True if all codes represent the same language, false otherwise.
+ */
 export declare const isSameLanguage: typeof _isSameLanguage;

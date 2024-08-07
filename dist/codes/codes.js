@@ -5,8 +5,8 @@ var __importDefault = (this && this.__importDefault) || function (mod) {
 };
 Object.defineProperty(exports, "__esModule", { value: true });
 exports._getLanguageCode = exports._getLanguageName = void 0;
-exports._isValidLanguageCode = _isValidLanguageCode;
 exports._standardizeLanguageCode = _standardizeLanguageCode;
+exports._isValidLanguageCode = _isValidLanguageCode;
 exports._getLanguageObject = _getLanguageObject;
 exports._isSameLanguage = _isSameLanguage;
 // Import modules for mapping ISO 639 codes to language names and vice versa
