@@ -77,7 +77,6 @@ function _isValidLanguageCode(code) {
  * Capitalizes the first letter of a code and converts the rest to lowercase.
  * @param {string} code - The code to capitalize.
  * @returns {string} The capitalized code.
- * @internal
  */
 const _capitalize = (code) => {
     if (code.length === 0)
@@ -89,7 +88,6 @@ const _capitalize = (code) => {
  * Returns the name of a language from an ISO 639 code.
  * @param {string} code - The ISO 639 code.
  * @returns {string} The language name.
- * @internal
  */
 const _mapCodeToLanguage = (code) => {
     code = code === null || code === void 0 ? void 0 : code.toLowerCase();
@@ -106,7 +104,6 @@ const _mapCodeToLanguage = (code) => {
  * Preferentially returns two-letter codes.
  * @param {string} language - The language name.
  * @returns {string} BCP 47 language tag.
- * @internal
  */
 const _mapLanguageToCode = (language) => {
     language = language === null || language === void 0 ? void 0 : language.toLowerCase();
@@ -116,7 +113,6 @@ const _mapLanguageToCode = (language) => {
  * Returns the name of a script from an ISO 15924 code.
  * @param {string} code - The ISO 15924 code.
  * @returns {string} The script name.
- * @internal
  */
 const _mapCodeToScript = (code) => {
     code = _capitalize(code);
@@ -126,7 +122,6 @@ const _mapCodeToScript = (code) => {
  * Returns an ISO 15924 code from a script name.
  * @param {string} script - The script name.
  * @returns {string} The ISO 15924 code.
- * @internal
  */
 const _mapScriptToCode = (script) => {
     script = script === null || script === void 0 ? void 0 : script.toLowerCase();
@@ -136,7 +131,6 @@ const _mapScriptToCode = (script) => {
  * Returns the name of a region from an ISO 3166 code.
  * @param {string} code - The ISO 3166 code.
  * @returns {string} The region name.
- * @internal
  */
 const _mapCodeToRegion = (code) => {
     code = code === null || code === void 0 ? void 0 : code.toUpperCase();
@@ -146,15 +140,11 @@ const _mapCodeToRegion = (code) => {
  * Returns an ISO 3166 code from a region name.
  * @param {string} region - The region name.
  * @returns {string} The ISO 3166 code.
- * @internal
  */
 const _mapRegionToCode = (region) => {
     region = region === null || region === void 0 ? void 0 : region.toLowerCase();
     return RegionToCode[region] || '';
 };
-/**
-* @internal
-*/
 function _getLanguageObject(codes) {
     return Array.isArray(codes) ? codes.map(_handleGetLanguageObject) : _handleGetLanguageObject(codes);
 }
@@ -162,7 +152,6 @@ function _getLanguageObject(codes) {
  * Helper function to create a language object from a code.
  * @param {string} code - The language code.
  * @returns {LanguageObject|null} The language object.
- * @internal
  */
 const _handleGetLanguageObject = (code) => {
     var _a, _b;
@@ -195,14 +184,13 @@ exports._getLanguageName = _getLanguageName;
  * Helper function to get the language name from a code.
  * @param {string} code - The language code.
  * @returns {string} The language name.
- * @internal
  */
 const _handleGetLanguageName = (code) => {
     if (!_isValidLanguageCode(code))
         return '';
     if (Predefined[code])
         return Predefined[code];
-    const languageObject = _getLanguageObject(code);
+    const languageObject = _handleGetLanguageObject(code);
     if (!languageObject)
         return '';
     let result = languageObject.language;
@@ -227,9 +215,8 @@ const _getLanguageCode = (languages) => {
 exports._getLanguageCode = _getLanguageCode;
 /**
  * Helper function to get the language code from a language name.
- * @param {string|Object} language - The language name or object.
+ * @param {string|LanguageObject} language - The language name or object.
  * @returns {string} The language code.
- * @internal
  */
 const _handleGetLanguageCode = (language) => {
     if (typeof language === 'string')
@@ -240,7 +227,6 @@ const _handleGetLanguageCode = (language) => {
  * Helper function to get the language code from a language name string.
  * @param {string} language - The language name.
  * @returns {string} The language code.
- * @internal
  */
 const _handleGetLanguageCodeFromString = (language) => {
     const subtagStrings = language.split(',').map(string => string.trim());
@@ -271,7 +257,6 @@ const _handleGetLanguageCodeFromString = (language) => {
  * Helper function to get the language code from a language object.
  * @param {LanguageObject} languageObject - The language object.
  * @returns {string} The language code.
- * @internal
  */
 const _handleGetLanguageCodeFromObject = (languageObject) => {
     if (!(languageObject === null || languageObject === void 0 ? void 0 : languageObject.language))
@@ -285,9 +270,6 @@ const _handleGetLanguageCodeFromObject = (languageObject) => {
     }
     return _isValidLanguageCode(code) ? code : '';
 };
-/**
-* @internal
-*/
 function _isSameLanguage(...codes) {
     // Flatten the array in case the codes are provided as an array
     if (codes.length === 1 && Array.isArray(codes[0])) {
