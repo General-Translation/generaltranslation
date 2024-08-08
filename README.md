@@ -34,60 +34,60 @@ const gt = new GT()
 
 Returns a language name from a BCP 47 language tag, or an array of tags.
 
-```
+```javascript
 const language1 = getLanguageName('en');
-console.log(language1) // 'English'
+console.log(language1); // 'English'
 
 const language2 = getLanguageName('en-GB');
-console.log(language2) // 'British English'
+console.log(language2); // 'British English'
 
-const languages = getLanguageName(['fr', 'zh-Hans'])
-console.log(languages) // ['French', 'Mandarin Chinese']
+const languages = getLanguageName(['fr', 'zh-Hans']);
+console.log(languages); // ['French', 'Mandarin Chinese']
 ```
 
 ### getLanguageObject(codes)
 
 Returns a language object, or array of language objects, each containing the English name of a language, script, and region.
 
-```
-const languageObject = getLanguageCode('en');
-console.log(languageObject) // { "language": "English", "script": "", "region": "" }
+```javascript
+const languageObject = getLanguageObject('en');
+console.log(languageObject); // { "language": "English", "script": "", "region": "" }
 
-const languageObjects = getLanguageObject(['zh-Hans', 'en-US'])
-console.log(codes) // [{ "language": "Chinese", "script": "Han (simplified)", "region": "" }, { "language": "English", "script": "", "region": "United States" }]
+const languageObjects = getLanguageObject(['zh-Hans', 'en-US']);
+console.log(languageObjects); // [{ "language": "Chinese", "script": "Han (simplified)", "region": "" }, { "language": "English", "script": "", "region": "United States" }]
 ```
 
 ### getLanguageCode(languages)
 
 Returns a BCP 47 language tag from a language name or an array of language names.
 
-```
+```javascript
 const code = getLanguageCode('English');
-console.log(code) // 'en'
+console.log(code); // 'en'
 
-const codes = getLanguageCode(['French', 'Spanish'])
-console.log(codes) // ['fr', 'es']
+const codes = getLanguageCode(['French', 'Spanish']);
+console.log(codes); // ['fr', 'es']
 ```
 
 ### isSameLanguage(...codes)
 
 Checks if a given set of codes are all equivalent to the same language. Returns a boolean.
 
-```
+```javascript
 const same = isSameLanguage('en', 'en-US', 'en-GB');
-console.log(same) // true
+console.log(same); // true
 ```
 
 ### getLanguageDirection(code)
 
 Returns the text direction ('rtl' for right-to-left or 'ltr' for left-to-right) for a given language code.
 
-```
+```javascript
 const direction = getLanguageDirection('ar');
-console.log(direction) // 'rtl'
+console.log(direction); // 'rtl'
 
-const direction = getLanguageDirection('en');
-console.log(direction) // 'ltr'
+const direction2 = getLanguageDirection('en');
+console.log(direction2); // 'ltr'
 ```
 
 ### isValidLanguageCode(code)
@@ -96,10 +96,10 @@ Checks if a given language-country-script code is valid. Returns a boolean indic
 
 ```javascript
 const isValid = isValidLanguageCode('en-US');
-console.log(isValid) // true
+console.log(isValid); // true
 
-const isValid = isValidLanguageCode('invalid-code');
-console.log(isValid) // false
+const isValid2 = isValidLanguageCode('invalid-code');
+console.log(isValid2); // false
 ```
 
 ## `GT` Class
@@ -172,8 +172,8 @@ console.log(result.translation); // 'Hola'
 Translates the content of React children elements.
 
 ```javascript
-const result = await gt.translateReactChildren(<div>Hello</div>, 'es');
-console.log(result.translation); // <div>Hola</div>
+const result = await gt.translateReactChildren({ "type": "div", "props": { "children": "Hello, world" }}, 'es');
+console.log(result.translation); // { "type": "div", "props": { "children": "Hola, mundo" } }
 ```
 
 #### Parameters
@@ -192,11 +192,22 @@ Bundles multiple requests and sends them to the server.
 
 ```javascript
 const requests = [
-    { content: 'Hello', targetLanguage: 'es' },
-    { content: 'World', targetLanguage: 'fr' }
+    {
+        type: "intl"
+        data: {
+            content: 'Hello', targetLanguage: 'es'
+        }
+    }
+    {
+        type: "intl"
+        data: {
+            content: 'Hello', targetLanguage: 'de'
+        }
+    }
+    
 ];
 const results = await gt.bundleRequests(requests);
-console.log(results); // ['Hola', 'Monde']
+console.log(results); // ['Hola', 'Hallo']
 ```
 
 #### Parameters
@@ -206,3 +217,140 @@ console.log(results); // ['Hola', 'Monde']
 #### Returns
 
 - A promise that resolves to an array of processed results.
+
+## Utility Functions
+
+### getLanguageDirection
+
+Gets the writing direction for a given BCP 47 language code.
+
+```javascript
+import { getLanguageDirection } from 'generaltranslation';
+
+const direction = getLanguageDirection('ar');
+console.log(direction); // 'rtl'
+```
+
+#### Parameters
+
+- `code` (string): The BCP 47 language code to check.
+
+#### Returns
+
+- The language direction ('ltr' for left-to-right or 'rtl' for right-to-left).
+
+### isValidLanguageCode
+
+Checks if a given BCP 47 language code is valid.
+
+```javascript
+import { isValidLanguageCode } from 'generaltranslation';
+
+const isValid = isValidLanguageCode('en-US');
+console.log(isValid); // true
+```
+
+#### Parameters
+
+- `code` (string): The BCP 47 language code to validate.
+
+#### Returns
+
+- True if the BCP 47 code is valid, false otherwise.
+
+### standardizeLanguageCode
+
+Standardizes a BCP 47 language code to ensure correct formatting.
+
+```javascript
+import { standardizeLanguageCode } from 'generaltranslation';
+
+const standardizedCode = standardizeLanguageCode('en-us');
+console.log(standardizedCode); // 'en-US'
+```
+
+#### Parameters
+
+- `code` (string): The BCP 47 language code to standardize.
+
+#### Returns
+
+- The standardized BCP 47 language code.
+
+### getLanguageObject
+
+Gets a language object from a BCP 47 language code.
+
+```javascript
+import { getLanguageObject } from 'generaltranslation';
+
+const languageObject = getLanguageObject('en');
+console.log(languageObject); // { language: 'English', script: '', region: '' }
+```
+
+#### Parameters
+
+- `code` (string): The BCP 47 language code to convert.
+
+#### Returns
+
+- The language object or null if the BCP 47 code is invalid.
+
+### getLanguageCode
+
+Gets a BCP 47 language code from a language name.
+
+```javascript
+import { getLanguageCode } from 'generaltranslation';
+
+const languageCode = getLanguageCode('English');
+console.log(languageCode); // 'en'
+```
+
+#### Parameters
+
+- `language` (string): The language name to convert.
+
+#### Returns
+
+- The corresponding BCP 47 language code.
+
+### getLanguageName
+
+Gets a language name from a BCP 47 language code.
+
+```javascript
+import { getLanguageName } from 'generaltranslation';
+
+const languageName = getLanguageName('en');
+console.log(languageName); // 'English'
+```
+
+#### Parameters
+
+- `code` (string): The BCP 47 language code to convert.
+
+#### Returns
+
+- The corresponding language name.
+
+### isSameLanguage
+
+Checks if multiple BCP 47 language codes represent the same language.
+
+```javascript
+import { isSameLanguage } from 'generaltranslation';
+
+const same = isSameLanguage('en', 'en-US', 'en-GB');
+console
+
+.log(same); // true
+```
+
+#### Parameters
+
+- `codes` (string[]): The BCP 47 language codes to compare.
+
+#### Returns
+
+- True if all BCP 47 codes represent the same language, false otherwise.
