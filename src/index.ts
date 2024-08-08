@@ -149,7 +149,6 @@ export function getLanguageObject(code: string): LanguageObject | null;
  * @returns {(LanguageObject | null)[]} An array of language objects or null for each invalid BCP 47 code.
  */
 export function getLanguageObject(codes: string[]): (LanguageObject | null)[];
-
 export function getLanguageObject(codes: string | string[]): LanguageObject | null | (LanguageObject | null)[] {
     return Array.isArray(codes) ? _getLanguageObject(codes) : _getLanguageObject([codes]);
 }
@@ -166,8 +165,8 @@ export function getLanguageCode(language: string): string;
  * @returns {string[]} The corresponding BCP 47 language codes.
  */
 export function getLanguageCode(languages: string[]): string[];
-export function getLanguageCode(languageOrLanguages: string | string[]): string | string[] {
-    return _getLanguageCode(languageOrLanguages);
+export function getLanguageCode(languages: string | string[]): string | string[] {
+    return _getLanguageCode(languages);
 }
 
 /**

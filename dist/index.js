@@ -131,8 +131,8 @@ exports.standardizeLanguageCode = standardizeLanguageCode;
 function getLanguageObject(codes) {
     return Array.isArray(codes) ? (0, codes_1._getLanguageObject)(codes) : (0, codes_1._getLanguageObject)([codes]);
 }
-function getLanguageCode(languageOrLanguages) {
-    return (0, codes_1._getLanguageCode)(languageOrLanguages);
+function getLanguageCode(languages) {
+    return (0, codes_1._getLanguageCode)(languages);
 }
 function getLanguageName(codes) {
     return (0, codes_1._getLanguageName)(codes);
