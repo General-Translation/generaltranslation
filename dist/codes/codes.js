@@ -152,6 +152,9 @@ const _mapRegionToCode = (region) => {
     region = region === null || region === void 0 ? void 0 : region.toLowerCase();
     return RegionToCode[region] || '';
 };
+/**
+* @internal
+*/
 function _getLanguageObject(codes) {
     return Array.isArray(codes) ? codes.map(_handleGetLanguageObject) : _handleGetLanguageObject(codes);
 }
@@ -282,6 +285,9 @@ const _handleGetLanguageCodeFromObject = (languageObject) => {
     }
     return _isValidLanguageCode(code) ? code : '';
 };
+/**
+* @internal
+*/
 function _isSameLanguage(...codes) {
     // Flatten the array in case the codes are provided as an array
     if (codes.length === 1 && Array.isArray(codes[0])) {

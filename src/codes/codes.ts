@@ -176,7 +176,13 @@ export type LanguageObject = {
  * @internal
  */
 export function _getLanguageObject(codes: string): LanguageObject | null;
+/**
+* @internal
+*/
 export function _getLanguageObject(codes: string[]): (LanguageObject | null)[];
+/**
+* @internal
+*/
 export function _getLanguageObject(codes: string | string[]): (LanguageObject | null) | (LanguageObject | null)[] {
     return Array.isArray(codes) ? codes.map(_handleGetLanguageObject) : _handleGetLanguageObject(codes);
 }
@@ -315,7 +321,13 @@ const _handleGetLanguageCodeFromObject = (languageObject: LanguageObject): strin
  * @internal
  */
 export function _isSameLanguage(...codes: string[]): boolean;
+/**
+* @internal
+*/
 export function _isSameLanguage(codes: string[]): boolean;
+/**
+* @internal
+*/
 export function _isSameLanguage(...codes: (string | string[])[]): boolean {
     // Flatten the array in case the codes are provided as an array
     if (codes.length === 1 && Array.isArray(codes[0])) {

@@ -3,5 +3,3 @@ export type LanguageObject = {
     script?: string;
     region?: string;
 };
-export declare function _getLanguageObject(codes: string[]): (LanguageObject | null)[];
-export declare function _isSameLanguage(codes: string[]): boolean;
