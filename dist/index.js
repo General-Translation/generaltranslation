@@ -129,7 +129,7 @@ exports.isValidLanguageCode = isValidLanguageCode;
 const standardizeLanguageCode = (code) => (0, codes_1._standardizeLanguageCode)(code);
 exports.standardizeLanguageCode = standardizeLanguageCode;
 function getLanguageObject(codes) {
-    return Array.isArray(codes) ? (0, codes_1._getLanguageObject)(codes) : (0, codes_1._getLanguageObject)([codes]);
+    return Array.isArray(codes) ? (0, codes_1._getLanguageObject)(codes) : (0, codes_1._getLanguageObject)(codes);
 }
 function getLanguageCode(languages) {
     return (0, codes_1._getLanguageCode)(languages);

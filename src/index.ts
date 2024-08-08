@@ -150,7 +150,7 @@ export function getLanguageObject(code: string): LanguageObject | null;
  */
 export function getLanguageObject(codes: string[]): (LanguageObject | null)[];
 export function getLanguageObject(codes: string | string[]): LanguageObject | null | (LanguageObject | null)[] {
-    return Array.isArray(codes) ? _getLanguageObject(codes) : _getLanguageObject([codes]);
+    return Array.isArray(codes) ? _getLanguageObject(codes) : _getLanguageObject(codes);
 }
 
 /**

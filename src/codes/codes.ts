@@ -171,7 +171,7 @@ export type LanguageObject = {
  * @returns {(LanguageObject|null) | (LanguageObject|null)[]} The language object(s).
  * @internal
  */
-export function _getLanguageObject(codes: string): LanguageObject | null;
+export function _getLanguageObject(code: string): LanguageObject | null;
 /**
  * @internal
  */
