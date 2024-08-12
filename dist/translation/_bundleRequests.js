@@ -12,24 +12,29 @@ Object.defineProperty(exports, "__esModule", { value: true });
 exports.default = _bundleRequests;
 /**
  * Bundles multiple requests and sends them to the server.
- * @param gt - Contains the baseURL and apiKey for the server request.
- * @param requests - Array of requests to be processed and sent.
- * @returns A promise that resolves to an array of processed results.
+ * @param {{ baseURL: string, apiKey: string }} gt - Contains the baseURL and apiKey for the server request.
+ * @param {Request[]} requests - Array of requests to be processed and sent.
+ * @param {{ timeout?: number }} options - Additional options for the request, including timeout.
+ * @returns {Promise<Array<any | null>>} A promise that resolves to an array of processed results.
  * @internal
-*/
-function _bundleRequests(gt, requests) {
-    return __awaiter(this, void 0, void 0, function* () {
+ */
+function _bundleRequests(gt_1, requests_1) {
+    return __awaiter(this, arguments, void 0, function* (gt, requests, options = {}) {
+        const controller = new AbortController();
+        const signal = controller.signal;
+        if (options.timeout) {
+            setTimeout(() => controller.abort(), options.timeout);
+        }
         try {
-            // Send the processed requests to the server as a bundled request.
             const response = yield fetch(`${gt.baseURL}/bundle`, {
                 method: 'POST',
                 headers: {
                     'Content-Type': 'application/json',
                     'gtx-api-key': gt.apiKey,
                 },
-                body: JSON.stringify(requests)
+                body: JSON.stringify(requests),
+                signal
             });
-            // Check for response errors.
             if (!response.ok) {
                 throw new Error(`${response.status}: ${yield response.text()}`);
             }
@@ -37,6 +42,10 @@ function _bundleRequests(gt, requests) {
             return resultArray;
         }
         catch (error) {
+            if (error instanceof Error && error.name === 'AbortError') {
+                console.error('Request timed out');
+                return Array.from(requests, () => ({ translation: null, error: 'Request timed out' }));
+            }
             console.error(error);
             return Array.from(requests, () => ({ translation: null, error: error }));
         }

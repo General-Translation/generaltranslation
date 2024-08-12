@@ -1,12 +1,12 @@
 /**
  * Translates the given content into the target language using a specified API.
  * 
- * @param {Object} gt - An object containing baseURL and apiKey for the API.
- * @param {JSON} content - The content to be translated. This can be of any type.
+ * @param {{ baseURL: string, apiKey: string }} gt - An object containing baseURL and apiKey for the API.
+ * @param {any} content - The content to be translated. This can be of any type.
  * @param {string} targetLanguage - The target language code (e.g., 'en', 'fr') for the translation.
- * @param {Object} metadata - Additional metadata to be sent with the translation request.
+ * @param {{ [key: string]: any }} metadata - Additional metadata to be sent with the translation request.
  * 
- * @returns {Promise<any | null>} - A promise that resolves to the translated content as an object, or null if an error occurs.
+ * @returns {Promise<{ translation: any | null, error?: Error | unknown }>} - A promise that resolves to the translated content as an object, or null if an error occurs.
  * 
  * @throws {Error} - Throws an error if the response from the API is not ok (status code not in the range 200-299).
  * @internal
@@ -17,6 +17,13 @@ export default async function _translateReactChildren(
     targetLanguage: string,
     metadata: { [key: string]: any }
 ): Promise<{ translation: any | null, error?: Error | unknown }> {
+    const controller = new AbortController();
+    const signal = controller.signal;
+
+    if (metadata.timeout) {
+        setTimeout(() => controller.abort(), metadata.timeout);
+    }
+
     try {
         const response = await fetch(`${gt.baseURL}/react`, {
             method: 'POST',
@@ -28,13 +35,21 @@ export default async function _translateReactChildren(
                 content: content,
                 targetLanguage: targetLanguage,
                 metadata: metadata
-            })
+            }),
+            signal
         });
         if (!response.ok) {
             throw new Error(`${response.status}: ${await response.text()}`);
         }
         return await response.json();
     } catch (error) {
+        if (error instanceof Error && error.name === 'AbortError') {
+            console.error('Request timed out');
+            return {
+                translation: null,
+                error: 'Request timed out'
+            };
+        }
         console.error(error);
         return {
             translation: null,
