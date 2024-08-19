@@ -66,7 +66,7 @@ function _isValidLanguageCode(code) {
         const locale = new Intl.Locale(code);
         const { language, script, region } = locale;
         const constructedCode = `${language}${script ? '-' + script : ''}${region ? '-' + region : ''}`;
-        return constructedCode.toLowerCase() === code.toLowerCase();
+        return constructedCode ? true : false;
     }
     catch (error) {
         return false;

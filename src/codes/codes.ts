@@ -64,9 +64,9 @@ export function _isValidLanguageCode(code: string): boolean {
     try {
         if (!_mapCodeToLanguage(code.split('-')[0])) return false;
         const locale = new Intl.Locale(code);
-        const { language, script, region } = locale;
+        const { language, script, region } = locale
         const constructedCode = `${language}${script ? '-' + script : ''}${region ? '-' + region : ''}`;
-        return constructedCode.toLowerCase() === code.toLowerCase();
+        return constructedCode ? true : false;
     } catch (error) {
         return false;
     }
