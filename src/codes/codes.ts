@@ -30,6 +30,7 @@ const CodeToRegion: Record<string, string> = CodeToRegionJSON as Record<string, 
 
 // Import predefined common regions
 import PredefinedJSON from './predefined/Predefined.json';
+import { isValidLanguageCode } from 'generaltranslation';
 
 const Predefined: Record<string, string> = PredefinedJSON as Record<string, string>;
 
@@ -43,14 +44,20 @@ const Predefined: Record<string, string> = PredefinedJSON as Record<string, stri
  * @internal
  */
 export function _standardizeLanguageCode(code: string): string {
-    if (!code || typeof code !== 'string') return '';
-    try {
-        const locale = new Intl.Locale(code);
-        const { language, script, region } = locale;
-        return `${language}${script ? '-' + script : ''}${region ? '-' + region : ''}`;
-    } catch (error) {
-        return '';
+    if (!isValidLanguageCode(code)) return '';
+    const codeParts = code.split('-');
+    let result = `${codeParts[0].toLowerCase()}`
+    if (codeParts[1]) {
+        if (codeParts[1].length === 4) {
+            result += `-${_capitalize(codeParts[1])}`;
+            if (codeParts[2] && codeParts[2].length === 2) {
+                result += `-${codeParts[2].toUpperCase()}`;
+            }
+        } else if (codeParts[1].length === 2) {
+            result += `-${codeParts[1].toUpperCase()}`;
+        }
     }
+    return result;
 }
 
 /**
@@ -61,15 +68,19 @@ export function _standardizeLanguageCode(code: string): string {
  */
 export function _isValidLanguageCode(code: string): boolean {
     if (!code || typeof code !== 'string') return false;
-    try {
-        if (!_mapCodeToLanguage(code.split('-')[0])) return false;
-        const locale = new Intl.Locale(code);
-        const { language, script, region } = locale
-        const constructedCode = `${language}${script ? '-' + script : ''}${region ? '-' + region : ''}`;
-        return constructedCode ? true : false;
-    } catch (error) {
-        return false;
+    const codeParts = code.split('-');
+    if (!_mapCodeToLanguage(codeParts[0])) return false;
+    if (codeParts[1]) {
+        if (codeParts[1].length === 4) {
+            if (!_mapCodeToScript(codeParts[1])) return false;
+            if (codeParts[2] && codeParts[2].length === 2) {
+                if (!_mapCodeToRegion(codeParts[2])) return false;
+            }
+        } else if (codeParts[1].length === 2) {
+            if (!_mapCodeToRegion(codeParts[1])) return false;
+        }
     }
+    return true;
 }
 
 // ----- FORMATTING HELPER FUNCTIONS ----- //
@@ -189,18 +200,22 @@ export function _getLanguageObject(codes: string | string[]): (LanguageObject | 
  * @returns {LanguageObject|null} The language object.
  */
 const _handleGetLanguageObject = (code: string): LanguageObject | null => {
-    try {
-        const locale = new Intl.Locale(code);
-        let languageObject = {
-            language: _mapCodeToLanguage(locale.language) || '',
-            script: locale.script ? _mapCodeToScript(locale.script) ?? '' : '',
-            region: locale.region ? _mapCodeToRegion(locale.region) ?? '' : ''
-        };
-        return languageObject.language ? languageObject : null;
-    } catch (error) {
-        // If the code is not a valid locale, return null
-        return null;
+    if (!isValidLanguageCode(code)) return null;
+    const codeParts = code.split('-');
+    let languageObject: LanguageObject = {
+        language: _mapCodeToLanguage(codeParts[0]),
     }
+    if (codeParts[1]) {
+        if (codeParts[1].length === 4) {
+            languageObject.script = _mapCodeToScript(codeParts[1]);
+            if (codeParts[2] && codeParts[2].length === 2) {
+                languageObject.region = _mapCodeToRegion(codeParts[2]);
+            }
+        } else if (codeParts[1].length === 2) {
+            languageObject.region = _mapCodeToRegion(codeParts[1]);
+        }
+    }
+    return languageObject;
 }
 
 // ----- LANGUAGE NAMES FROM CODES ----- //
