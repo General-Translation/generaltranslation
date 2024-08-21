@@ -212,13 +212,13 @@ Bundles multiple requests and sends them to the server.
 ```javascript
 const requests = [
     {
-        type: "intl"
+        type: "translate"
         data: {
             content: 'Hello', targetLanguage: 'es'
         }
     }
     {
-        type: "intl"
+        type: "translate"
         data: {
             content: 'Hello', targetLanguage: 'de'
         }

@@ -14,7 +14,7 @@ export type Request = {
         metadata: Record<string, any>
     }
 } | {
-    type: 'intl';
+    type: 'react';
     data: {
         children: object | string;
         targetLanguage: string;
