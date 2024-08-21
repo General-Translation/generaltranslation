@@ -2,14 +2,14 @@ export type Update = {
     type: 'react';
     data: {
         children: object | string,
-        targetLanguage?: string;
+        targetLanguages?: string[];
         metadata: Record<string, any>
     };
 } | {
     type: 'intl';
     data: {
         content: string,
-        targetLanguage?: string;
+        targetLanguages?: string[];
         metadata: Record<string, any>
     };
 }
@@ -24,7 +24,7 @@ export type Update = {
 export default async function _updateRemoteDictionary(
     gt: { baseURL: string, apiKey: string },
     updates: Update[]
-): Promise<boolean> {
+): Promise<string[]> {
 
     try {
         const response = await fetch(`${gt.baseURL}/update`, {
@@ -39,13 +39,13 @@ export default async function _updateRemoteDictionary(
             throw new Error(`${response.status}: ${await response.text()}`);
         }
         const result = await response.json();
-        return result.success;
+        return result.languages;
     } catch (error) {
         if (error instanceof Error && error.name === 'AbortError') {
             console.error('Request timed out');
-            return false;
+            return [];
         }
         console.error(error);
-        return false;
+        return [];
     }
 }

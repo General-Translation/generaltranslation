@@ -32,15 +32,15 @@ function _updateRemoteDictionary(gt, updates) {
                 throw new Error(`${response.status}: ${yield response.text()}`);
             }
             const result = yield response.json();
-            return result.success;
+            return result.languages;
         }
         catch (error) {
             if (error instanceof Error && error.name === 'AbortError') {
                 console.error('Request timed out');
-                return false;
+                return [];
             }
             console.error(error);
-            return false;
+            return [];
         }
     });
 }
