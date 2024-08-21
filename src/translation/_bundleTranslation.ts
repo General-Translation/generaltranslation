@@ -1,7 +1,25 @@
 // Define the Request type to specify the expected structure of input requests.
-type Request = {
-    type: 'translate' | 'intl' | 'react';
-    data: any;
+export type Request = {
+    type: 'translate';
+    data: {
+        content: string;
+        targetLanguage: string;
+        metadata: Record<string, any>
+    }
+} | {
+    type: 'intl';
+    data: {
+        content: string;
+        targetLanguage: string;
+        metadata: Record<string, any>
+    }
+} | {
+    type: 'intl';
+    data: {
+        children: object | string;
+        targetLanguage: string;
+        metadata: Record<string, any>
+    }
 };
 
 /**
@@ -12,16 +30,15 @@ type Request = {
  * @returns {Promise<Array<any | null>>} A promise that resolves to an array of processed results.
  * @internal
  */
-export default async function _bundleRequests(
+export default async function _bundleTranslation(
     gt: { baseURL: string, apiKey: string },
-    requests: Request[],
-    options: { timeout?: number } = {}
+    requests: Request[]
 ): Promise<Array<any | null>> {
     const controller = new AbortController();
     const signal = controller.signal;
 
-    if (options.timeout) {
-        setTimeout(() => controller.abort(), options.timeout);
+    if (requests[0]?.data?.metadata?.timeout) {
+        setTimeout(() => controller.abort(), requests[0].data.metadata.timeout);
     }
 
     try {

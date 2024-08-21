@@ -186,7 +186,7 @@ console.log(result.translation); // { "type": "div", "props": { "children": "Hol
 
 - A promise that resolves to an object containing the translated content and optional error information.
 
-#### `bundleRequests(requests: any[]): Promise<Array<any | null>>`
+#### `bundleTranslation(requests: any[]): Promise<Array<any | null>>`
 
 Bundles multiple requests and sends them to the server.
 
@@ -206,7 +206,7 @@ const requests = [
     }
     
 ];
-const results = await gt.bundleRequests(requests);
+const results = await gt.bundleTranslation(requests);
 console.log(results); // ['Hola', 'Hallo']
 ```
 

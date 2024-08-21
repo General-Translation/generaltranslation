@@ -22,10 +22,11 @@ exports.isSameLanguage = isSameLanguage;
 // ----- IMPORTS ----- //
 const codes_1 = require("./codes/codes");
 const getLanguageDirection_1 = __importDefault(require("./codes/getLanguageDirection"));
-const _bundleRequests_1 = __importDefault(require("./translation/_bundleRequests"));
+const _bundleTranslation_1 = __importDefault(require("./translation/_bundleTranslation"));
 const _intl_1 = __importDefault(require("./translation/_intl"));
 const _translate_1 = __importDefault(require("./translation/_translate"));
 const _translateReactChildren_1 = __importDefault(require("./translation/_translateReactChildren"));
+const _updateRemoteDictionary_1 = __importDefault(require("./translation/_updateRemoteDictionary"));
 // ----- CORE CLASS ----- // 
 const getDefaultFromEnv = (VARIABLE) => {
     if (typeof process !== 'undefined' && process.env) {
@@ -93,13 +94,23 @@ class GT {
         });
     }
     /**
-    * Bundles multiple requests and sends them to the server.
+    * Bundles multiple translation requests and sends them to the server.
     * @param requests - Array of requests to be processed and sent.
     * @returns A promise that resolves to an array of processed results.
     */
-    bundleRequests(requests) {
+    bundleTranslation(requests) {
         return __awaiter(this, void 0, void 0, function* () {
-            return (0, _bundleRequests_1.default)(this, requests);
+            return (0, _bundleTranslation_1.default)(this, requests);
+        });
+    }
+    /**
+    *Pushes updates to a remotely cached translation dictionary.
+    * @param updates - Array of updates with optional targetLanguage.
+    * @returns A promise that resolves to a boolean indicating success or failure.
+    */
+    updateRemoteDictionary(updates) {
+        return __awaiter(this, void 0, void 0, function* () {
+            return (0, _updateRemoteDictionary_1.default)(this, updates);
         });
     }
 }

@@ -5,10 +5,11 @@
 
 import { LanguageObject, _isValidLanguageCode, _standardizeLanguageCode, _getLanguageObject, _getLanguageCode, _getLanguageName, _isSameLanguage } from './codes/codes';
 import _getLanguageDirection from './codes/getLanguageDirection';
-import _bundleRequests from './translation/_bundleRequests';
+import _bundleTranslation, { Request } from './translation/_bundleTranslation';
 import _intl from './translation/_intl';
 import _translate from './translation/_translate';
 import _translateReactChildren from './translation/_translateReactChildren';
+import _updateRemoteDictionary, { Update } from './translation/_updateRemoteDictionary';
 
 // ----- CORE CLASS ----- // 
 
@@ -97,12 +98,21 @@ class GT {
     }
 
     /**
-    * Bundles multiple requests and sends them to the server.
+    * Bundles multiple translation requests and sends them to the server.
     * @param requests - Array of requests to be processed and sent.
     * @returns A promise that resolves to an array of processed results.
     */
-    async bundleRequests(requests: any[]): Promise<Array<any | null>> {
-        return _bundleRequests(this, requests);
+    async bundleTranslation(requests: Request[]): Promise<Array<any | null>> {
+        return _bundleTranslation(this, requests);
+    }
+
+    /**
+    *Pushes updates to a remotely cached translation dictionary.
+    * @param updates - Array of updates with optional targetLanguage.
+    * @returns A promise that resolves to a boolean indicating success or failure.
+    */
+    async updateRemoteDictionary(updates: Update[]): Promise<boolean> {
+        return _updateRemoteDictionary(this, updates);
     }
 
 }

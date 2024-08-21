@@ -1,4 +1,6 @@
 import { LanguageObject } from './codes/codes';
+import { Request } from './translation/_bundleTranslation';
+import { Update } from './translation/_updateRemoteDictionary';
 /**
  * Type representing the constructor parameters for the GT class.
  */
@@ -73,11 +75,17 @@ declare class GT {
         error?: Error | unknown;
     }>;
     /**
-    * Bundles multiple requests and sends them to the server.
+    * Bundles multiple translation requests and sends them to the server.
     * @param requests - Array of requests to be processed and sent.
     * @returns A promise that resolves to an array of processed results.
     */
-    bundleRequests(requests: any[]): Promise<Array<any | null>>;
+    bundleTranslation(requests: Request[]): Promise<Array<any | null>>;
+    /**
+    *Pushes updates to a remotely cached translation dictionary.
+    * @param updates - Array of updates with optional targetLanguage.
+    * @returns A promise that resolves to a boolean indicating success or failure.
+    */
+    updateRemoteDictionary(updates: Update[]): Promise<boolean>;
 }
 export default GT;
 /**
