@@ -10,14 +10,7 @@ var __awaiter = (this && this.__awaiter) || function (thisArg, _arguments, P, ge
 };
 Object.defineProperty(exports, "__esModule", { value: true });
 exports.default = _updateRemoteDictionary;
-/**
- * Pushes updates to a remotely cached translation dictionary.
- * @param {{ baseURL: string, apiKey: string }} gt - Contains the baseURL and apiKey for the server request.
- * @param {Update[]} updates - Array of requests to be processed and sent.
- * @returns {Promise<boolean>} A promise that resolves to an array of processed results.
- * @internal
- */
-function _updateRemoteDictionary(gt, updates, projectID, replace) {
+function _updateRemoteDictionary(gt, updates, languages, projectID, replace) {
     return __awaiter(this, void 0, void 0, function* () {
         try {
             const response = yield fetch(`${gt.baseURL}/update`, {
@@ -27,7 +20,7 @@ function _updateRemoteDictionary(gt, updates, projectID, replace) {
                     'gtx-api-key': gt.apiKey,
                 },
                 body: JSON.stringify({
-                    updates, projectID, replace
+                    updates, languages, projectID, replace
                 })
             });
             if (!response.ok) {
