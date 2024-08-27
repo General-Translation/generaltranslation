@@ -2,28 +2,20 @@ export type Update = {
     type: 'react';
     data: {
         children: object | string,
-        targetLanguages?: string[];
         metadata: Record<string, any>
     };
 } | {
     type: 'intl';
     data: {
         content: string,
-        targetLanguages?: string[];
         metadata: Record<string, any>
     };
 }
 
-/**
- * Pushes updates to a remotely cached translation dictionary.
- * @param {{ baseURL: string, apiKey: string }} gt - Contains the baseURL and apiKey for the server request.
- * @param {Update[]} updates - Array of requests to be processed and sent.
- * @returns {Promise<boolean>} A promise that resolves to an array of processed results.
- * @internal
- */
 export default async function _updateRemoteDictionary(
     gt: { baseURL: string, apiKey: string },
     updates: Update[],
+    languages: string[],
     projectID: string,
     replace: boolean
 ): Promise<string[]> {
@@ -36,7 +28,7 @@ export default async function _updateRemoteDictionary(
                 'gtx-api-key': gt.apiKey,
             },
             body: JSON.stringify({
-                updates, projectID, replace
+                updates, languages, projectID, replace
             })
         });
         if (!response.ok) {
