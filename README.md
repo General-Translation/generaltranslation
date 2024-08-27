@@ -237,50 +237,6 @@ console.log(results); // [{ translation: "Hola", language: "es" }, { translation
 
 - A promise that resolves to an array of processed results.
 
-### updateRemoteDictionary(updates)
-
-Pushes updates to a remotely cached translation dictionary.
-
-#### Parameters
-
-- `updates` (Update[]): An array of update objects. Each update can be of type `react` or `intl`.
-
-  - **React Update**:
-    - `type`: `'react'`
-    - `data`: An object containing:
-      - `children` (object | string): The React children content to be translated.
-      - `targetLanguage` (string, optional): The target language for the translation.
-      - `metadata` (Record<string, any>): Additional metadata for the translation process.
-
-  - **Intl Update**:
-    - `type`: `'intl'`
-    - `data`: An object containing:
-      - `content` (string): The string content to be translated.
-      - `targetLanguage` (string, optional): The target language for the translation.
-      - `metadata` (Record<string, any>): Additional metadata for the translation process.
-
-#### Returns
-
-- A promise that resolves to a boolean indicating success (`true`) or failure (`false`).
-
-#### Example
-
-```js
-import { updateRemoteDictionary } from 'generaltranslation';
-const updates = [
-    {
-        type: 'react',
-        data: {
-            children: { type: 'div', props: { children: 'Hello, world' } },
-            targetLanguage: 'es',
-            metadata: { id: 'greeting' }
-        }
-    }
-];
-const success = await updateRemoteDictionary(updates);
-console.log(success); // true or false
-```
-
 ## Utility Functions
 
 ### getLanguageDirection
