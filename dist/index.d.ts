@@ -85,7 +85,7 @@ declare class GT {
     * @param updates - Array of updates with optional targetLanguage.
     * @returns A promise that resolves to a boolean indicating success or failure.
     */
-    updateRemoteDictionary(updates: Update[]): Promise<string[]>;
+    updateRemoteDictionary(updates: Update[], projectID?: string, replace?: boolean): Promise<string[]>;
 }
 export default GT;
 /**

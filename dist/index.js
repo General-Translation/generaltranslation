@@ -108,9 +108,9 @@ class GT {
     * @param updates - Array of updates with optional targetLanguage.
     * @returns A promise that resolves to a boolean indicating success or failure.
     */
-    updateRemoteDictionary(updates) {
-        return __awaiter(this, void 0, void 0, function* () {
-            return (0, _updateRemoteDictionary_1.default)(this, updates);
+    updateRemoteDictionary(updates_1) {
+        return __awaiter(this, arguments, void 0, function* (updates, projectID = this.projectID, replace = false) {
+            return (0, _updateRemoteDictionary_1.default)(this, updates, projectID, replace);
         });
     }
 }

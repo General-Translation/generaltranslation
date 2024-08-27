@@ -23,7 +23,9 @@ export type Update = {
  */
 export default async function _updateRemoteDictionary(
     gt: { baseURL: string, apiKey: string },
-    updates: Update[]
+    updates: Update[],
+    projectID: string,
+    replace: boolean
 ): Promise<string[]> {
 
     try {
@@ -33,7 +35,9 @@ export default async function _updateRemoteDictionary(
                 'Content-Type': 'application/json',
                 'gtx-api-key': gt.apiKey,
             },
-            body: JSON.stringify(updates)
+            body: JSON.stringify({
+                updates, projectID, replace
+            })
         });
         if (!response.ok) {
             throw new Error(`${response.status}: ${await response.text()}`);

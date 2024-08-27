@@ -17,7 +17,7 @@ exports.default = _updateRemoteDictionary;
  * @returns {Promise<boolean>} A promise that resolves to an array of processed results.
  * @internal
  */
-function _updateRemoteDictionary(gt, updates) {
+function _updateRemoteDictionary(gt, updates, projectID, replace) {
     return __awaiter(this, void 0, void 0, function* () {
         try {
             const response = yield fetch(`${gt.baseURL}/update`, {
@@ -26,7 +26,9 @@ function _updateRemoteDictionary(gt, updates) {
                     'Content-Type': 'application/json',
                     'gtx-api-key': gt.apiKey,
                 },
-                body: JSON.stringify(updates)
+                body: JSON.stringify({
+                    updates, projectID, replace
+                })
             });
             if (!response.ok) {
                 throw new Error(`${response.status}: ${yield response.text()}`);

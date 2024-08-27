@@ -111,8 +111,8 @@ class GT {
     * @param updates - Array of updates with optional targetLanguage.
     * @returns A promise that resolves to a boolean indicating success or failure.
     */
-    async updateRemoteDictionary(updates: Update[]): Promise<string[]> {
-        return _updateRemoteDictionary(this, updates);
+    async updateRemoteDictionary(updates: Update[], projectID = this.projectID, replace: boolean = false): Promise<string[]> {
+        return _updateRemoteDictionary(this, updates, projectID, replace);
     }
 
 }
