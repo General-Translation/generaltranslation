@@ -104,9 +104,11 @@ class GT {
         });
     }
     /**
-    *Pushes updates to a remotely cached translation dictionary.
-    * @param updates - Array of updates with optional targetLanguage.
-    * @returns A promise that resolves to a boolean indicating success or failure.
+    * Pushes updates to a remotely cached translation dictionary.
+    * @param {Update[]} updates - Array of updates with optional targetLanguage.
+    * @param {string} [projectID=this.projectID] - The ID of the project. Defaults to the instance's projectID.
+    * @param {boolean} [replace=false] - Whether to replace the existing dictionary. Defaults to false.
+    * @returns {Promise<string[]>} A promise that resolves to an array of strings indicating the result of each update.
     */
     updateRemoteDictionary(updates_1) {
         return __awaiter(this, arguments, void 0, function* (updates, projectID = this.projectID, replace = false) {
