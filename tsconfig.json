@@ -1,16 +1,19 @@
 {
   "compilerOptions": {
     "target": "ES6",
-    "module": "commonjs",
+    "module": "ESNext",
     "strict": true,
     "esModuleInterop": true,
     "skipLibCheck": true,
     "forceConsistentCasingInFileNames": true,
-    "outDir": "./dist",
-    "resolveJsonModule": true,
     "declaration": true,
+    "declarationDir": "./dist/mjs",
+    "moduleResolution": "node",
+    "resolveJsonModule": true,
     "removeComments": false,
     "stripInternal": true, 
+    "outDir": "./dist/mjs",
+    "rootDir": "./src",
     "baseUrl": "./",
     "paths": {
       "generaltranslation": ["src/index.ts"]
