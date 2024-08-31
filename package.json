@@ -2,20 +2,20 @@
   "name": "generaltranslation",
   "version": "2.0.55",
   "description": "A language toolkit for AI developers",
-  "main": "dist/cjs/index.js",
-  "types": "dist/cjs/index.d.ts",
+  "main": "dist/index.js",
+  "types": "dist/index.d.ts",
   "files": [
     "dist"
   ],
   "scripts": {
-    "transpile": "rm -r -f dist; tsc; tsc --project tsconfig.cjs.json;",
+    "transpile": "rm -r -f dist; tsc;",
     "prepublishOnly": "npm run transpile"
   },
   "exports": {
     ".": {
-      "import": "./dist/cjs/index.js",
-      "require": "./dist/cjs/index.js",
-      "types": "./dist/mjs/index.d.ts"
+      "import": "./dist/index.js",
+      "require": "./dist/index.js",
+      "types": "./dist/index.d.ts"
     }
   },
   "repository": {

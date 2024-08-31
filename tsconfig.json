@@ -1,18 +1,17 @@
 {
   "compilerOptions": {
-    "target": "ES2020",
-    "module": "ESNext",
+    "module": "CommonJS",
     "strict": true,
     "esModuleInterop": true,
     "skipLibCheck": true,
     "forceConsistentCasingInFileNames": true,
     "declaration": true,
-    "declarationDir": "./dist/mjs",
+    "declarationDir": "./dist",
     "moduleResolution": "node",
     "resolveJsonModule": true,
     "removeComments": false,
     "stripInternal": true, 
-    "outDir": "./dist/mjs",
+    "outDir": "./dist",
     "rootDir": "./src",
     "baseUrl": "./",
     "paths": {

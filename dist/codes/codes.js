@@ -1,27 +1,37 @@
+"use strict";
+var __importDefault = (this && this.__importDefault) || function (mod) {
+    return (mod && mod.__esModule) ? mod : { "default": mod };
+};
+Object.defineProperty(exports, "__esModule", { value: true });
+exports._getLanguageCode = exports._getLanguageName = void 0;
+exports._standardizeLanguageCode = _standardizeLanguageCode;
+exports._isValidLanguageCode = _isValidLanguageCode;
+exports._getLanguageObject = _getLanguageObject;
+exports._isSameLanguage = _isSameLanguage;
 // ----- IMPORTS ----- //
 // Import modules for mapping ISO 639 codes to language names and vice versa
-import CodeToLanguageJSON from './639-1/CodeToLanguage.json';
-import LanguageToCodeJSON from './639-1/LanguageToCode.json';
-const CodeToLanguage = CodeToLanguageJSON;
-const LanguageToCode = LanguageToCodeJSON;
+var CodeToLanguage_json_1 = __importDefault(require("./639-1/CodeToLanguage.json"));
+var LanguageToCode_json_1 = __importDefault(require("./639-1/LanguageToCode.json"));
+var CodeToLanguage = CodeToLanguage_json_1.default;
+var LanguageToCode = LanguageToCode_json_1.default;
 // Import modules for mapping ISO 639-3 codes (for languages without two-letter codes)
-import CodeToLanguageTriletterJSON from './639-3/CodeToLanguageTriletter.json';
-import LanguageToCodeTriletterJSON from './639-3/LanguageToCodeTriletter.json';
-const CodeToLanguageTriletter = CodeToLanguageTriletterJSON;
-const LanguageToCodeTriletter = LanguageToCodeTriletterJSON;
+var CodeToLanguageTriletter_json_1 = __importDefault(require("./639-3/CodeToLanguageTriletter.json"));
+var LanguageToCodeTriletter_json_1 = __importDefault(require("./639-3/LanguageToCodeTriletter.json"));
+var CodeToLanguageTriletter = CodeToLanguageTriletter_json_1.default;
+var LanguageToCodeTriletter = LanguageToCodeTriletter_json_1.default;
 // Import module for mapping ISO 15924 script codes to script names
-import ScriptToCodeJSON from './15924/ScriptToCode.json';
-import CodeToScriptJSON from './15924/CodeToScript.json';
-const ScriptToCode = ScriptToCodeJSON;
-const CodeToScript = CodeToScriptJSON;
+var ScriptToCode_json_1 = __importDefault(require("./15924/ScriptToCode.json"));
+var CodeToScript_json_1 = __importDefault(require("./15924/CodeToScript.json"));
+var ScriptToCode = ScriptToCode_json_1.default;
+var CodeToScript = CodeToScript_json_1.default;
 // Import module for mapping ISO 3166 region codes to region names
-import RegionToCodeJSON from './3166/RegionToCode.json';
-import CodeToRegionJSON from './3166/CodeToRegion.json';
-const RegionToCode = RegionToCodeJSON;
-const CodeToRegion = CodeToRegionJSON;
+var RegionToCode_json_1 = __importDefault(require("./3166/RegionToCode.json"));
+var CodeToRegion_json_1 = __importDefault(require("./3166/CodeToRegion.json"));
+var RegionToCode = RegionToCode_json_1.default;
+var CodeToRegion = CodeToRegion_json_1.default;
 // Import predefined common regions
-import PredefinedJSON from './predefined/Predefined.json';
-const Predefined = PredefinedJSON;
+var Predefined_json_1 = __importDefault(require("./predefined/Predefined.json"));
+var Predefined = Predefined_json_1.default;
 // ----- VALIDITY CHECKS ----- //
 /**
  * Ensures correct capitalization and formatting of a language code.
@@ -29,20 +39,20 @@ const Predefined = PredefinedJSON;
  * @returns {string} A BCP 47 language tag.
  * @internal
  */
-export function _standardizeLanguageCode(code) {
+function _standardizeLanguageCode(code) {
     if (!_isValidLanguageCode(code))
         return '';
-    const codeParts = code.split('-');
-    let result = `${codeParts[0].toLowerCase()}`;
+    var codeParts = code.split('-');
+    var result = "".concat(codeParts[0].toLowerCase());
     if (codeParts[1]) {
         if (codeParts[1].length === 4) {
-            result += `-${_capitalize(codeParts[1])}`;
+            result += "-".concat(_capitalize(codeParts[1]));
             if (codeParts[2] && codeParts[2].length === 2) {
-                result += `-${codeParts[2].toUpperCase()}`;
+                result += "-".concat(codeParts[2].toUpperCase());
             }
         }
         else if (codeParts[1].length === 2) {
-            result += `-${codeParts[1].toUpperCase()}`;
+            result += "-".concat(codeParts[1].toUpperCase());
         }
     }
     return result;
@@ -53,10 +63,10 @@ export function _standardizeLanguageCode(code) {
  * @returns {boolean} - Returns true if valid, false otherwise.
  * @internal
  */
-export function _isValidLanguageCode(code) {
+function _isValidLanguageCode(code) {
     if (!code || typeof code !== 'string')
         return false;
-    const codeParts = code.split('-');
+    var codeParts = code.split('-');
     if (!_mapCodeToLanguage(codeParts[0]))
         return false;
     if (codeParts[1]) {
@@ -81,7 +91,7 @@ export function _isValidLanguageCode(code) {
  * @param {string} code - The code to capitalize.
  * @returns {string} The capitalized code.
  */
-const _capitalize = (code) => {
+var _capitalize = function (code) {
     if (code.length === 0)
         return code;
     return code.charAt(0).toUpperCase() + code.slice(1).toLowerCase();
@@ -92,12 +102,12 @@ const _capitalize = (code) => {
  * @param {string} code - The ISO 639 code.
  * @returns {string} The language name.
  */
-const _mapCodeToLanguage = (code) => {
-    code = code?.toLowerCase();
-    if (code?.length === 2) {
+var _mapCodeToLanguage = function (code) {
+    code = code === null || code === void 0 ? void 0 : code.toLowerCase();
+    if ((code === null || code === void 0 ? void 0 : code.length) === 2) {
         return CodeToLanguage[code];
     }
-    if (code?.length === 3) {
+    if ((code === null || code === void 0 ? void 0 : code.length) === 3) {
         return CodeToLanguageTriletter[code];
     }
     return '';
@@ -108,8 +118,8 @@ const _mapCodeToLanguage = (code) => {
  * @param {string} language - The language name.
  * @returns {string} BCP 47 language tag.
  */
-const _mapLanguageToCode = (language) => {
-    language = language?.toLowerCase();
+var _mapLanguageToCode = function (language) {
+    language = language === null || language === void 0 ? void 0 : language.toLowerCase();
     return LanguageToCode[language] || LanguageToCodeTriletter[language] || '';
 };
 /**
@@ -117,7 +127,7 @@ const _mapLanguageToCode = (language) => {
  * @param {string} code - The ISO 15924 code.
  * @returns {string} The script name.
  */
-const _mapCodeToScript = (code) => {
+var _mapCodeToScript = function (code) {
     code = _capitalize(code);
     return CodeToScript[code] || '';
 };
@@ -126,8 +136,8 @@ const _mapCodeToScript = (code) => {
  * @param {string} script - The script name.
  * @returns {string} The ISO 15924 code.
  */
-const _mapScriptToCode = (script) => {
-    script = script?.toLowerCase();
+var _mapScriptToCode = function (script) {
+    script = script === null || script === void 0 ? void 0 : script.toLowerCase();
     return ScriptToCode[script] || '';
 };
 /**
@@ -135,8 +145,8 @@ const _mapScriptToCode = (script) => {
  * @param {string} code - The ISO 3166 code.
  * @returns {string} The region name.
  */
-const _mapCodeToRegion = (code) => {
-    code = code?.toUpperCase();
+var _mapCodeToRegion = function (code) {
+    code = code === null || code === void 0 ? void 0 : code.toUpperCase();
     return CodeToRegion[code] || '';
 };
 /**
@@ -144,14 +154,14 @@ const _mapCodeToRegion = (code) => {
  * @param {string} region - The region name.
  * @returns {string} The ISO 3166 code.
  */
-const _mapRegionToCode = (region) => {
-    region = region?.toLowerCase();
+var _mapRegionToCode = function (region) {
+    region = region === null || region === void 0 ? void 0 : region.toLowerCase();
     return RegionToCode[region] || '';
 };
 /**
  * @internal
  */
-export function _getLanguageObject(codes) {
+function _getLanguageObject(codes) {
     return Array.isArray(codes) ? codes.map(_handleGetLanguageObject) : _handleGetLanguageObject(codes);
 }
 /**
@@ -159,11 +169,11 @@ export function _getLanguageObject(codes) {
  * @param {string} code - The language code.
  * @returns {LanguageObject|null} The language object.
  */
-const _handleGetLanguageObject = (code) => {
+var _handleGetLanguageObject = function (code) {
     if (!_isValidLanguageCode(code))
         return null;
-    const codeParts = code.split('-');
-    let languageObject = {
+    var codeParts = code.split('-');
+    var languageObject = {
         language: _mapCodeToLanguage(codeParts[0]),
     };
     if (codeParts[1]) {
@@ -186,28 +196,29 @@ const _handleGetLanguageObject = (code) => {
  * @returns {string|string[]} The language name(s).
  * @internal
  */
-export const _getLanguageName = (codes) => {
+var _getLanguageName = function (codes) {
     return Array.isArray(codes) ? codes.map(_handleGetLanguageName) : _handleGetLanguageName(codes);
 };
+exports._getLanguageName = _getLanguageName;
 /**
  * Helper function to get the language name from a code.
  * @param {string} code - The language code.
  * @returns {string} The language name.
  */
-const _handleGetLanguageName = (code) => {
+var _handleGetLanguageName = function (code) {
     if (!_isValidLanguageCode(code))
         return '';
     if (Predefined[code])
         return Predefined[code];
-    const languageObject = _handleGetLanguageObject(code);
+    var languageObject = _handleGetLanguageObject(code);
     if (!languageObject)
         return '';
-    let result = languageObject.language;
+    var result = languageObject.language;
     if (languageObject.script) {
-        result += `, ${languageObject.script}`;
+        result += ", ".concat(languageObject.script);
     }
     if (languageObject.region) {
-        result += `, ${languageObject.region}`;
+        result += ", ".concat(languageObject.region);
     }
     return result;
 };
@@ -218,15 +229,16 @@ const _handleGetLanguageName = (code) => {
  * @returns {string|string[]} The language code(s).
  * @internal
  */
-export const _getLanguageCode = (languages) => {
+var _getLanguageCode = function (languages) {
     return Array.isArray(languages) ? languages.map(_handleGetLanguageCode) : _handleGetLanguageCode(languages);
 };
+exports._getLanguageCode = _getLanguageCode;
 /**
  * Helper function to get the language code from a language name.
  * @param {string|LanguageObject} language - The language name or object.
  * @returns {string} The language code.
  */
-const _handleGetLanguageCode = (language) => {
+var _handleGetLanguageCode = function (language) {
     if (typeof language === 'string')
         return _handleGetLanguageCodeFromString(language);
     return _handleGetLanguageCodeFromObject(language);
@@ -236,24 +248,24 @@ const _handleGetLanguageCode = (language) => {
  * @param {string} language - The language name.
  * @returns {string} The language code.
  */
-const _handleGetLanguageCodeFromString = (language) => {
-    const subtagStrings = language.split(',').map(string => string.trim());
-    let code = _mapLanguageToCode(subtagStrings[0]);
+var _handleGetLanguageCodeFromString = function (language) {
+    var subtagStrings = language.split(',').map(function (string) { return string.trim(); });
+    var code = _mapLanguageToCode(subtagStrings[0]);
     if (code) {
         if (subtagStrings.length === 3) {
-            code += `-${_mapScriptToCode(subtagStrings[1])}`;
-            code += `-${_mapRegionToCode(subtagStrings[2])}`;
+            code += "-".concat(_mapScriptToCode(subtagStrings[1]));
+            code += "-".concat(_mapRegionToCode(subtagStrings[2]));
         }
         else if (subtagStrings.length === 2) {
-            let tag = _mapScriptToCode(subtagStrings[1]);
+            var tag = _mapScriptToCode(subtagStrings[1]);
             if (!tag)
                 tag = _mapRegionToCode(subtagStrings[1]);
             if (tag)
-                code += `-${tag}`;
+                code += "-".concat(tag);
         }
     }
     if (!code) {
-        for (const key in Predefined) {
+        for (var key in Predefined) {
             if (Predefined[key] === language) {
                 return key;
             }
@@ -266,34 +278,38 @@ const _handleGetLanguageCodeFromString = (language) => {
  * @param {LanguageObject} languageObject - The language object.
  * @returns {string} The language code.
  */
-const _handleGetLanguageCodeFromObject = (languageObject) => {
-    if (!languageObject?.language)
+var _handleGetLanguageCodeFromObject = function (languageObject) {
+    if (!(languageObject === null || languageObject === void 0 ? void 0 : languageObject.language))
         return '';
-    let code = languageObject.language.toLowerCase();
+    var code = languageObject.language.toLowerCase();
     if (languageObject.script) {
-        code += `-${_capitalize(languageObject.script)}`;
+        code += "-".concat(_capitalize(languageObject.script));
     }
     if (languageObject.region) {
-        code += `-${languageObject.region.toUpperCase()}`;
+        code += "-".concat(languageObject.region.toUpperCase());
     }
     return _isValidLanguageCode(code) ? code : '';
 };
 /**
  * @internal
  */
-export function _isSameLanguage(...codes) {
+function _isSameLanguage() {
+    var codes = [];
+    for (var _i = 0; _i < arguments.length; _i++) {
+        codes[_i] = arguments[_i];
+    }
     // Flatten the array in case the codes are provided as an array
     if (codes.length === 1 && Array.isArray(codes[0])) {
         codes = codes[0];
     }
     if (codes.length < 2)
         return false;
-    let language = null;
-    for (let i = 0; i < codes.length; i++) {
+    var language = null;
+    for (var i = 0; i < codes.length; i++) {
         if (typeof codes[i] !== 'string')
             return false;
-        const languageCode = codes[i].split('-')[0];
-        const currentLanguage = _mapCodeToLanguage(languageCode);
+        var languageCode = codes[i].split('-')[0];
+        var currentLanguage = _mapCodeToLanguage(languageCode);
         if (language === null) {
             language = currentLanguage;
         }

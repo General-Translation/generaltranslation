@@ -1,4 +1,7 @@
+"use strict";
 /* ----- BEGIN YAHOO COPYRIGHT ----- */
+Object.defineProperty(exports, "__esModule", { value: true });
+exports.default = _getLanguageDirection;
 /*
 
 Copyright 2015 Yahoo Inc. All rights reserved.
@@ -24,7 +27,7 @@ THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS "AS IS" AND 
  *
  * @type {string[]}
  */
-const rtlLanguages = [
+var rtlLanguages = [
     'ae', /* Avestan */
     'ar', /* 'العربية', Arabic */
     'arc', /* Aramaic */
@@ -47,7 +50,7 @@ const rtlLanguages = [
     'yi' /* 'ייִדיש', Yiddish */
 ];
 /* ----- END YAHOO COPYRIGHT ----- */
-import { _getLanguageObject, _isSameLanguage } from "./codes.js";
+var codes_js_1 = require("./codes.js");
 /**
  * Get the text direction for a given language code.
  *
@@ -55,14 +58,14 @@ import { _getLanguageObject, _isSameLanguage } from "./codes.js";
  * @returns {string} - 'rtl' if the language is right-to-left, otherwise 'ltr'.
 * @internal
 */
-export default function _getLanguageDirection(code) {
-    return rtlLanguages.some(language => {
-        const lo = _getLanguageObject(language);
-        const clo = _getLanguageObject(code);
+function _getLanguageDirection(code) {
+    return rtlLanguages.some(function (language) {
+        var lo = (0, codes_js_1._getLanguageObject)(language);
+        var clo = (0, codes_js_1._getLanguageObject)(code);
         if (!lo || !clo)
             return false;
         if (lo.script && clo.script && lo.script !== clo.script)
             return false;
-        return _isSameLanguage(code, language);
+        return (0, codes_js_1._isSameLanguage)(code, language);
     }) ? 'rtl' : 'ltr';
 }
