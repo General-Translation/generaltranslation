@@ -1,5 +1,4 @@
 "use strict";
-// ----- IMPORTS ----- //
 var __importDefault = (this && this.__importDefault) || function (mod) {
     return (mod && mod.__esModule) ? mod : { "default": mod };
 };
@@ -9,6 +8,7 @@ exports._standardizeLanguageCode = _standardizeLanguageCode;
 exports._isValidLanguageCode = _isValidLanguageCode;
 exports._getLanguageObject = _getLanguageObject;
 exports._isSameLanguage = _isSameLanguage;
+// ----- IMPORTS ----- //
 // Import modules for mapping ISO 639 codes to language names and vice versa
 const CodeToLanguage_json_1 = __importDefault(require("./639-1/CodeToLanguage.json"));
 const LanguageToCode_json_1 = __importDefault(require("./639-1/LanguageToCode.json"));
@@ -31,7 +31,6 @@ const RegionToCode = RegionToCode_json_1.default;
 const CodeToRegion = CodeToRegion_json_1.default;
 // Import predefined common regions
 const Predefined_json_1 = __importDefault(require("./predefined/Predefined.json"));
-const generaltranslation_1 = require("generaltranslation");
 const Predefined = Predefined_json_1.default;
 // ----- VALIDITY CHECKS ----- //
 /**
@@ -41,7 +40,7 @@ const Predefined = Predefined_json_1.default;
  * @internal
  */
 function _standardizeLanguageCode(code) {
-    if (!(0, generaltranslation_1.isValidLanguageCode)(code))
+    if (!_isValidLanguageCode(code))
         return '';
     const codeParts = code.split('-');
     let result = `${codeParts[0].toLowerCase()}`;
@@ -104,11 +103,11 @@ const _capitalize = (code) => {
  * @returns {string} The language name.
  */
 const _mapCodeToLanguage = (code) => {
-    code = code === null || code === void 0 ? void 0 : code.toLowerCase();
-    if ((code === null || code === void 0 ? void 0 : code.length) === 2) {
+    code = code?.toLowerCase();
+    if (code?.length === 2) {
         return CodeToLanguage[code];
     }
-    if ((code === null || code === void 0 ? void 0 : code.length) === 3) {
+    if (code?.length === 3) {
         return CodeToLanguageTriletter[code];
     }
     return '';
@@ -120,7 +119,7 @@ const _mapCodeToLanguage = (code) => {
  * @returns {string} BCP 47 language tag.
  */
 const _mapLanguageToCode = (language) => {
-    language = language === null || language === void 0 ? void 0 : language.toLowerCase();
+    language = language?.toLowerCase();
     return LanguageToCode[language] || LanguageToCodeTriletter[language] || '';
 };
 /**
@@ -138,7 +137,7 @@ const _mapCodeToScript = (code) => {
  * @returns {string} The ISO 15924 code.
  */
 const _mapScriptToCode = (script) => {
-    script = script === null || script === void 0 ? void 0 : script.toLowerCase();
+    script = script?.toLowerCase();
     return ScriptToCode[script] || '';
 };
 /**
@@ -147,7 +146,7 @@ const _mapScriptToCode = (script) => {
  * @returns {string} The region name.
  */
 const _mapCodeToRegion = (code) => {
-    code = code === null || code === void 0 ? void 0 : code.toUpperCase();
+    code = code?.toUpperCase();
     return CodeToRegion[code] || '';
 };
 /**
@@ -156,7 +155,7 @@ const _mapCodeToRegion = (code) => {
  * @returns {string} The ISO 3166 code.
  */
 const _mapRegionToCode = (region) => {
-    region = region === null || region === void 0 ? void 0 : region.toLowerCase();
+    region = region?.toLowerCase();
     return RegionToCode[region] || '';
 };
 /**
@@ -171,7 +170,7 @@ function _getLanguageObject(codes) {
  * @returns {LanguageObject|null} The language object.
  */
 const _handleGetLanguageObject = (code) => {
-    if (!(0, generaltranslation_1.isValidLanguageCode)(code))
+    if (!_isValidLanguageCode(code))
         return null;
     const codeParts = code.split('-');
     let languageObject = {
@@ -280,7 +279,7 @@ const _handleGetLanguageCodeFromString = (language) => {
  * @returns {string} The language code.
  */
 const _handleGetLanguageCodeFromObject = (languageObject) => {
-    if (!(languageObject === null || languageObject === void 0 ? void 0 : languageObject.language))
+    if (!languageObject?.language)
         return '';
     let code = languageObject.language.toLowerCase();
     if (languageObject.script) {

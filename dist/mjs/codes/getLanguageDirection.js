@@ -47,7 +47,7 @@ const rtlLanguages = [
     'yi' /* 'ייִדיש', Yiddish */
 ];
 /* ----- END YAHOO COPYRIGHT ----- */
-import { _getLanguageObject, _isSameLanguage } from "./codes";
+import { _getLanguageObject, _isSameLanguage } from "./codes.js";
 /**
  * Get the text direction for a given language code.
  *

@@ -50,7 +50,7 @@ const rtlLanguages = [
     'yi' /* 'ייִדיש', Yiddish */
 ];
 /* ----- END YAHOO COPYRIGHT ----- */
-const codes_1 = require("./codes");
+const codes_js_1 = require("./codes.js");
 /**
  * Get the text direction for a given language code.
  *
@@ -60,12 +60,12 @@ const codes_1 = require("./codes");
 */
 function _getLanguageDirection(code) {
     return rtlLanguages.some(language => {
-        const lo = (0, codes_1._getLanguageObject)(language);
-        const clo = (0, codes_1._getLanguageObject)(code);
+        const lo = (0, codes_js_1._getLanguageObject)(language);
+        const clo = (0, codes_js_1._getLanguageObject)(code);
         if (!lo || !clo)
             return false;
         if (lo.script && clo.script && lo.script !== clo.script)
             return false;
-        return (0, codes_1._isSameLanguage)(code, language);
+        return (0, codes_js_1._isSameLanguage)(code, language);
     }) ? 'rtl' : 'ltr';
 }

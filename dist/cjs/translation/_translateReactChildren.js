@@ -1,13 +1,4 @@
 "use strict";
-var __awaiter = (this && this.__awaiter) || function (thisArg, _arguments, P, generator) {
-    function adopt(value) { return value instanceof P ? value : new P(function (resolve) { resolve(value); }); }
-    return new (P || (P = Promise))(function (resolve, reject) {
-        function fulfilled(value) { try { step(generator.next(value)); } catch (e) { reject(e); } }
-        function rejected(value) { try { step(generator["throw"](value)); } catch (e) { reject(e); } }
-        function step(result) { result.done ? resolve(result.value) : adopt(result.value).then(fulfilled, rejected); }
-        step((generator = generator.apply(thisArg, _arguments || [])).next());
-    });
-};
 Object.defineProperty(exports, "__esModule", { value: true });
 exports.default = _translateReactChildren;
 /**
@@ -23,45 +14,43 @@ exports.default = _translateReactChildren;
  * @throws {Error} - Throws an error if the response from the API is not ok (status code not in the range 200-299).
  * @internal
 **/
-function _translateReactChildren(gt, content, targetLanguage, metadata) {
-    return __awaiter(this, void 0, void 0, function* () {
-        const controller = new AbortController();
-        const signal = controller.signal;
-        if (metadata.timeout) {
-            setTimeout(() => controller.abort(), metadata.timeout);
+async function _translateReactChildren(gt, content, targetLanguage, metadata) {
+    const controller = new AbortController();
+    const signal = controller.signal;
+    if (metadata.timeout) {
+        setTimeout(() => controller.abort(), metadata.timeout);
+    }
+    try {
+        const response = await fetch(`${gt.baseURL}/react`, {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json',
+                'gtx-api-key': gt.apiKey,
+            },
+            body: JSON.stringify({
+                content: content,
+                targetLanguage: targetLanguage,
+                metadata: metadata
+            }),
+            signal
+        });
+        if (!response.ok) {
+            throw new Error(`${response.status}: ${await response.text()}`);
         }
-        try {
-            const response = yield fetch(`${gt.baseURL}/react`, {
-                method: 'POST',
-                headers: {
-                    'Content-Type': 'application/json',
-                    'gtx-api-key': gt.apiKey,
-                },
-                body: JSON.stringify({
-                    content: content,
-                    targetLanguage: targetLanguage,
-                    metadata: metadata
-                }),
-                signal
-            });
-            if (!response.ok) {
-                throw new Error(`${response.status}: ${yield response.text()}`);
-            }
-            return yield response.json();
-        }
-        catch (error) {
-            if (error instanceof Error && error.name === 'AbortError') {
-                console.error('Request timed out');
-                return {
-                    translation: null,
-                    error: 'Request timed out'
-                };
-            }
-            console.error(error);
+        return await response.json();
+    }
+    catch (error) {
+        if (error instanceof Error && error.name === 'AbortError') {
+            console.error('Request timed out');
             return {
                 translation: null,
-                error: error
+                error: 'Request timed out'
             };
         }
-    });
+        console.error(error);
+        return {
+            translation: null,
+            error: error
+        };
+    }
 }

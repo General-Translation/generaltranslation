@@ -1,5 +1,4 @@
 // ----- IMPORTS ----- //
-
 // Import modules for mapping ISO 639 codes to language names and vice versa
 import CodeToLanguageJSON from './639-1/CodeToLanguage.json';
 import LanguageToCodeJSON from './639-1/LanguageToCode.json';
@@ -30,7 +29,6 @@ const CodeToRegion: Record<string, string> = CodeToRegionJSON as Record<string, 
 
 // Import predefined common regions
 import PredefinedJSON from './predefined/Predefined.json';
-import { isValidLanguageCode } from 'generaltranslation';
 
 const Predefined: Record<string, string> = PredefinedJSON as Record<string, string>;
 
@@ -44,7 +42,7 @@ const Predefined: Record<string, string> = PredefinedJSON as Record<string, stri
  * @internal
  */
 export function _standardizeLanguageCode(code: string): string {
-    if (!isValidLanguageCode(code)) return '';
+    if (!_isValidLanguageCode(code)) return '';
     const codeParts = code.split('-');
     let result = `${codeParts[0].toLowerCase()}`
     if (codeParts[1]) {
@@ -200,7 +198,7 @@ export function _getLanguageObject(codes: string | string[]): (LanguageObject | 
  * @returns {LanguageObject|null} The language object.
  */
 const _handleGetLanguageObject = (code: string): LanguageObject | null => {
-    if (!isValidLanguageCode(code)) return null;
+    if (!_isValidLanguageCode(code)) return null;
     const codeParts = code.split('-');
     let languageObject: LanguageObject = {
         language: _mapCodeToLanguage(codeParts[0]),

@@ -21,7 +21,6 @@ const RegionToCode = RegionToCodeJSON;
 const CodeToRegion = CodeToRegionJSON;
 // Import predefined common regions
 import PredefinedJSON from './predefined/Predefined.json';
-import { isValidLanguageCode } from 'generaltranslation';
 const Predefined = PredefinedJSON;
 // ----- VALIDITY CHECKS ----- //
 /**
@@ -31,7 +30,7 @@ const Predefined = PredefinedJSON;
  * @internal
  */
 export function _standardizeLanguageCode(code) {
-    if (!isValidLanguageCode(code))
+    if (!_isValidLanguageCode(code))
         return '';
     const codeParts = code.split('-');
     let result = `${codeParts[0].toLowerCase()}`;
@@ -94,11 +93,11 @@ const _capitalize = (code) => {
  * @returns {string} The language name.
  */
 const _mapCodeToLanguage = (code) => {
-    code = code === null || code === void 0 ? void 0 : code.toLowerCase();
-    if ((code === null || code === void 0 ? void 0 : code.length) === 2) {
+    code = code?.toLowerCase();
+    if (code?.length === 2) {
         return CodeToLanguage[code];
     }
-    if ((code === null || code === void 0 ? void 0 : code.length) === 3) {
+    if (code?.length === 3) {
         return CodeToLanguageTriletter[code];
     }
     return '';
@@ -110,7 +109,7 @@ const _mapCodeToLanguage = (code) => {
  * @returns {string} BCP 47 language tag.
  */
 const _mapLanguageToCode = (language) => {
-    language = language === null || language === void 0 ? void 0 : language.toLowerCase();
+    language = language?.toLowerCase();
     return LanguageToCode[language] || LanguageToCodeTriletter[language] || '';
 };
 /**
@@ -128,7 +127,7 @@ const _mapCodeToScript = (code) => {
  * @returns {string} The ISO 15924 code.
  */
 const _mapScriptToCode = (script) => {
-    script = script === null || script === void 0 ? void 0 : script.toLowerCase();
+    script = script?.toLowerCase();
     return ScriptToCode[script] || '';
 };
 /**
@@ -137,7 +136,7 @@ const _mapScriptToCode = (script) => {
  * @returns {string} The region name.
  */
 const _mapCodeToRegion = (code) => {
-    code = code === null || code === void 0 ? void 0 : code.toUpperCase();
+    code = code?.toUpperCase();
     return CodeToRegion[code] || '';
 };
 /**
@@ -146,7 +145,7 @@ const _mapCodeToRegion = (code) => {
  * @returns {string} The ISO 3166 code.
  */
 const _mapRegionToCode = (region) => {
-    region = region === null || region === void 0 ? void 0 : region.toLowerCase();
+    region = region?.toLowerCase();
     return RegionToCode[region] || '';
 };
 /**
@@ -161,7 +160,7 @@ export function _getLanguageObject(codes) {
  * @returns {LanguageObject|null} The language object.
  */
 const _handleGetLanguageObject = (code) => {
-    if (!isValidLanguageCode(code))
+    if (!_isValidLanguageCode(code))
         return null;
     const codeParts = code.split('-');
     let languageObject = {
@@ -268,7 +267,7 @@ const _handleGetLanguageCodeFromString = (language) => {
  * @returns {string} The language code.
  */
 const _handleGetLanguageCodeFromObject = (languageObject) => {
-    if (!(languageObject === null || languageObject === void 0 ? void 0 : languageObject.language))
+    if (!languageObject?.language)
         return '';
     let code = languageObject.language.toLowerCase();
     if (languageObject.script) {

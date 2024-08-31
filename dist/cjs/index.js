@@ -1,15 +1,6 @@
 "use strict";
 // `generaltranslation` language toolkit
 // © 2024, General Translation, Inc.
-var __awaiter = (this && this.__awaiter) || function (thisArg, _arguments, P, generator) {
-    function adopt(value) { return value instanceof P ? value : new P(function (resolve) { resolve(value); }); }
-    return new (P || (P = Promise))(function (resolve, reject) {
-        function fulfilled(value) { try { step(generator.next(value)); } catch (e) { reject(e); } }
-        function rejected(value) { try { step(generator["throw"](value)); } catch (e) { reject(e); } }
-        function step(result) { result.done ? resolve(result.value) : adopt(result.value).then(fulfilled, rejected); }
-        step((generator = generator.apply(thisArg, _arguments || [])).next());
-    });
-};
 var __importDefault = (this && this.__importDefault) || function (mod) {
     return (mod && mod.__esModule) ? mod : { "default": mod };
 };
@@ -60,10 +51,8 @@ class GT {
     * @param {{ notes?: string, [key: string]: any }} metadata - Additional metadata for the translation request.
     * @returns {Promise<{ translation: string, error?: Error | unknown }>} - The translated content with optional error information.
     */
-    translate(content, targetLanguage, metadata) {
-        return __awaiter(this, void 0, void 0, function* () {
-            return yield (0, _translate_1.default)(this, content, targetLanguage, Object.assign({ projectID: this.projectID, defaultLanguage: this.defaultLanguage }, metadata));
-        });
+    async translate(content, targetLanguage, metadata) {
+        return await (0, _translate_1.default)(this, content, targetLanguage, { projectID: this.projectID, defaultLanguage: this.defaultLanguage, ...metadata });
     }
     /**
     * Translates a string and caches for use in a public project.
@@ -73,10 +62,8 @@ class GT {
     * @param {dictionaryName?: string, context?: string, [key: string]: any }} metadata - Additional metadata for the translation request.
     * @returns {Promise<{ translation: string, error?: Error | unknown }>} The translated content with optional error information.
     */
-    intl(content, targetLanguage, projectID, metadata) {
-        return __awaiter(this, void 0, void 0, function* () {
-            return yield (0, _intl_1.default)(this, content, targetLanguage, projectID || this.projectID, Object.assign({ projectID: projectID || this.projectID, defaultLanguage: this.defaultLanguage }, metadata));
-        });
+    async intl(content, targetLanguage, projectID, metadata) {
+        return await (0, _intl_1.default)(this, content, targetLanguage, projectID || this.projectID, { projectID: projectID || this.projectID, defaultLanguage: this.defaultLanguage, ...metadata });
     }
     /**
     * Translates the content of React children elements.
@@ -88,20 +75,16 @@ class GT {
     *
     * @returns {Promise<any>} - A promise that resolves to the translated content.
     */
-    translateReactChildren(content, targetLanguage, metadata) {
-        return __awaiter(this, void 0, void 0, function* () {
-            return yield (0, _translateReactChildren_1.default)(this, content, targetLanguage, Object.assign({ projectID: this.projectID, defaultLanguage: this.defaultLanguage }, metadata));
-        });
+    async translateReactChildren(content, targetLanguage, metadata) {
+        return await (0, _translateReactChildren_1.default)(this, content, targetLanguage, { projectID: this.projectID, defaultLanguage: this.defaultLanguage, ...metadata });
     }
     /**
     * Bundles multiple translation requests and sends them to the server.
     * @param requests - Array of requests to be processed and sent.
     * @returns A promise that resolves to an array of processed results.
     */
-    bundleTranslation(requests) {
-        return __awaiter(this, void 0, void 0, function* () {
-            return (0, _bundleTranslation_1.default)(this, requests);
-        });
+    async bundleTranslation(requests) {
+        return (0, _bundleTranslation_1.default)(this, requests);
     }
     /**
     * Pushes updates to a remotely cached translation dictionary.
@@ -111,10 +94,8 @@ class GT {
     * @param {boolean} [replace=false] - Whether to replace the existing dictionary. Defaults to false.
     * @returns {Promise<string[]>} A promise that resolves to an array of strings indicating the languages which have been updated.
     */
-    updateRemoteDictionary(updates_1) {
-        return __awaiter(this, arguments, void 0, function* (updates, languages = [], projectID = this.projectID, replace = false) {
-            return (0, _updateRemoteDictionary_1.default)(this, updates, languages, projectID, replace);
-        });
+    async updateRemoteDictionary(updates, languages = [], projectID = this.projectID, replace = false) {
+        return (0, _updateRemoteDictionary_1.default)(this, updates, languages, projectID, replace);
     }
 }
 // ----- EXPORTS ----- //
