@@ -9,7 +9,7 @@ import _translateBundle, { Request } from './translation/_translateBundle';
 import _translate from './translation/_translate';
 import _translateReact from './translation/_translateReact';
 import _updateProjectDictionary, { Update } from './translation/_updateProjectDictionary';
-import { _num, _datetime, _currency } from './format/_format';
+import { _formatNum, _formatDateTime, _formatCurrency } from './format/_format';
 
 // ----- CORE CLASS ----- // 
 
@@ -212,13 +212,13 @@ export function isSameLanguage(...codes: string[]): boolean {
  * @param {Intl.NumberFormatOptions} [params.options={}] - Additional options for number formatting.
  * @returns {string} The formatted number.
  */
-export function num({
+export function formatNum({
     value, languages, options
 }: {
     value: number,
     languages?: string | string[],
     options?: Intl.NumberFormatOptions
-}): string { return _num({ value, languages, options }); }
+}): string { return _formatNum({ value, languages, options }); }
 
 /**
  * Formats a date according to the specified languages and options.
@@ -228,13 +228,13 @@ export function num({
  * @param {Intl.DateTimeFormatOptions} [params.options={}] - Additional options for date formatting.
  * @returns {string} The formatted date.
  */
-export function datetime({
+export function formatDateTime({
     value, languages, options
 }: {
     value: Date,
     languages?: string | string[],
     options?: Intl.DateTimeFormatOptions
-}): string { return _datetime({ value, languages, options }); }
+}): string { return _formatDateTime({ value, languages, options }); }
 
 /**
  * Formats a currency value according to the specified languages, currency, and options.
@@ -245,11 +245,11 @@ export function datetime({
  * @param {Intl.NumberFormatOptions} [params.options={}] - Additional options for currency formatting.
  * @returns {string} The formatted currency value.
  */
-export function currency({
+export function formatCurrency({
     value, languages, currency, options
 }: {
     value: number,
     languages?: string | string[],
     currency?: string,
     options?: Intl.NumberFormatOptions
-}): string { return _currency({ value, languages, currency, options }); }
+}): string { return _formatCurrency({ value, languages, currency, options }); }

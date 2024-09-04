@@ -11,9 +11,9 @@ var __assign = (this && this.__assign) || function () {
     return __assign.apply(this, arguments);
 };
 Object.defineProperty(exports, "__esModule", { value: true });
-exports._num = _num;
-exports._datetime = _datetime;
-exports._currency = _currency;
+exports._formatNum = _formatNum;
+exports._formatDateTime = _formatDateTime;
+exports._formatCurrency = _formatCurrency;
 /**
  * Formats a number according to the specified languages and options.
  *
@@ -25,7 +25,7 @@ exports._currency = _currency;
  * @returns {string} The formatted number.
  * @internal
  */
-function _num(_a) {
+function _formatNum(_a) {
     var value = _a.value, _b = _a.languages, languages = _b === void 0 ? ['en'] : _b, _c = _a.options, options = _c === void 0 ? {} : _c;
     return new Intl.NumberFormat(languages, __assign({ numberingSystem: 'latn' }, options)).format(value);
 }
@@ -40,7 +40,7 @@ function _num(_a) {
  * @returns {string} The formatted date.
  * @internal
  */
-function _datetime(_a) {
+function _formatDateTime(_a) {
     var value = _a.value, _b = _a.languages, languages = _b === void 0 ? ['en'] : _b, _c = _a.options, options = _c === void 0 ? {} : _c;
     return new Intl.DateTimeFormat(languages, __assign({ calendar: "gregory", numberingSystem: "latn" }, options)).format(value);
 }
@@ -56,7 +56,7 @@ function _datetime(_a) {
  * @returns {string} The formatted currency value.
  * @internal
  */
-function _currency(_a) {
+function _formatCurrency(_a) {
     var value = _a.value, _b = _a.languages, languages = _b === void 0 ? ['en'] : _b, _c = _a.currency, currency = _c === void 0 ? 'USD' : _c, _d = _a.options, options = _d === void 0 ? {} : _d;
     return new Intl.NumberFormat(languages, __assign({ style: 'currency', currency: currency, numberingSystem: 'latn' }, options)).format(value);
 }

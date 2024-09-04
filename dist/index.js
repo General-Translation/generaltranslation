@@ -57,9 +57,9 @@ exports.getLanguageObject = getLanguageObject;
 exports.getLanguageCode = getLanguageCode;
 exports.getLanguageName = getLanguageName;
 exports.isSameLanguage = isSameLanguage;
-exports.num = num;
-exports.datetime = datetime;
-exports.currency = currency;
+exports.formatNum = formatNum;
+exports.formatDateTime = formatDateTime;
+exports.formatCurrency = formatCurrency;
 // ----- IMPORTS ----- //
 var codes_1 = require("./codes/codes");
 var getLanguageDirection_1 = __importDefault(require("./codes/getLanguageDirection"));
@@ -224,9 +224,9 @@ function isSameLanguage() {
  * @param {Intl.NumberFormatOptions} [params.options={}] - Additional options for number formatting.
  * @returns {string} The formatted number.
  */
-function num(_a) {
+function formatNum(_a) {
     var value = _a.value, languages = _a.languages, options = _a.options;
-    return (0, _format_1._num)({ value: value, languages: languages, options: options });
+    return (0, _format_1._formatNum)({ value: value, languages: languages, options: options });
 }
 /**
  * Formats a date according to the specified languages and options.
@@ -236,9 +236,9 @@ function num(_a) {
  * @param {Intl.DateTimeFormatOptions} [params.options={}] - Additional options for date formatting.
  * @returns {string} The formatted date.
  */
-function datetime(_a) {
+function formatDateTime(_a) {
     var value = _a.value, languages = _a.languages, options = _a.options;
-    return (0, _format_1._datetime)({ value: value, languages: languages, options: options });
+    return (0, _format_1._formatDateTime)({ value: value, languages: languages, options: options });
 }
 /**
  * Formats a currency value according to the specified languages, currency, and options.
@@ -249,7 +249,7 @@ function datetime(_a) {
  * @param {Intl.NumberFormatOptions} [params.options={}] - Additional options for currency formatting.
  * @returns {string} The formatted currency value.
  */
-function currency(_a) {
+function formatCurrency(_a) {
     var value = _a.value, languages = _a.languages, currency = _a.currency, options = _a.options;
-    return (0, _format_1._currency)({ value: value, languages: languages, currency: currency, options: options });
+    return (0, _format_1._formatCurrency)({ value: value, languages: languages, currency: currency, options: options });
 }

@@ -9,7 +9,7 @@
  * @returns {string} The formatted number.
  * @internal
  */
-export function _num({
+export function _formatNum({
     value,
     languages = ['en'],
     options = {}
@@ -31,7 +31,7 @@ export function _num({
  * @returns {string} The formatted date.
  * @internal
  */
-export function _datetime({
+export function _formatDateTime({
     value,
     languages = ['en'],
     options = {}
@@ -54,7 +54,7 @@ export function _datetime({
  * @returns {string} The formatted currency value.
  * @internal
  */
-export function _currency({
+export function _formatCurrency({
     value,
     languages = ['en'],
     currency = 'USD',

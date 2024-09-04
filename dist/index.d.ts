@@ -151,7 +151,7 @@ export declare function isSameLanguage(...codes: string[]): boolean;
  * @param {Intl.NumberFormatOptions} [params.options={}] - Additional options for number formatting.
  * @returns {string} The formatted number.
  */
-export declare function num({ value, languages, options }: {
+export declare function formatNum({ value, languages, options }: {
     value: number;
     languages?: string | string[];
     options?: Intl.NumberFormatOptions;
@@ -164,7 +164,7 @@ export declare function num({ value, languages, options }: {
  * @param {Intl.DateTimeFormatOptions} [params.options={}] - Additional options for date formatting.
  * @returns {string} The formatted date.
  */
-export declare function datetime({ value, languages, options }: {
+export declare function formatDateTime({ value, languages, options }: {
     value: Date;
     languages?: string | string[];
     options?: Intl.DateTimeFormatOptions;
@@ -178,7 +178,7 @@ export declare function datetime({ value, languages, options }: {
  * @param {Intl.NumberFormatOptions} [params.options={}] - Additional options for currency formatting.
  * @returns {string} The formatted currency value.
  */
-export declare function currency({ value, languages, currency, options }: {
+export declare function formatCurrency({ value, languages, currency, options }: {
     value: number;
     languages?: string | string[];
     currency?: string;
