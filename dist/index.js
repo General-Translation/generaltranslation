@@ -52,11 +52,14 @@ var __importDefault = (this && this.__importDefault) || function (mod) {
     return (mod && mod.__esModule) ? mod : { "default": mod };
 };
 Object.defineProperty(exports, "__esModule", { value: true });
-exports.currency = exports.datetime = exports.num = exports.standardizeLanguageCode = exports.isValidLanguageCode = exports.getLanguageDirection = void 0;
+exports.standardizeLanguageCode = exports.isValidLanguageCode = exports.getLanguageDirection = void 0;
 exports.getLanguageObject = getLanguageObject;
 exports.getLanguageCode = getLanguageCode;
 exports.getLanguageName = getLanguageName;
 exports.isSameLanguage = isSameLanguage;
+exports.num = num;
+exports.datetime = datetime;
+exports.currency = currency;
 // ----- IMPORTS ----- //
 var codes_1 = require("./codes/codes");
 var getLanguageDirection_1 = __importDefault(require("./codes/getLanguageDirection"));
@@ -221,7 +224,10 @@ function isSameLanguage() {
  * @param {Intl.NumberFormatOptions} [params.options={}] - Additional options for number formatting.
  * @returns {string} The formatted number.
  */
-exports.num = _format_1._num;
+function num(_a) {
+    var value = _a.value, languages = _a.languages, options = _a.options;
+    return (0, _format_1._num)({ value: value, languages: languages, options: options });
+}
 /**
  * Formats a date according to the specified languages and options.
  * @param {Object} params - The parameters for the date formatting.
@@ -230,7 +236,10 @@ exports.num = _format_1._num;
  * @param {Intl.DateTimeFormatOptions} [params.options={}] - Additional options for date formatting.
  * @returns {string} The formatted date.
  */
-exports.datetime = _format_1._datetime;
+function datetime(_a) {
+    var value = _a.value, languages = _a.languages, options = _a.options;
+    return (0, _format_1._datetime)({ value: value, languages: languages, options: options });
+}
 /**
  * Formats a currency value according to the specified languages, currency, and options.
  * @param {Object} params - The parameters for the currency formatting.
@@ -240,4 +249,7 @@ exports.datetime = _format_1._datetime;
  * @param {Intl.NumberFormatOptions} [params.options={}] - Additional options for currency formatting.
  * @returns {string} The formatted currency value.
  */
-exports.currency = _format_1._currency;
+function currency(_a) {
+    var value = _a.value, languages = _a.languages, currency = _a.currency, options = _a.options;
+    return (0, _format_1._currency)({ value: value, languages: languages, currency: currency, options: options });
+}

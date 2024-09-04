@@ -212,7 +212,13 @@ export function isSameLanguage(...codes: string[]): boolean {
  * @param {Intl.NumberFormatOptions} [params.options={}] - Additional options for number formatting.
  * @returns {string} The formatted number.
  */
-export const num = _num;
+export function num({
+    value, languages, options
+}: {
+    value: number,
+    languages?: string | string[],
+    options?: Intl.NumberFormatOptions
+}): string { return _num({ value, languages, options }); }
 
 /**
  * Formats a date according to the specified languages and options.
@@ -222,7 +228,13 @@ export const num = _num;
  * @param {Intl.DateTimeFormatOptions} [params.options={}] - Additional options for date formatting.
  * @returns {string} The formatted date.
  */
-export const datetime = _datetime;
+export function datetime({
+    value, languages, options
+}: {
+    value: Date,
+    languages?: string | string[],
+    options?: Intl.DateTimeFormatOptions
+}): string { return _datetime({ value, languages, options }); }
 
 /**
  * Formats a currency value according to the specified languages, currency, and options.
@@ -233,4 +245,11 @@ export const datetime = _datetime;
  * @param {Intl.NumberFormatOptions} [params.options={}] - Additional options for currency formatting.
  * @returns {string} The formatted currency value.
  */
-export const currency = _currency;
+export function currency({
+    value, languages, currency, options
+}: {
+    value: number,
+    languages?: string | string[],
+    currency?: string,
+    options?: Intl.NumberFormatOptions
+}): string { return _currency({ value, languages, currency, options }); }

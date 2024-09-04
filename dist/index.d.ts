@@ -1,7 +1,6 @@
 import { LanguageObject } from './codes/codes';
 import { Request } from './translation/_translateBundle';
 import { Update } from './translation/_updateProjectDictionary';
-import { _num, _datetime, _currency } from './format/_format';
 /**
  * Type representing the constructor parameters for the GT class.
  */
@@ -152,7 +151,11 @@ export declare function isSameLanguage(...codes: string[]): boolean;
  * @param {Intl.NumberFormatOptions} [params.options={}] - Additional options for number formatting.
  * @returns {string} The formatted number.
  */
-export declare const num: typeof _num;
+export declare function num({ value, languages, options }: {
+    value: number;
+    languages?: string | string[];
+    options?: Intl.NumberFormatOptions;
+}): string;
 /**
  * Formats a date according to the specified languages and options.
  * @param {Object} params - The parameters for the date formatting.
@@ -161,7 +164,11 @@ export declare const num: typeof _num;
  * @param {Intl.DateTimeFormatOptions} [params.options={}] - Additional options for date formatting.
  * @returns {string} The formatted date.
  */
-export declare const datetime: typeof _datetime;
+export declare function datetime({ value, languages, options }: {
+    value: Date;
+    languages?: string | string[];
+    options?: Intl.DateTimeFormatOptions;
+}): string;
 /**
  * Formats a currency value according to the specified languages, currency, and options.
  * @param {Object} params - The parameters for the currency formatting.
@@ -171,4 +178,9 @@ export declare const datetime: typeof _datetime;
  * @param {Intl.NumberFormatOptions} [params.options={}] - Additional options for currency formatting.
  * @returns {string} The formatted currency value.
  */
-export declare const currency: typeof _currency;
+export declare function currency({ value, languages, currency, options }: {
+    value: number;
+    languages?: string | string[];
+    currency?: string;
+    options?: Intl.NumberFormatOptions;
+}): string;

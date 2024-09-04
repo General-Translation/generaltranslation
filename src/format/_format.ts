@@ -14,8 +14,8 @@ export function _num({
     languages = ['en'],
     options = {}
 }: {
-    value: number, languages: string | string[]
-    options: Intl.NumberFormatOptions
+    value: number, languages?: string | string[]
+    options?: Intl.NumberFormatOptions
 }) {
     return new Intl.NumberFormat(languages, { numberingSystem: 'latn', ...options }).format(value);
 }
@@ -36,8 +36,8 @@ export function _datetime({
     languages = ['en'],
     options = {}
 }: {
-    value: Date, languages: string | string[]
-    options: Intl.DateTimeFormatOptions
+    value: Date, languages?: string | string[]
+    options?: Intl.DateTimeFormatOptions
 }) {
     return new Intl.DateTimeFormat(languages, { calendar: "gregory", numberingSystem: "latn", ...options }).format(value);
 }
@@ -61,9 +61,9 @@ export function _currency({
     options = {}
 }: {
     value: number, 
-    currency: string,
-    languages: string | string[]
-    options: Intl.NumberFormatOptions
+    currency?: string,
+    languages?: string | string[]
+    options?: Intl.NumberFormatOptions
 }) {
     return new Intl.NumberFormat(languages, { style: 'currency', currency, numberingSystem: 'latn', ...options }).format(value);
 }
