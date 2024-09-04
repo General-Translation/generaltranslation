@@ -12,7 +12,7 @@ export type Update = {
     };
 }
 
-export default async function _updateRemoteDictionary(
+export default async function _updateProjectDictionary(
     gt: { baseURL: string, apiKey: string },
     updates: Update[],
     languages: string[],

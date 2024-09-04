@@ -1,12 +1,5 @@
 export type Request = {
-    type: 'translate';
-    data: {
-        content: string;
-        targetLanguage: string;
-        metadata: Record<string, any>;
-    };
-} | {
-    type: 'intl';
+    type: 'string';
     data: {
         content: string;
         targetLanguage: string;
@@ -15,7 +8,7 @@ export type Request = {
 } | {
     type: 'react';
     data: {
-        children: object | string;
+        content: string;
         targetLanguage: string;
         metadata: Record<string, any>;
     };

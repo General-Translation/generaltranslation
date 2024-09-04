@@ -1,6 +1,7 @@
 import { LanguageObject } from './codes/codes';
-import { Request } from './translation/_bundleTranslation';
-import { Update } from './translation/_updateRemoteDictionary';
+import { Request } from './translation/_translateBundle';
+import { Update } from './translation/_updateProjectDictionary';
+import { _num, _datetime, _currency } from './format/_format';
 /**
  * Type representing the constructor parameters for the GT class.
  */
@@ -29,30 +30,20 @@ declare class GT {
      */
     constructor({ apiKey, defaultLanguage, projectID, baseURL }?: GTConstructorParams);
     /**
-    * Translates a string into a target language.
-    * @param {string} content - A string to translate.
-    * @param {string} targetLanguage - The target language for the translation.
-    * @param {{ notes?: string, [key: string]: any }} metadata - Additional metadata for the translation request.
-    * @returns {Promise<{ translation: string, error?: Error | unknown }>} - The translated content with optional error information.
-    */
+     * Translates a string into a target language.
+     * If `metadata.store` is provided, the translation is cached for use in a public project.
+     *
+     * @param {string} content - The string to be translated.
+     * @param {string} targetLanguage - The target language code (e.g., 'en', 'fr') for the translation.
+     * @param {{ context?: string, store?: boolean, [key: string]: any }} [metadata] - Additional metadata for the translation request.
+     * @param {string} [metadata.context] - Contextual information to assist with the translation.
+     * @param {boolean} [metadata.store] - Whether to cache the translation for use in a public project.
+     *
+     * @returns {Promise<{ translation: string, error?: Error | unknown }>} - A promise that resolves to the translated content, or an error if the translation fails.
+     */
     translate(content: string, targetLanguage: string, metadata?: {
-        notes?: string;
-        [key: string]: any;
-    }): Promise<{
-        translation: string;
-        error?: Error | unknown;
-    }>;
-    /**
-    * Translates a string and caches for use in a public project.
-    * @param {string} content - A string to translate.
-    * @param {string} targetLanguage - The target language for the translation.
-    * @param {string} projectID - The ID of the project.
-    * @param {dictionaryName?: string, context?: string, [key: string]: any }} metadata - Additional metadata for the translation request.
-    * @returns {Promise<{ translation: string, error?: Error | unknown }>} The translated content with optional error information.
-    */
-    intl(content: string, targetLanguage: string, projectID?: string, metadata?: {
-        dictionaryName?: string;
         context?: string;
+        store?: boolean;
         [key: string]: any;
     }): Promise<{
         translation: string;
@@ -68,7 +59,9 @@ declare class GT {
     *
     * @returns {Promise<any>} - A promise that resolves to the translated content.
     */
-    translateReactChildren(content: any, targetLanguage: string, metadata?: {
+    translateReact(content: any, targetLanguage: string, metadata?: {
+        context?: string;
+        store?: boolean;
         [key: string]: any;
     }): Promise<{
         translation: any | null;
@@ -79,7 +72,7 @@ declare class GT {
     * @param requests - Array of requests to be processed and sent.
     * @returns A promise that resolves to an array of processed results.
     */
-    bundleTranslation(requests: Request[]): Promise<Array<any | null>>;
+    translateBundle(requests: Request[]): Promise<Array<any | null>>;
     /**
     * Pushes updates to a remotely cached translation dictionary.
     * @param {Update[]} updates - Array of updates with optional targetLanguage.
@@ -88,7 +81,7 @@ declare class GT {
     * @param {boolean} [replace=false] - Whether to replace the existing dictionary. Defaults to false.
     * @returns {Promise<string[]>} A promise that resolves to an array of strings indicating the languages which have been updated.
     */
-    updateRemoteDictionary(updates: Update[], languages?: string[], projectID?: string, replace?: boolean): Promise<string[]>;
+    updateProjectDictionary(updates: Update[], languages?: string[], projectID?: string, replace?: boolean): Promise<string[]>;
 }
 export default GT;
 /**
@@ -151,3 +144,31 @@ export declare function getLanguageName(codes: string[]): string[];
  * @returns {boolean} True if all BCP 47 codes represent the same language, false otherwise.
  */
 export declare function isSameLanguage(...codes: string[]): boolean;
+/**
+ * Formats a number according to the specified languages and options.
+ * @param {Object} params - The parameters for the number formatting.
+ * @param {number} params.value - The number to format.
+ * @param {string | string[]} [params.languages=['en']] - The languages to use for formatting.
+ * @param {Intl.NumberFormatOptions} [params.options={}] - Additional options for number formatting.
+ * @returns {string} The formatted number.
+ */
+export declare const num: typeof _num;
+/**
+ * Formats a date according to the specified languages and options.
+ * @param {Object} params - The parameters for the date formatting.
+ * @param {Date} params.value - The date to format.
+ * @param {string | string[]} [params.languages=['en']] - The languages to use for formatting.
+ * @param {Intl.DateTimeFormatOptions} [params.options={}] - Additional options for date formatting.
+ * @returns {string} The formatted date.
+ */
+export declare const datetime: typeof _datetime;
+/**
+ * Formats a currency value according to the specified languages, currency, and options.
+ * @param {Object} params - The parameters for the currency formatting.
+ * @param {number} params.value - The currency value to format.
+ * @param {string} params.currency - The currency code (e.g., 'USD').
+ * @param {string | string[]} [params.languages=['en']] - The languages to use for formatting.
+ * @param {Intl.NumberFormatOptions} [params.options={}] - Additional options for currency formatting.
+ * @returns {string} The formatted currency value.
+ */
+export declare const currency: typeof _currency;

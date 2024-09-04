@@ -1,13 +1,6 @@
 // Define the Request type to specify the expected structure of input requests.
 export type Request = {
-    type: 'translate';
-    data: {
-        content: string;
-        targetLanguage: string;
-        metadata: Record<string, any>
-    }
-} | {
-    type: 'intl';
+    type: 'string';
     data: {
         content: string;
         targetLanguage: string;
@@ -16,7 +9,7 @@ export type Request = {
 } | {
     type: 'react';
     data: {
-        children: object | string;
+        content: string;
         targetLanguage: string;
         metadata: Record<string, any>
     }
@@ -30,7 +23,7 @@ export type Request = {
  * @returns {Promise<Array<any | null>>} A promise that resolves to an array of processed results.
  * @internal
  */
-export default async function _bundleTranslation(
+export default async function _translateBundle(
     gt: { baseURL: string, apiKey: string },
     requests: Request[]
 ): Promise<Array<any | null>> {

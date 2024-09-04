@@ -36,71 +36,47 @@ var __generator = (this && this.__generator) || function (thisArg, body) {
     }
 };
 Object.defineProperty(exports, "__esModule", { value: true });
-exports.default = _translateReactChildren;
-/**
- * Translates the given content into the target language using a specified API.
- *
- * @param {{ baseURL: string, apiKey: string }} gt - An object containing baseURL and apiKey for the API.
- * @param {any} content - The content to be translated. This can be of any type.
- * @param {string} targetLanguage - The target language code (e.g., 'en', 'fr') for the translation.
- * @param {{ [key: string]: any }} metadata - Additional metadata to be sent with the translation request.
- *
- * @returns {Promise<{ translation: any | null, error?: Error | unknown }>} - A promise that resolves to the translated content as an object, or null if an error occurs.
- *
- * @throws {Error} - Throws an error if the response from the API is not ok (status code not in the range 200-299).
- * @internal
-**/
-function _translateReactChildren(gt, content, targetLanguage, metadata) {
+exports.default = _updateProjectDictionary;
+function _updateProjectDictionary(gt, updates, languages, projectID, replace) {
     return __awaiter(this, void 0, void 0, function () {
-        var controller, signal, response, _a, _b, _c, error_1;
+        var response, _a, _b, _c, result, error_1;
         return __generator(this, function (_d) {
             switch (_d.label) {
                 case 0:
-                    controller = new AbortController();
-                    signal = controller.signal;
-                    if (metadata.timeout) {
-                        setTimeout(function () { return controller.abort(); }, metadata.timeout);
-                    }
-                    _d.label = 1;
-                case 1:
-                    _d.trys.push([1, 6, , 7]);
-                    return [4 /*yield*/, fetch("".concat(gt.baseURL, "/react"), {
+                    _d.trys.push([0, 5, , 6]);
+                    return [4 /*yield*/, fetch("".concat(gt.baseURL, "/update"), {
                             method: 'POST',
                             headers: {
                                 'Content-Type': 'application/json',
                                 'gtx-api-key': gt.apiKey,
                             },
                             body: JSON.stringify({
-                                content: content,
-                                targetLanguage: targetLanguage,
-                                metadata: metadata
-                            }),
-                            signal: signal
+                                updates: updates,
+                                languages: languages,
+                                projectID: projectID,
+                                replace: replace
+                            })
                         })];
-                case 2:
+                case 1:
                     response = _d.sent();
-                    if (!!response.ok) return [3 /*break*/, 4];
+                    if (!!response.ok) return [3 /*break*/, 3];
                     _a = Error.bind;
                     _c = (_b = "".concat(response.status, ": ")).concat;
                     return [4 /*yield*/, response.text()];
-                case 3: throw new (_a.apply(Error, [void 0, _c.apply(_b, [_d.sent()])]))();
-                case 4: return [4 /*yield*/, response.json()];
-                case 5: return [2 /*return*/, _d.sent()];
-                case 6:
+                case 2: throw new (_a.apply(Error, [void 0, _c.apply(_b, [_d.sent()])]))();
+                case 3: return [4 /*yield*/, response.json()];
+                case 4:
+                    result = _d.sent();
+                    return [2 /*return*/, result.languages];
+                case 5:
                     error_1 = _d.sent();
                     if (error_1 instanceof Error && error_1.name === 'AbortError') {
                         console.error('Request timed out');
-                        return [2 /*return*/, {
-                                translation: null,
-                                error: 'Request timed out'
-                            }];
+                        return [2 /*return*/, []];
                     }
                     console.error(error_1);
-                    return [2 /*return*/, {
-                            translation: null,
-                            error: error_1
-                        }];
-                case 7: return [2 /*return*/];
+                    return [2 /*return*/, []];
+                case 6: return [2 /*return*/];
             }
         });
     });

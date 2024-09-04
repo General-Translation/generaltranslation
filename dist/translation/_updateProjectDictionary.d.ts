@@ -11,7 +11,7 @@ export type Update = {
         metadata: Record<string, any>;
     };
 };
-export default function _updateRemoteDictionary(gt: {
+export default function _updateProjectDictionary(gt: {
     baseURL: string;
     apiKey: string;
 }, updates: Update[], languages: string[], projectID: string, replace: boolean): Promise<string[]>;

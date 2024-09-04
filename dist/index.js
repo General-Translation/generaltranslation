@@ -52,7 +52,7 @@ var __importDefault = (this && this.__importDefault) || function (mod) {
     return (mod && mod.__esModule) ? mod : { "default": mod };
 };
 Object.defineProperty(exports, "__esModule", { value: true });
-exports.standardizeLanguageCode = exports.isValidLanguageCode = exports.getLanguageDirection = void 0;
+exports.currency = exports.datetime = exports.num = exports.standardizeLanguageCode = exports.isValidLanguageCode = exports.getLanguageDirection = void 0;
 exports.getLanguageObject = getLanguageObject;
 exports.getLanguageCode = getLanguageCode;
 exports.getLanguageName = getLanguageName;
@@ -60,11 +60,11 @@ exports.isSameLanguage = isSameLanguage;
 // ----- IMPORTS ----- //
 var codes_1 = require("./codes/codes");
 var getLanguageDirection_1 = __importDefault(require("./codes/getLanguageDirection"));
-var _bundleTranslation_1 = __importDefault(require("./translation/_bundleTranslation"));
-var _intl_1 = __importDefault(require("./translation/_intl"));
+var _translateBundle_1 = __importDefault(require("./translation/_translateBundle"));
 var _translate_1 = __importDefault(require("./translation/_translate"));
-var _translateReactChildren_1 = __importDefault(require("./translation/_translateReactChildren"));
-var _updateRemoteDictionary_1 = __importDefault(require("./translation/_updateRemoteDictionary"));
+var _translateReact_1 = __importDefault(require("./translation/_translateReact"));
+var _updateProjectDictionary_1 = __importDefault(require("./translation/_updateProjectDictionary"));
+var _format_1 = require("./format/_format");
 // ----- CORE CLASS ----- // 
 var getDefaultFromEnv = function (VARIABLE) {
     if (typeof process !== 'undefined' && process.env) {
@@ -93,35 +93,22 @@ var GT = /** @class */ (function () {
         this.baseURL = baseURL;
     }
     /**
-    * Translates a string into a target language.
-    * @param {string} content - A string to translate.
-    * @param {string} targetLanguage - The target language for the translation.
-    * @param {{ notes?: string, [key: string]: any }} metadata - Additional metadata for the translation request.
-    * @returns {Promise<{ translation: string, error?: Error | unknown }>} - The translated content with optional error information.
-    */
+     * Translates a string into a target language.
+     * If `metadata.store` is provided, the translation is cached for use in a public project.
+     *
+     * @param {string} content - The string to be translated.
+     * @param {string} targetLanguage - The target language code (e.g., 'en', 'fr') for the translation.
+     * @param {{ context?: string, store?: boolean, [key: string]: any }} [metadata] - Additional metadata for the translation request.
+     * @param {string} [metadata.context] - Contextual information to assist with the translation.
+     * @param {boolean} [metadata.store] - Whether to cache the translation for use in a public project.
+     *
+     * @returns {Promise<{ translation: string, error?: Error | unknown }>} - A promise that resolves to the translated content, or an error if the translation fails.
+     */
     GT.prototype.translate = function (content, targetLanguage, metadata) {
         return __awaiter(this, void 0, void 0, function () {
             return __generator(this, function (_a) {
                 switch (_a.label) {
                     case 0: return [4 /*yield*/, (0, _translate_1.default)(this, content, targetLanguage, __assign({ projectID: this.projectID, defaultLanguage: this.defaultLanguage }, metadata))];
-                    case 1: return [2 /*return*/, _a.sent()];
-                }
-            });
-        });
-    };
-    /**
-    * Translates a string and caches for use in a public project.
-    * @param {string} content - A string to translate.
-    * @param {string} targetLanguage - The target language for the translation.
-    * @param {string} projectID - The ID of the project.
-    * @param {dictionaryName?: string, context?: string, [key: string]: any }} metadata - Additional metadata for the translation request.
-    * @returns {Promise<{ translation: string, error?: Error | unknown }>} The translated content with optional error information.
-    */
-    GT.prototype.intl = function (content, targetLanguage, projectID, metadata) {
-        return __awaiter(this, void 0, void 0, function () {
-            return __generator(this, function (_a) {
-                switch (_a.label) {
-                    case 0: return [4 /*yield*/, (0, _intl_1.default)(this, content, targetLanguage, projectID || this.projectID, __assign({ projectID: projectID || this.projectID, defaultLanguage: this.defaultLanguage }, metadata))];
                     case 1: return [2 /*return*/, _a.sent()];
                 }
             });
@@ -137,11 +124,11 @@ var GT = /** @class */ (function () {
     *
     * @returns {Promise<any>} - A promise that resolves to the translated content.
     */
-    GT.prototype.translateReactChildren = function (content, targetLanguage, metadata) {
+    GT.prototype.translateReact = function (content, targetLanguage, metadata) {
         return __awaiter(this, void 0, void 0, function () {
             return __generator(this, function (_a) {
                 switch (_a.label) {
-                    case 0: return [4 /*yield*/, (0, _translateReactChildren_1.default)(this, content, targetLanguage, __assign({ projectID: this.projectID, defaultLanguage: this.defaultLanguage }, metadata))];
+                    case 0: return [4 /*yield*/, (0, _translateReact_1.default)(this, content, targetLanguage, __assign({ projectID: this.projectID, defaultLanguage: this.defaultLanguage }, metadata))];
                     case 1: return [2 /*return*/, _a.sent()];
                 }
             });
@@ -152,10 +139,10 @@ var GT = /** @class */ (function () {
     * @param requests - Array of requests to be processed and sent.
     * @returns A promise that resolves to an array of processed results.
     */
-    GT.prototype.bundleTranslation = function (requests) {
+    GT.prototype.translateBundle = function (requests) {
         return __awaiter(this, void 0, void 0, function () {
             return __generator(this, function (_a) {
-                return [2 /*return*/, (0, _bundleTranslation_1.default)(this, requests)];
+                return [2 /*return*/, (0, _translateBundle_1.default)(this, requests)];
             });
         });
     };
@@ -167,13 +154,13 @@ var GT = /** @class */ (function () {
     * @param {boolean} [replace=false] - Whether to replace the existing dictionary. Defaults to false.
     * @returns {Promise<string[]>} A promise that resolves to an array of strings indicating the languages which have been updated.
     */
-    GT.prototype.updateRemoteDictionary = function (updates_1) {
+    GT.prototype.updateProjectDictionary = function (updates_1) {
         return __awaiter(this, arguments, void 0, function (updates, languages, projectID, replace) {
             if (languages === void 0) { languages = []; }
             if (projectID === void 0) { projectID = this.projectID; }
             if (replace === void 0) { replace = false; }
             return __generator(this, function (_a) {
-                return [2 /*return*/, (0, _updateRemoteDictionary_1.default)(this, updates, languages, projectID, replace)];
+                return [2 /*return*/, (0, _updateProjectDictionary_1.default)(this, updates, languages, projectID, replace)];
             });
         });
     };
@@ -226,3 +213,31 @@ function isSameLanguage() {
     return codes_1._isSameLanguage.apply(void 0, codes);
 }
 ;
+/**
+ * Formats a number according to the specified languages and options.
+ * @param {Object} params - The parameters for the number formatting.
+ * @param {number} params.value - The number to format.
+ * @param {string | string[]} [params.languages=['en']] - The languages to use for formatting.
+ * @param {Intl.NumberFormatOptions} [params.options={}] - Additional options for number formatting.
+ * @returns {string} The formatted number.
+ */
+exports.num = _format_1._num;
+/**
+ * Formats a date according to the specified languages and options.
+ * @param {Object} params - The parameters for the date formatting.
+ * @param {Date} params.value - The date to format.
+ * @param {string | string[]} [params.languages=['en']] - The languages to use for formatting.
+ * @param {Intl.DateTimeFormatOptions} [params.options={}] - Additional options for date formatting.
+ * @returns {string} The formatted date.
+ */
+exports.datetime = _format_1._datetime;
+/**
+ * Formats a currency value according to the specified languages, currency, and options.
+ * @param {Object} params - The parameters for the currency formatting.
+ * @param {number} params.value - The currency value to format.
+ * @param {string} params.currency - The currency code (e.g., 'USD').
+ * @param {string | string[]} [params.languages=['en']] - The languages to use for formatting.
+ * @param {Intl.NumberFormatOptions} [params.options={}] - Additional options for currency formatting.
+ * @returns {string} The formatted currency value.
+ */
+exports.currency = _format_1._currency;

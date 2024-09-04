@@ -36,7 +36,7 @@ var __generator = (this && this.__generator) || function (thisArg, body) {
     }
 };
 Object.defineProperty(exports, "__esModule", { value: true });
-exports.default = _bundleTranslation;
+exports.default = _translateBundle;
 /**
  * Bundles multiple requests and sends them to the server.
  * @param {{ baseURL: string, apiKey: string }} gt - Contains the baseURL and apiKey for the server request.
@@ -45,7 +45,7 @@ exports.default = _bundleTranslation;
  * @returns {Promise<Array<any | null>>} A promise that resolves to an array of processed results.
  * @internal
  */
-function _bundleTranslation(gt, requests) {
+function _translateBundle(gt, requests) {
     return __awaiter(this, void 0, void 0, function () {
         var controller, signal, response, _a, _b, _c, resultArray, error_1;
         var _d, _e, _f;

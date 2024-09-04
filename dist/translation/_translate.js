@@ -38,14 +38,18 @@ var __generator = (this && this.__generator) || function (thisArg, body) {
 Object.defineProperty(exports, "__esModule", { value: true });
 exports.default = _translate;
 /**
- * Translates a string.
- * @param {{ baseURL: string, apiKey: string }} gt - The translation service configuration.
- * @param {string} content - The content to translate.
- * @param {string} targetLanguage - The target language for the translation.
- * @param {{ notes?: string, timeout?: number, [key: string]: any }} metadata - Additional metadata for the translation request.
- * @returns {Promise<{ translation: string, error?: Error | unknown }>} - The translated content with optional error information.
+ * Translates the given string into the target language using a specified API.
+ *
+ * @param {{ baseURL: string, apiKey: string }} gt - An object containing baseURL and apiKey for the API.
+ * @param {any} content - The string to be translated.
+ * @param {string} targetLanguage - The target language code (e.g., 'en', 'fr') for the translation.
+ * @param {{ [key: string]: any }} metadata - Additional metadata to be sent with the translation request.
+ *
+ * @returns {Promise<{ translation: any | null, error?: Error | unknown }>} - A promise that resolves to the translated content as an object, or null if an error occurs.
+ *
+ * @throws {Error} - Throws an error if the response from the API is not ok (status code not in the range 200-299).
  * @internal
- */
+**/
 function _translate(gt, content, targetLanguage, metadata) {
     return __awaiter(this, void 0, void 0, function () {
         var controller, signal, response, _a, _b, _c, result, error_1;

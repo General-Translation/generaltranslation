@@ -36,20 +36,23 @@ var __generator = (this && this.__generator) || function (thisArg, body) {
     }
 };
 Object.defineProperty(exports, "__esModule", { value: true });
-exports.default = _translate;
+exports.default = _translateReact;
 /**
-    * Translates a single piece of content and caches for use in a public project.
-    * @param {{ baseURL: string, apiKey: string }} gt - The translation service configuration.
-    * @param {string} content - The content to translate.
-    * @param {string} targetLanguage - The target language for the translation.
-    * @param {string} projectID - The ID of the project
-    * @param {{ dictionaryName?: string, notes?: string, timeout?: number, [key: string]: any }} metadata - Additional metadata for the translation request.
-    * @returns {Promise<{ translation: string, error?: Error | unknown }>} - The translated content with optional error information.
-    * @internal
-*/
-function _translate(gt, content, targetLanguage, projectID, metadata) {
+ * Translates the given React children into the target language using a specified API.
+ *
+ * @param {{ baseURL: string, apiKey: string }} gt - An object containing baseURL and apiKey for the API.
+ * @param {any} children - The React children to be translated.
+ * @param {string} targetLanguage - The target language code (e.g., 'en', 'fr') for the translation.
+ * @param {{ [key: string]: any }} metadata - Additional metadata to be sent with the translation request.
+ *
+ * @returns {Promise<{ translation: any | null, error?: Error | unknown }>} - A promise that resolves to the translated content as an object, or null if an error occurs.
+ *
+ * @throws {Error} - Throws an error if the response from the API is not ok (status code not in the range 200-299).
+ * @internal
+**/
+function _translateReact(gt, content, targetLanguage, metadata) {
     return __awaiter(this, void 0, void 0, function () {
-        var controller, signal, response, _a, _b, _c, result, error_1;
+        var controller, signal, response, _a, _b, _c, error_1;
         return __generator(this, function (_d) {
             switch (_d.label) {
                 case 0:
@@ -61,7 +64,7 @@ function _translate(gt, content, targetLanguage, projectID, metadata) {
                     _d.label = 1;
                 case 1:
                     _d.trys.push([1, 6, , 7]);
-                    return [4 /*yield*/, fetch("".concat(gt.baseURL, "/translate"), {
+                    return [4 /*yield*/, fetch("".concat(gt.baseURL, "/react"), {
                             method: 'POST',
                             headers: {
                                 'Content-Type': 'application/json',
@@ -70,7 +73,6 @@ function _translate(gt, content, targetLanguage, projectID, metadata) {
                             body: JSON.stringify({
                                 content: content,
                                 targetLanguage: targetLanguage,
-                                projectID: projectID,
                                 metadata: metadata
                             }),
                             signal: signal
@@ -83,21 +85,19 @@ function _translate(gt, content, targetLanguage, projectID, metadata) {
                     return [4 /*yield*/, response.text()];
                 case 3: throw new (_a.apply(Error, [void 0, _c.apply(_b, [_d.sent()])]))();
                 case 4: return [4 /*yield*/, response.json()];
-                case 5:
-                    result = _d.sent();
-                    return [2 /*return*/, result];
+                case 5: return [2 /*return*/, _d.sent()];
                 case 6:
                     error_1 = _d.sent();
                     if (error_1 instanceof Error && error_1.name === 'AbortError') {
                         console.error('Request timed out');
                         return [2 /*return*/, {
-                                translation: content,
+                                translation: null,
                                 error: 'Request timed out'
                             }];
                     }
                     console.error(error_1);
                     return [2 /*return*/, {
-                            translation: content,
+                            translation: null,
                             error: error_1
                         }];
                 case 7: return [2 /*return*/];

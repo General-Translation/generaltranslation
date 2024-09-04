@@ -5,11 +5,11 @@
 
 import { LanguageObject, _isValidLanguageCode, _standardizeLanguageCode, _getLanguageObject, _getLanguageCode, _getLanguageName, _isSameLanguage } from './codes/codes';
 import _getLanguageDirection from './codes/getLanguageDirection';
-import _bundleTranslation, { Request } from './translation/_bundleTranslation';
-import _intl from './translation/_intl';
+import _translateBundle, { Request } from './translation/_translateBundle';
 import _translate from './translation/_translate';
-import _translateReactChildren from './translation/_translateReactChildren';
-import _updateRemoteDictionary, { Update } from './translation/_updateRemoteDictionary';
+import _translateReact from './translation/_translateReact';
+import _updateProjectDictionary, { Update } from './translation/_updateProjectDictionary';
+import { _num, _datetime, _currency } from './format/_format';
 
 // ----- CORE CLASS ----- // 
 
@@ -61,28 +61,25 @@ class GT {
     }
 
     /**
-    * Translates a string into a target language.
-    * @param {string} content - A string to translate.
-    * @param {string} targetLanguage - The target language for the translation.
-    * @param {{ notes?: string, [key: string]: any }} metadata - Additional metadata for the translation request.
-    * @returns {Promise<{ translation: string, error?: Error | unknown }>} - The translated content with optional error information.
-    */
-    async translate(content: string, targetLanguage: string, metadata?: { notes?: string, [key: string]: any }): Promise<{ translation: string, error?: Error | unknown }> {
-        return await _translate(this, content, targetLanguage, { projectID: this.projectID, defaultLanguage: this.defaultLanguage, ...metadata})
+     * Translates a string into a target language.
+     * If `metadata.store` is provided, the translation is cached for use in a public project.
+     * 
+     * @param {string} content - The string to be translated.
+     * @param {string} targetLanguage - The target language code (e.g., 'en', 'fr') for the translation.
+     * @param {{ context?: string, store?: boolean, [key: string]: any }} [metadata] - Additional metadata for the translation request.
+     * @param {string} [metadata.context] - Contextual information to assist with the translation.
+     * @param {boolean} [metadata.store] - Whether to cache the translation for use in a public project.
+     * 
+     * @returns {Promise<{ translation: string, error?: Error | unknown }>} - A promise that resolves to the translated content, or an error if the translation fails.
+     */
+    async translate(content: string, targetLanguage: string, metadata?: { 
+        context?: string,
+        store?: boolean, 
+        [key: string]: any 
+    }): Promise<{ translation: string, error?: Error | unknown }> {
+        return await _translate(this, content, targetLanguage, { projectID: this.projectID, defaultLanguage: this.defaultLanguage, ...metadata })
     }
 
-    /**
-    * Translates a string and caches for use in a public project.
-    * @param {string} content - A string to translate.
-    * @param {string} targetLanguage - The target language for the translation.
-    * @param {string} projectID - The ID of the project.
-    * @param {dictionaryName?: string, context?: string, [key: string]: any }} metadata - Additional metadata for the translation request.
-    * @returns {Promise<{ translation: string, error?: Error | unknown }>} The translated content with optional error information.
-    */
-    async intl(content: string, targetLanguage: string, projectID?: string, metadata?: { dictionaryName?: string, context?: string, [key:string]: any }): Promise<{ translation: string; error?: Error | unknown; }> {
-        return await _intl(this, content, targetLanguage, projectID || this.projectID, { projectID: projectID || this.projectID, defaultLanguage: this.defaultLanguage, ...metadata })
-    }
-   
     /**
     * Translates the content of React children elements.
     * 
@@ -93,8 +90,8 @@ class GT {
     * 
     * @returns {Promise<any>} - A promise that resolves to the translated content.
     */
-    async translateReactChildren(content: any, targetLanguage: string, metadata?: { [key: string]: any }): Promise<{ translation: any | null, error?: Error | unknown }> {
-        return await _translateReactChildren(this, content, targetLanguage, { projectID: this.projectID, defaultLanguage: this.defaultLanguage, ...metadata });
+    async translateReact(content: any, targetLanguage: string, metadata?: { context?: string, store?: boolean, [key: string]: any }): Promise<{ translation: any | null, error?: Error | unknown }> {
+        return await _translateReact(this, content, targetLanguage, { projectID: this.projectID, defaultLanguage: this.defaultLanguage, ...metadata });
     }
 
     /**
@@ -102,8 +99,8 @@ class GT {
     * @param requests - Array of requests to be processed and sent.
     * @returns A promise that resolves to an array of processed results.
     */
-    async bundleTranslation(requests: Request[]): Promise<Array<any | null>> {
-        return _bundleTranslation(this, requests);
+    async translateBundle(requests: Request[]): Promise<Array<any | null>> {
+        return _translateBundle(this, requests);
     }
 
     /**
@@ -114,8 +111,8 @@ class GT {
     * @param {boolean} [replace=false] - Whether to replace the existing dictionary. Defaults to false.
     * @returns {Promise<string[]>} A promise that resolves to an array of strings indicating the languages which have been updated.
     */
-    async updateRemoteDictionary(updates: Update[], languages: string[] = [], projectID = this.projectID, replace: boolean = false): Promise<string[]> {
-        return _updateRemoteDictionary(this, updates, languages, projectID, replace);
+    async updateProjectDictionary(updates: Update[], languages: string[] = [], projectID = this.projectID, replace: boolean = false): Promise<string[]> {
+        return _updateProjectDictionary(this, updates, languages, projectID, replace);
     }
 
 }
@@ -206,3 +203,34 @@ export function getLanguageName(codes: string | string[]): string | string[] {
 export function isSameLanguage(...codes: string[]): boolean {
     return _isSameLanguage(...codes);
 };
+
+/**
+ * Formats a number according to the specified languages and options.
+ * @param {Object} params - The parameters for the number formatting.
+ * @param {number} params.value - The number to format.
+ * @param {string | string[]} [params.languages=['en']] - The languages to use for formatting.
+ * @param {Intl.NumberFormatOptions} [params.options={}] - Additional options for number formatting.
+ * @returns {string} The formatted number.
+ */
+export const num = _num;
+
+/**
+ * Formats a date according to the specified languages and options.
+ * @param {Object} params - The parameters for the date formatting.
+ * @param {Date} params.value - The date to format.
+ * @param {string | string[]} [params.languages=['en']] - The languages to use for formatting.
+ * @param {Intl.DateTimeFormatOptions} [params.options={}] - Additional options for date formatting.
+ * @returns {string} The formatted date.
+ */
+export const datetime = _datetime;
+
+/**
+ * Formats a currency value according to the specified languages, currency, and options.
+ * @param {Object} params - The parameters for the currency formatting.
+ * @param {number} params.value - The currency value to format.
+ * @param {string} params.currency - The currency code (e.g., 'USD').
+ * @param {string | string[]} [params.languages=['en']] - The languages to use for formatting.
+ * @param {Intl.NumberFormatOptions} [params.options={}] - Additional options for currency formatting.
+ * @returns {string} The formatted currency value.
+ */
+export const currency = _currency;
