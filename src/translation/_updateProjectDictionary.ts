@@ -5,7 +5,7 @@ export type Update = {
         metadata: Record<string, any>
     };
 } | {
-    type: 'intl';
+    type: 'string';
     data: {
         content: string,
         metadata: Record<string, any>
