@@ -89,17 +89,9 @@ function _translateReact(gt, content, targetLanguage, metadata) {
                 case 6:
                     error_1 = _d.sent();
                     if (error_1 instanceof Error && error_1.name === 'AbortError') {
-                        console.error('Request timed out');
-                        return [2 /*return*/, {
-                                translation: null,
-                                error: 'Request timed out'
-                            }];
+                        throw new Error('Error: Request timed out.');
                     }
-                    console.error(error_1);
-                    return [2 /*return*/, {
-                            translation: null,
-                            error: error_1
-                        }];
+                    throw new Error("".concat(error_1));
                 case 7: return [2 /*return*/];
             }
         });

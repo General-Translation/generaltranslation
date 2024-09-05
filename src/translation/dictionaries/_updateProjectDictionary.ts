@@ -28,10 +28,8 @@ export default async function _updateProjectDictionary(
         return result.languages;
     } catch (error) {
         if (error instanceof Error && error.name === 'AbortError') {
-            console.error('Request timed out');
-            return [];
+            throw new Error('Error: Request timed out.');
         }
-        console.error(error);
-        return [];
+        throw new Error(`${error}`);
     }
 }

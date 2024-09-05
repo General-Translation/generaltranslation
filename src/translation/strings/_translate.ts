@@ -57,17 +57,9 @@ export default async function _translate(
         return result;
     } catch (error) {
         if (error instanceof Error && error.name === 'AbortError') {
-            console.error('Request timed out');
-            return {
-                translation: content,
-                error: 'Request timed out'
-            };
+            throw new Error('Error: Request timed out.');
         }
-        console.error(error);
-        return {
-            translation: content,
-            error: error
-        };
+        throw new Error(`${error}`);
     }
 }
 

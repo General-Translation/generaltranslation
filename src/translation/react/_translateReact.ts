@@ -44,16 +44,8 @@ export default async function _translateReact(
         return await response.json();
     } catch (error) {
         if (error instanceof Error && error.name === 'AbortError') {
-            console.error('Request timed out');
-            return {
-                translation: null,
-                error: 'Request timed out'
-            };
+            throw new Error('Error: Request timed out.');
         }
-        console.error(error);
-        return {
-            translation: null,
-            error: error
-        };
+        throw new Error(`${error}`);
     }
 }

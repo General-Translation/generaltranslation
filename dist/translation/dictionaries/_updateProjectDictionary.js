@@ -74,11 +74,9 @@ function _updateProjectDictionary(gt, updates, languages, projectID, replace) {
                 case 5:
                     error_1 = _d.sent();
                     if (error_1 instanceof Error && error_1.name === 'AbortError') {
-                        console.error('Request timed out');
-                        return [2 /*return*/, []];
+                        throw new Error('Error: Request timed out.');
                     }
-                    console.error(error_1);
-                    return [2 /*return*/, []];
+                    throw new Error("".concat(error_1));
                 case 6: return [2 /*return*/];
             }
         });

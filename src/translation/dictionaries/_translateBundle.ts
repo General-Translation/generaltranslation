@@ -36,10 +36,8 @@ export default async function _translateBundle(
         return resultArray;
     } catch (error) {
         if (error instanceof Error && error.name === 'AbortError') {
-            console.error('Request timed out');
-            return Array.from(requests, () => ({ translation: null, error: 'Request timed out' }));
+            throw new Error('Error: Request timed out.');
         }
-        console.error(error);
-        return Array.from(requests, () => ({ translation: null, error: error }));
+        throw new Error(`${error}`);
     }
 }
