@@ -1,6 +1,6 @@
 import { LanguageObject } from './codes/codes';
-import { Request } from './translation/_translateBundle';
-import { Update } from './translation/_updateProjectDictionary';
+import { StringWithVariables } from './translation/strings/_translate';
+import { Content, Update, Request } from './types/types';
 /**
  * Type representing the constructor parameters for the GT class.
  */
@@ -29,36 +29,36 @@ declare class GT {
      */
     constructor({ apiKey, defaultLanguage, projectID, baseURL }?: GTConstructorParams);
     /**
-     * Translates a string into a target language.
+     * Translates a string or an array of strings/variables into a target language.
      * If `metadata.store` is provided, the translation is cached for use in a public project.
      *
-     * @param {string} content - The string to be translated.
+     * @param {Content} content - The string or array of strings/variables to be translated.
      * @param {string} targetLanguage - The target language code (e.g., 'en', 'fr') for the translation.
      * @param {{ context?: string, store?: boolean, [key: string]: any }} [metadata] - Additional metadata for the translation request.
      * @param {string} [metadata.context] - Contextual information to assist with the translation.
      * @param {boolean} [metadata.store] - Whether to cache the translation for use in a public project.
      *
-     * @returns {Promise<{ translation: string, error?: Error | unknown }>} - A promise that resolves to the translated content, or an error if the translation fails.
+     * @returns {Promise<{ translation: string, error?: Error | unknown }>} A promise that resolves to the translated content, or an error if the translation fails.
      */
-    translate(content: string, targetLanguage: string, metadata?: {
+    translate(content: Content, targetLanguage: string, metadata?: {
         context?: string;
         store?: boolean;
         [key: string]: any;
     }): Promise<{
-        translation: string;
+        translation: StringWithVariables | [];
         error?: Error | unknown;
     }>;
     /**
     * Translates the content of React children elements.
     *
     * @param {Object} params - The parameters for the translation.
-    * @param {any} params.content - The React children content to be translated.
+    * @param {any} params.children - The React children content to be translated.
     * @param {string} params.targetLanguage - The target language for the translation.
     * @param {Object} params.metadata - Additional metadata for the translation process.
     *
     * @returns {Promise<any>} - A promise that resolves to the translated content.
     */
-    translateReact(content: any, targetLanguage: string, metadata?: {
+    translateReact(children: any, targetLanguage: string, metadata?: {
         context?: string;
         store?: boolean;
         [key: string]: any;

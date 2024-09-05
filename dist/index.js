@@ -63,10 +63,10 @@ exports.formatCurrency = formatCurrency;
 // ----- IMPORTS ----- //
 var codes_1 = require("./codes/codes");
 var getLanguageDirection_1 = __importDefault(require("./codes/getLanguageDirection"));
-var _translateBundle_1 = __importDefault(require("./translation/_translateBundle"));
-var _translate_1 = __importDefault(require("./translation/_translate"));
-var _translateReact_1 = __importDefault(require("./translation/_translateReact"));
-var _updateProjectDictionary_1 = __importDefault(require("./translation/_updateProjectDictionary"));
+var _translateBundle_1 = __importDefault(require("./translation/dictionaries/_translateBundle"));
+var _translate_1 = __importDefault(require("./translation/strings/_translate"));
+var _translateReact_1 = __importDefault(require("./translation/react/_translateReact"));
+var _updateProjectDictionary_1 = __importDefault(require("./translation/dictionaries/_updateProjectDictionary"));
 var _format_1 = require("./format/_format");
 // ----- CORE CLASS ----- // 
 var getDefaultFromEnv = function (VARIABLE) {
@@ -96,16 +96,16 @@ var GT = /** @class */ (function () {
         this.baseURL = baseURL;
     }
     /**
-     * Translates a string into a target language.
+     * Translates a string or an array of strings/variables into a target language.
      * If `metadata.store` is provided, the translation is cached for use in a public project.
      *
-     * @param {string} content - The string to be translated.
+     * @param {Content} content - The string or array of strings/variables to be translated.
      * @param {string} targetLanguage - The target language code (e.g., 'en', 'fr') for the translation.
      * @param {{ context?: string, store?: boolean, [key: string]: any }} [metadata] - Additional metadata for the translation request.
      * @param {string} [metadata.context] - Contextual information to assist with the translation.
      * @param {boolean} [metadata.store] - Whether to cache the translation for use in a public project.
      *
-     * @returns {Promise<{ translation: string, error?: Error | unknown }>} - A promise that resolves to the translated content, or an error if the translation fails.
+     * @returns {Promise<{ translation: string, error?: Error | unknown }>} A promise that resolves to the translated content, or an error if the translation fails.
      */
     GT.prototype.translate = function (content, targetLanguage, metadata) {
         return __awaiter(this, void 0, void 0, function () {
@@ -121,17 +121,17 @@ var GT = /** @class */ (function () {
     * Translates the content of React children elements.
     *
     * @param {Object} params - The parameters for the translation.
-    * @param {any} params.content - The React children content to be translated.
+    * @param {any} params.children - The React children content to be translated.
     * @param {string} params.targetLanguage - The target language for the translation.
     * @param {Object} params.metadata - Additional metadata for the translation process.
     *
     * @returns {Promise<any>} - A promise that resolves to the translated content.
     */
-    GT.prototype.translateReact = function (content, targetLanguage, metadata) {
+    GT.prototype.translateReact = function (children, targetLanguage, metadata) {
         return __awaiter(this, void 0, void 0, function () {
             return __generator(this, function (_a) {
                 switch (_a.label) {
-                    case 0: return [4 /*yield*/, (0, _translateReact_1.default)(this, content, targetLanguage, __assign({ projectID: this.projectID, defaultLanguage: this.defaultLanguage }, metadata))];
+                    case 0: return [4 /*yield*/, (0, _translateReact_1.default)(this, children, targetLanguage, __assign({ projectID: this.projectID, defaultLanguage: this.defaultLanguage }, metadata))];
                     case 1: return [2 /*return*/, _a.sent()];
                 }
             });

@@ -1,17 +1,8 @@
-export type Update = {
-    type: 'react';
-    data: {
-        children: object | string,
-        metadata: Record<string, any>
-    };
-} | {
-    type: 'string';
-    data: {
-        content: string,
-        metadata: Record<string, any>
-    };
-}
+import { Content, Update } from '../../types/types'
 
+/**
+ * @internal
+ */
 export default async function _updateProjectDictionary(
     gt: { baseURL: string, apiKey: string },
     updates: Update[],
@@ -19,7 +10,6 @@ export default async function _updateProjectDictionary(
     projectID: string,
     replace: boolean
 ): Promise<string[]> {
-
     try {
         const response = await fetch(`${gt.baseURL}/update`, {
             method: 'POST',

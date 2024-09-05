@@ -1,3 +1,11 @@
+export type StringWithVariables = string | {
+    variable?: string,
+    key: string
+} | Array<string | {
+    variable?: string,
+    key: string
+}>
+
 /**
  * Translates the given string into the target language using a specified API.
  * 
@@ -13,7 +21,7 @@
 **/
 export default async function _translate(
     gt: { baseURL: string; apiKey: string },
-    content: string,
+    content: StringWithVariables,
     targetLanguage: string,
     metadata: { 
         notes?: string, 
@@ -22,14 +30,14 @@ export default async function _translate(
         projectID?: string,
         [key: string]: any
     }
-): Promise<{ translation: string, error?: Error | unknown }> {
+): Promise<{ translation: StringWithVariables, error?: Error | unknown }> {
+    
     const controller = new AbortController();
     const signal = controller.signal;
-
     if (metadata.timeout) {
         setTimeout(() => controller.abort(), metadata.timeout);
     }
-
+    
     try {
         const response = await fetch(`${gt.baseURL}/translate`, {
             method: 'POST',
@@ -62,3 +70,4 @@ export default async function _translate(
         };
     }
 }
+

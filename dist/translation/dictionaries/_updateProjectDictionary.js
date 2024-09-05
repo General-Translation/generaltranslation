@@ -37,6 +37,9 @@ var __generator = (this && this.__generator) || function (thisArg, body) {
 };
 Object.defineProperty(exports, "__esModule", { value: true });
 exports.default = _updateProjectDictionary;
+/**
+ * @internal
+ */
 function _updateProjectDictionary(gt, updates, languages, projectID, replace) {
     return __awaiter(this, void 0, void 0, function () {
         var response, _a, _b, _c, result, error_1;

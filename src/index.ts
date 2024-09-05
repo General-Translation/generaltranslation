@@ -5,11 +5,12 @@
 
 import { LanguageObject, _isValidLanguageCode, _standardizeLanguageCode, _getLanguageObject, _getLanguageCode, _getLanguageName, _isSameLanguage } from './codes/codes';
 import _getLanguageDirection from './codes/getLanguageDirection';
-import _translateBundle, { Request } from './translation/_translateBundle';
-import _translate from './translation/_translate';
-import _translateReact from './translation/_translateReact';
-import _updateProjectDictionary, { Update } from './translation/_updateProjectDictionary';
+import _translateBundle from './translation/dictionaries/_translateBundle';
+import _translate, { StringWithVariables } from './translation/strings/_translate';
+import _translateReact from './translation/react/_translateReact';
+import _updateProjectDictionary from './translation/dictionaries/_updateProjectDictionary';
 import { _formatNum, _formatDateTime, _formatCurrency } from './format/_format';
+import { Content, Update, Request } from './types/types'
 
 // ----- CORE CLASS ----- // 
 
@@ -61,22 +62,22 @@ class GT {
     }
 
     /**
-     * Translates a string into a target language.
+     * Translates a string or an array of strings/variables into a target language.
      * If `metadata.store` is provided, the translation is cached for use in a public project.
      * 
-     * @param {string} content - The string to be translated.
+     * @param {Content} content - The string or array of strings/variables to be translated.
      * @param {string} targetLanguage - The target language code (e.g., 'en', 'fr') for the translation.
      * @param {{ context?: string, store?: boolean, [key: string]: any }} [metadata] - Additional metadata for the translation request.
      * @param {string} [metadata.context] - Contextual information to assist with the translation.
      * @param {boolean} [metadata.store] - Whether to cache the translation for use in a public project.
      * 
-     * @returns {Promise<{ translation: string, error?: Error | unknown }>} - A promise that resolves to the translated content, or an error if the translation fails.
+     * @returns {Promise<{ translation: string, error?: Error | unknown }>} A promise that resolves to the translated content, or an error if the translation fails.
      */
-    async translate(content: string, targetLanguage: string, metadata?: { 
+    async translate(content: Content, targetLanguage: string, metadata?: { 
         context?: string,
         store?: boolean, 
         [key: string]: any 
-    }): Promise<{ translation: string, error?: Error | unknown }> {
+    }): Promise<{ translation: StringWithVariables | [], error?: Error | unknown }> {
         return await _translate(this, content, targetLanguage, { projectID: this.projectID, defaultLanguage: this.defaultLanguage, ...metadata })
     }
 
@@ -84,14 +85,14 @@ class GT {
     * Translates the content of React children elements.
     * 
     * @param {Object} params - The parameters for the translation.
-    * @param {any} params.content - The React children content to be translated.
+    * @param {any} params.children - The React children content to be translated.
     * @param {string} params.targetLanguage - The target language for the translation.
     * @param {Object} params.metadata - Additional metadata for the translation process.
     * 
     * @returns {Promise<any>} - A promise that resolves to the translated content.
     */
-    async translateReact(content: any, targetLanguage: string, metadata?: { context?: string, store?: boolean, [key: string]: any }): Promise<{ translation: any | null, error?: Error | unknown }> {
-        return await _translateReact(this, content, targetLanguage, { projectID: this.projectID, defaultLanguage: this.defaultLanguage, ...metadata });
+    async translateReact(children: any, targetLanguage: string, metadata?: { context?: string, store?: boolean, [key: string]: any }): Promise<{ translation: any | null, error?: Error | unknown }> {
+        return await _translateReact(this, children, targetLanguage, { projectID: this.projectID, defaultLanguage: this.defaultLanguage, ...metadata });
     }
 
     /**
