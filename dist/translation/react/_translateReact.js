@@ -71,7 +71,7 @@ function _translateReact(gt, content, targetLanguage, metadata) {
                                 'gtx-api-key': gt.apiKey,
                             },
                             body: JSON.stringify({
-                                content: content,
+                                children: content,
                                 targetLanguage: targetLanguage,
                                 metadata: metadata
                             }),

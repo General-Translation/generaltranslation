@@ -32,7 +32,7 @@ export default async function _translateReact(
                 'gtx-api-key': gt.apiKey,
             },
             body: JSON.stringify({
-                content: content,
+                children: content,
                 targetLanguage: targetLanguage,
                 metadata: metadata
             }),
