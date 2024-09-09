@@ -60,6 +60,8 @@ exports.isSameLanguage = isSameLanguage;
 exports.formatNum = formatNum;
 exports.formatDateTime = formatDateTime;
 exports.formatCurrency = formatCurrency;
+exports.splitStringToContent = splitStringToContent;
+exports.renderContentToString = renderContentToString;
 // ----- IMPORTS ----- //
 var codes_1 = require("./codes/codes");
 var getLanguageDirection_1 = __importDefault(require("./codes/getLanguageDirection"));
@@ -67,7 +69,8 @@ var _translateBundle_1 = __importDefault(require("./translation/dictionaries/_tr
 var _translate_1 = __importDefault(require("./translation/strings/_translate"));
 var _translateReact_1 = __importDefault(require("./translation/react/_translateReact"));
 var _updateProjectDictionary_1 = __importDefault(require("./translation/dictionaries/_updateProjectDictionary"));
-var _format_1 = require("./format/_format");
+var _format_1 = require("./formatting/_format");
+var _string_content_1 = require("./formatting/_string_content");
 // ----- CORE CLASS ----- // 
 var getDefaultFromEnv = function (VARIABLE) {
     if (typeof process !== 'undefined' && process.env) {
@@ -97,15 +100,15 @@ var GT = /** @class */ (function () {
     }
     /**
      * Translates a string or an array of strings/variables into a target language.
-     * If `metadata.store` is provided, the translation is cached for use in a public project.
+     * If `metadata.save` is provided, the translation is cached for use in a public project.
      *
      * @param {Content} content - The string or array of strings/variables to be translated.
      * @param {string} targetLanguage - The target language code (e.g., 'en', 'fr') for the translation.
-     * @param {{ context?: string, store?: boolean, [key: string]: any }} [metadata] - Additional metadata for the translation request.
+     * @param {{ context?: string, save?: boolean, [key: string]: any }} [metadata] - Additional metadata for the translation request.
      * @param {string} [metadata.context] - Contextual information to assist with the translation.
-     * @param {boolean} [metadata.store] - Whether to cache the translation for use in a public project.
+     * @param {boolean} [metadata.save] - Whether to cache the translation for use in a public project.
      *
-     * @returns {Promise<{ translation: string, error?: Error | unknown }>} A promise that resolves to the translated content, or an error if the translation fails.
+     * @returns {Promise<ContentTranslationResult>} A promise that resolves to the translated content, or an error if the translation fails.
      */
     GT.prototype.translate = function (content, targetLanguage, metadata) {
         return __awaiter(this, void 0, void 0, function () {
@@ -121,11 +124,11 @@ var GT = /** @class */ (function () {
     * Translates the content of React children elements.
     *
     * @param {Object} params - The parameters for the translation.
-    * @param {any} params.children - The React children content to be translated.
+    * @param {ReactChildrenAsObject} params.children - The React children content to be translated.
     * @param {string} params.targetLanguage - The target language for the translation.
     * @param {Object} params.metadata - Additional metadata for the translation process.
     *
-    * @returns {Promise<any>} - A promise that resolves to the translated content.
+    * @returns {Promise<ReactTranslationResult>} - A promise that resolves to the translated content.
     */
     GT.prototype.translateReact = function (children, targetLanguage, metadata) {
         return __awaiter(this, void 0, void 0, function () {
@@ -252,4 +255,26 @@ function formatDateTime(_a) {
 function formatCurrency(_a) {
     var value = _a.value, languages = _a.languages, currency = _a.currency, options = _a.options;
     return (0, _format_1._formatCurrency)({ value: value, languages: languages, currency: currency, options: options });
+}
+/**
+ * Splits a string into an array of text and variable objects.
+ *
+ * @param {string} string - The input string to split.
+ * @returns {Content} - An array containing strings and VariableObjects.
+ */
+function splitStringToContent(string) {
+    return (0, _string_content_1._splitStringToContent)(string);
+}
+/**
+ * Renders content to a string by replacing variables with their formatted values.
+ *
+ * @param {Content} content - The content to render, which can be a string or an array of strings and VariableObjects.
+ * @param {string | string[]} [languages='en'] - The language(s) to use for formatting.
+ * @param {Record<string, any>} [variables={}] - An object containing variable values keyed by variable names.
+ * @param {Record<string, any>} [variableOptions={}] - An object containing options for formatting variables, keyed by variable names.
+ * @returns {string} - The rendered string with variables replaced by their formatted values.
+ *
+*/
+function renderContentToString(content, languages, variables, variableOptions) {
+    return (0, _string_content_1._renderContentToString)(content, languages, variables, variableOptions);
 }

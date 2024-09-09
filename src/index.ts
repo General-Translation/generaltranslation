@@ -6,11 +6,12 @@
 import { LanguageObject, _isValidLanguageCode, _standardizeLanguageCode, _getLanguageObject, _getLanguageCode, _getLanguageName, _isSameLanguage } from './codes/codes';
 import _getLanguageDirection from './codes/getLanguageDirection';
 import _translateBundle from './translation/dictionaries/_translateBundle';
-import _translate, { StringWithVariables } from './translation/strings/_translate';
+import _translate from './translation/strings/_translate';
 import _translateReact from './translation/react/_translateReact';
 import _updateProjectDictionary from './translation/dictionaries/_updateProjectDictionary';
-import { _formatNum, _formatDateTime, _formatCurrency } from './format/_format';
-import { Content, Update, Request } from './types/types'
+import { _formatNum, _formatDateTime, _formatCurrency } from './formatting/_format';
+import { _splitStringToContent, _renderContentToString } from './formatting/_string_content'
+import { Content, Update, Request, ReactChildrenAsObject, ReactTranslationResult, ContentTranslationResult } from './types/types'
 
 // ----- CORE CLASS ----- // 
 
@@ -63,21 +64,21 @@ class GT {
 
     /**
      * Translates a string or an array of strings/variables into a target language.
-     * If `metadata.store` is provided, the translation is cached for use in a public project.
+     * If `metadata.save` is provided, the translation is cached for use in a public project.
      * 
      * @param {Content} content - The string or array of strings/variables to be translated.
      * @param {string} targetLanguage - The target language code (e.g., 'en', 'fr') for the translation.
-     * @param {{ context?: string, store?: boolean, [key: string]: any }} [metadata] - Additional metadata for the translation request.
+     * @param {{ context?: string, save?: boolean, [key: string]: any }} [metadata] - Additional metadata for the translation request.
      * @param {string} [metadata.context] - Contextual information to assist with the translation.
-     * @param {boolean} [metadata.store] - Whether to cache the translation for use in a public project.
+     * @param {boolean} [metadata.save] - Whether to cache the translation for use in a public project.
      * 
-     * @returns {Promise<{ translation: string, error?: Error | unknown }>} A promise that resolves to the translated content, or an error if the translation fails.
+     * @returns {Promise<ContentTranslationResult>} A promise that resolves to the translated content, or an error if the translation fails.
      */
     async translate(content: Content, targetLanguage: string, metadata?: { 
         context?: string,
-        store?: boolean, 
+        save?: boolean, 
         [key: string]: any 
-    }): Promise<{ translation: StringWithVariables | [], error?: Error | unknown }> {
+    }): Promise<{ translation: Content, language: string }> {
         return await _translate(this, content, targetLanguage, { projectID: this.projectID, defaultLanguage: this.defaultLanguage, ...metadata })
     }
 
@@ -85,13 +86,13 @@ class GT {
     * Translates the content of React children elements.
     * 
     * @param {Object} params - The parameters for the translation.
-    * @param {any} params.children - The React children content to be translated.
+    * @param {ReactChildrenAsObject} params.children - The React children content to be translated.
     * @param {string} params.targetLanguage - The target language for the translation.
     * @param {Object} params.metadata - Additional metadata for the translation process.
     * 
-    * @returns {Promise<any>} - A promise that resolves to the translated content.
+    * @returns {Promise<ReactTranslationResult>} - A promise that resolves to the translated content.
     */
-    async translateReact(children: any, targetLanguage: string, metadata?: { context?: string, store?: boolean, [key: string]: any }): Promise<{ translation: any | null, error?: Error | unknown }> {
+    async translateReact(children: ReactChildrenAsObject, targetLanguage: string, metadata?: { context?: string, save?: boolean, [key: string]: any }): Promise<ReactTranslationResult> {
         return await _translateReact(this, children, targetLanguage, { projectID: this.projectID, defaultLanguage: this.defaultLanguage, ...metadata });
     }
 
@@ -100,7 +101,7 @@ class GT {
     * @param requests - Array of requests to be processed and sent.
     * @returns A promise that resolves to an array of processed results.
     */
-    async translateBundle(requests: Request[]): Promise<Array<any | null>> {
+    async translateBundle(requests: Request[]): Promise<Array<ReactTranslationResult | ContentTranslationResult>> {
         return _translateBundle(this, requests);
     }
 
@@ -254,3 +255,32 @@ export function formatCurrency({
     currency?: string,
     options?: Intl.NumberFormatOptions
 }): string { return _formatCurrency({ value, languages, currency, options }); }
+
+/**
+ * Splits a string into an array of text and variable objects.
+ * 
+ * @param {string} string - The input string to split.
+ * @returns {Content} - An array containing strings and VariableObjects.
+ */
+export function splitStringToContent(string: string): Content {
+    return _splitStringToContent(string);
+}
+
+/**
+ * Renders content to a string by replacing variables with their formatted values.
+ * 
+ * @param {Content} content - The content to render, which can be a string or an array of strings and VariableObjects.
+ * @param {string | string[]} [languages='en'] - The language(s) to use for formatting.
+ * @param {Record<string, any>} [variables={}] - An object containing variable values keyed by variable names.
+ * @param {Record<string, any>} [variableOptions={}] - An object containing options for formatting variables, keyed by variable names.
+ * @returns {string} - The rendered string with variables replaced by their formatted values.
+ *
+*/
+export function renderContentToString<V extends Record<string, any>>(
+    content: Content, 
+    languages?: string | string[], 
+    variables?: V,
+    variableOptions?: { [key in keyof V]?: Intl.NumberFormatOptions | Intl.DateTimeFormatOptions }
+): string {
+    return _renderContentToString(content, languages, variables, variableOptions)
+}

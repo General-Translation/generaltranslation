@@ -1,8 +1,21 @@
-export type Variable = {
+export type VariableObject = {
     variable?: string;
     key: string;
 };
-export type Content = string | Array<string | Variable>;
+export type Content = string | Array<string | VariableObject>;
+export type ElementAsObject = {
+    type: string;
+    props: {
+        'data-generaltranslation'?: {
+            id: number;
+            [key: string]: any;
+        };
+        children?: ReactChildrenAsObject;
+        [key: string]: any;
+    };
+};
+export type ReactChildAsObject = string | ElementAsObject | VariableObject;
+export type ReactChildrenAsObject = ReactChildAsObject | ReactChildAsObject[];
 export type Update = {
     type: 'react';
     data: {
@@ -29,5 +42,23 @@ export type Request = {
         children: any;
         targetLanguage: string;
         metadata: Record<string, any>;
+    };
+};
+export type ContentTranslationResult = {
+    translation: Content;
+    language: string;
+    reference?: {
+        id: string;
+        key: string;
+        dictionaryName: string;
+    };
+};
+export type ReactTranslationResult = {
+    translation: Content;
+    language: string;
+    reference?: {
+        id: string;
+        key: string;
+        dictionaryName: string;
     };
 };

@@ -38,16 +38,11 @@ var __generator = (this && this.__generator) || function (thisArg, body) {
 Object.defineProperty(exports, "__esModule", { value: true });
 exports.default = _translateBundle;
 /**
- * Bundles multiple requests and sends them to the server.
- * @param {{ baseURL: string, apiKey: string }} gt - Contains the baseURL and apiKey for the server request.
- * @param {Request[]} requests - Array of requests to be processed and sent.
- * @param {{ timeout?: number }} options - Additional options for the request, including timeout.
- * @returns {Promise<Array<any | null>>} A promise that resolves to an array of processed results.
  * @internal
  */
 function _translateBundle(gt, requests) {
     return __awaiter(this, void 0, void 0, function () {
-        var controller, signal, response, _a, _b, _c, resultArray, error_1;
+        var controller, signal, response, _a, _b, _c, resultArray;
         var _d, _e, _f;
         return __generator(this, function (_g) {
             switch (_g.label) {
@@ -57,9 +52,6 @@ function _translateBundle(gt, requests) {
                     if ((_f = (_e = (_d = requests[0]) === null || _d === void 0 ? void 0 : _d.data) === null || _e === void 0 ? void 0 : _e.metadata) === null || _f === void 0 ? void 0 : _f.timeout) {
                         setTimeout(function () { return controller.abort(); }, requests[0].data.metadata.timeout);
                     }
-                    _g.label = 1;
-                case 1:
-                    _g.trys.push([1, 6, , 7]);
                     return [4 /*yield*/, fetch("".concat(gt.baseURL, "/bundle"), {
                             method: 'POST',
                             headers: {
@@ -69,24 +61,17 @@ function _translateBundle(gt, requests) {
                             body: JSON.stringify(requests),
                             signal: signal
                         })];
-                case 2:
+                case 1:
                     response = _g.sent();
-                    if (!!response.ok) return [3 /*break*/, 4];
+                    if (!!response.ok) return [3 /*break*/, 3];
                     _a = Error.bind;
                     _c = (_b = "".concat(response.status, ": ")).concat;
                     return [4 /*yield*/, response.text()];
-                case 3: throw new (_a.apply(Error, [void 0, _c.apply(_b, [_g.sent()])]))();
-                case 4: return [4 /*yield*/, response.json()];
-                case 5:
+                case 2: throw new (_a.apply(Error, [void 0, _c.apply(_b, [_g.sent()])]))();
+                case 3: return [4 /*yield*/, response.json()];
+                case 4:
                     resultArray = _g.sent();
                     return [2 /*return*/, resultArray];
-                case 6:
-                    error_1 = _g.sent();
-                    if (error_1 instanceof Error && error_1.name === 'AbortError') {
-                        throw new Error('Error: Request timed out.');
-                    }
-                    throw new Error("".concat(error_1));
-                case 7: return [2 /*return*/];
             }
         });
     });

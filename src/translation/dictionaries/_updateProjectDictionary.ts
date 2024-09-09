@@ -10,26 +10,19 @@ export default async function _updateProjectDictionary(
     projectID: string,
     replace: boolean
 ): Promise<string[]> {
-    try {
-        const response = await fetch(`${gt.baseURL}/update`, {
-            method: 'POST',
-            headers: {
-                'Content-Type': 'application/json',
-                'gtx-api-key': gt.apiKey,
-            },
-            body: JSON.stringify({
-                updates, languages, projectID, replace
-            })
-        });
-        if (!response.ok) {
-            throw new Error(`${response.status}: ${await response.text()}`);
-        }
-        const result = await response.json();
-        return result.languages;
-    } catch (error) {
-        if (error instanceof Error && error.name === 'AbortError') {
-            throw new Error('Error: Request timed out.');
-        }
-        throw new Error(`${error}`);
+    const response = await fetch(`${gt.baseURL}/update`, {
+        method: 'POST',
+        headers: {
+            'Content-Type': 'application/json',
+            'gtx-api-key': gt.apiKey,
+        },
+        body: JSON.stringify({
+            updates, languages, projectID, replace
+        })
+    });
+    if (!response.ok) {
+        throw new Error(`${response.status}: ${await response.text()}`);
     }
+    const result = await response.json();
+    return result.languages;
 }

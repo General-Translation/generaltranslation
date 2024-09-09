@@ -38,21 +38,11 @@ var __generator = (this && this.__generator) || function (thisArg, body) {
 Object.defineProperty(exports, "__esModule", { value: true });
 exports.default = _translate;
 /**
- * Translates the given string into the target language using a specified API.
- *
- * @param {{ baseURL: string, apiKey: string }} gt - An object containing baseURL and apiKey for the API.
- * @param {any} content - The string to be translated.
- * @param {string} targetLanguage - The target language code (e.g., 'en', 'fr') for the translation.
- * @param {{ [key: string]: any }} metadata - Additional metadata to be sent with the translation request.
- *
- * @returns {Promise<{ translation: any | null, error?: Error | unknown }>} - A promise that resolves to the translated content as an object, or null if an error occurs.
- *
- * @throws {Error} - Throws an error if the response from the API is not ok (status code not in the range 200-299).
  * @internal
 **/
 function _translate(gt, content, targetLanguage, metadata) {
     return __awaiter(this, void 0, void 0, function () {
-        var controller, signal, response, _a, _b, _c, result, error_1;
+        var controller, signal, response, _a, _b, _c, result;
         return __generator(this, function (_d) {
             switch (_d.label) {
                 case 0:
@@ -61,9 +51,6 @@ function _translate(gt, content, targetLanguage, metadata) {
                     if (metadata.timeout) {
                         setTimeout(function () { return controller.abort(); }, metadata.timeout);
                     }
-                    _d.label = 1;
-                case 1:
-                    _d.trys.push([1, 6, , 7]);
                     return [4 /*yield*/, fetch("".concat(gt.baseURL, "/translate"), {
                             method: 'POST',
                             headers: {
@@ -77,24 +64,17 @@ function _translate(gt, content, targetLanguage, metadata) {
                             }),
                             signal: signal
                         })];
-                case 2:
+                case 1:
                     response = _d.sent();
-                    if (!!response.ok) return [3 /*break*/, 4];
+                    if (!!response.ok) return [3 /*break*/, 3];
                     _a = Error.bind;
                     _c = (_b = "".concat(response.status, ": ")).concat;
                     return [4 /*yield*/, response.text()];
-                case 3: throw new (_a.apply(Error, [void 0, _c.apply(_b, [_d.sent()])]))();
-                case 4: return [4 /*yield*/, response.json()];
-                case 5:
+                case 2: throw new (_a.apply(Error, [void 0, _c.apply(_b, [_d.sent()])]))();
+                case 3: return [4 /*yield*/, response.json()];
+                case 4:
                     result = _d.sent();
                     return [2 /*return*/, result];
-                case 6:
-                    error_1 = _d.sent();
-                    if (error_1 instanceof Error && error_1.name === 'AbortError') {
-                        throw new Error('Error: Request timed out.');
-                    }
-                    throw new Error("".concat(error_1));
-                case 7: return [2 /*return*/];
             }
         });
     });

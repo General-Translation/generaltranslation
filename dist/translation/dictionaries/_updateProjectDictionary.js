@@ -42,24 +42,22 @@ exports.default = _updateProjectDictionary;
  */
 function _updateProjectDictionary(gt, updates, languages, projectID, replace) {
     return __awaiter(this, void 0, void 0, function () {
-        var response, _a, _b, _c, result, error_1;
+        var response, _a, _b, _c, result;
         return __generator(this, function (_d) {
             switch (_d.label) {
-                case 0:
-                    _d.trys.push([0, 5, , 6]);
-                    return [4 /*yield*/, fetch("".concat(gt.baseURL, "/update"), {
-                            method: 'POST',
-                            headers: {
-                                'Content-Type': 'application/json',
-                                'gtx-api-key': gt.apiKey,
-                            },
-                            body: JSON.stringify({
-                                updates: updates,
-                                languages: languages,
-                                projectID: projectID,
-                                replace: replace
-                            })
-                        })];
+                case 0: return [4 /*yield*/, fetch("".concat(gt.baseURL, "/update"), {
+                        method: 'POST',
+                        headers: {
+                            'Content-Type': 'application/json',
+                            'gtx-api-key': gt.apiKey,
+                        },
+                        body: JSON.stringify({
+                            updates: updates,
+                            languages: languages,
+                            projectID: projectID,
+                            replace: replace
+                        })
+                    })];
                 case 1:
                     response = _d.sent();
                     if (!!response.ok) return [3 /*break*/, 3];
@@ -71,13 +69,6 @@ function _updateProjectDictionary(gt, updates, languages, projectID, replace) {
                 case 4:
                     result = _d.sent();
                     return [2 /*return*/, result.languages];
-                case 5:
-                    error_1 = _d.sent();
-                    if (error_1 instanceof Error && error_1.name === 'AbortError') {
-                        throw new Error('Error: Request timed out.');
-                    }
-                    throw new Error("".concat(error_1));
-                case 6: return [2 /*return*/];
             }
         });
     });
