@@ -12,6 +12,7 @@ import _updateProjectDictionary from './translation/dictionaries/_updateProjectD
 import { _formatNum, _formatDateTime, _formatCurrency } from './formatting/_format';
 import { _splitStringToContent, _renderContentToString } from './formatting/_string_content'
 import { Content, Update, Request, ReactChildrenAsObject, ReactTranslationResult, ContentTranslationResult } from './types/types'
+import _determineLanguage from './codes/determineLanguage'
 
 // ----- CORE CLASS ----- // 
 
@@ -283,4 +284,29 @@ export function renderContentToString<V extends Record<string, any>>(
     variableOptions?: { [key in keyof V]?: Intl.NumberFormatOptions | Intl.DateTimeFormatOptions }
 ): string {
     return _renderContentToString(content, languages, variables, variableOptions)
+}
+
+/**
+ * Determines the best matching language from the approved languages list based on a provided
+ * list of preferred languages. The function prioritizes exact matches, but will also consider
+ * dialects of the same language if an exact match is not available. 
+ *
+ * It also respects the order of preference in both the provided languages list and the 
+ * approved languages list. A dialect match of a higher-preference language is considered better 
+ * than an exact match of a lower-preference language.
+ *
+ * For example, if the `languages` list is ['en', 'fr'], and the `approvedLanguages` list is 
+ * ['fr', 'en-GB'], it will prefer 'en-GB' over 'fr', even though 'fr' has an exact 
+ * dialect match, because 'en' appears earlier in the `languages` list.
+ *
+ * @param {string | string[]} languages - A single language or an array of languages sorted in preference order.
+ * @param {string[]} approvedLanguages - An array of approved languages, also sorted by preference.
+ * 
+ * @returns {string | undefined} - The best matching language from the approvedLanguages list, or undefined if no match is found.
+ */
+export function determineLanguage(
+    languages: string | string[],
+    approvedLanguages: string[]
+): string | undefined {
+    return _determineLanguage(languages, approvedLanguages);
 }

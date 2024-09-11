@@ -200,3 +200,22 @@ export declare function splitStringToContent(string: string): Content;
 export declare function renderContentToString<V extends Record<string, any>>(content: Content, languages?: string | string[], variables?: V, variableOptions?: {
     [key in keyof V]?: Intl.NumberFormatOptions | Intl.DateTimeFormatOptions;
 }): string;
+/**
+ * Determines the best matching language from the approved languages list based on a provided
+ * list of preferred languages. The function prioritizes exact matches, but will also consider
+ * dialects of the same language if an exact match is not available.
+ *
+ * It also respects the order of preference in both the provided languages list and the
+ * approved languages list. A dialect match of a higher-preference language is considered better
+ * than an exact match of a lower-preference language.
+ *
+ * For example, if the `languages` list is ['en', 'fr'], and the `approvedLanguages` list is
+ * ['fr', 'en-GB'], it will prefer 'en-GB' over 'fr', even though 'fr' has an exact
+ * dialect match, because 'en' appears earlier in the `languages` list.
+ *
+ * @param {string | string[]} languages - A single language or an array of languages sorted in preference order.
+ * @param {string[]} approvedLanguages - An array of approved languages, also sorted by preference.
+ *
+ * @returns {string | undefined} - The best matching language from the approvedLanguages list, or undefined if no match is found.
+ */
+export declare function determineLanguage(languages: string | string[], approvedLanguages: string[]): string | undefined;

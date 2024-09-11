@@ -62,6 +62,7 @@ exports.formatDateTime = formatDateTime;
 exports.formatCurrency = formatCurrency;
 exports.splitStringToContent = splitStringToContent;
 exports.renderContentToString = renderContentToString;
+exports.determineLanguage = determineLanguage;
 // ----- IMPORTS ----- //
 var codes_1 = require("./codes/codes");
 var getLanguageDirection_1 = __importDefault(require("./codes/getLanguageDirection"));
@@ -71,6 +72,7 @@ var _translateReact_1 = __importDefault(require("./translation/react/_translateR
 var _updateProjectDictionary_1 = __importDefault(require("./translation/dictionaries/_updateProjectDictionary"));
 var _format_1 = require("./formatting/_format");
 var _string_content_1 = require("./formatting/_string_content");
+var determineLanguage_1 = __importDefault(require("./codes/determineLanguage"));
 // ----- CORE CLASS ----- // 
 var getDefaultFromEnv = function (VARIABLE) {
     if (typeof process !== 'undefined' && process.env) {
@@ -277,4 +279,25 @@ function splitStringToContent(string) {
 */
 function renderContentToString(content, languages, variables, variableOptions) {
     return (0, _string_content_1._renderContentToString)(content, languages, variables, variableOptions);
+}
+/**
+ * Determines the best matching language from the approved languages list based on a provided
+ * list of preferred languages. The function prioritizes exact matches, but will also consider
+ * dialects of the same language if an exact match is not available.
+ *
+ * It also respects the order of preference in both the provided languages list and the
+ * approved languages list. A dialect match of a higher-preference language is considered better
+ * than an exact match of a lower-preference language.
+ *
+ * For example, if the `languages` list is ['en', 'fr'], and the `approvedLanguages` list is
+ * ['fr', 'en-GB'], it will prefer 'en-GB' over 'fr', even though 'fr' has an exact
+ * dialect match, because 'en' appears earlier in the `languages` list.
+ *
+ * @param {string | string[]} languages - A single language or an array of languages sorted in preference order.
+ * @param {string[]} approvedLanguages - An array of approved languages, also sorted by preference.
+ *
+ * @returns {string | undefined} - The best matching language from the approvedLanguages list, or undefined if no match is found.
+ */
+function determineLanguage(languages, approvedLanguages) {
+    return (0, determineLanguage_1.default)(languages, approvedLanguages);
 }
