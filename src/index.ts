@@ -68,19 +68,19 @@ class GT {
      * If `metadata.save` is provided, the translation is cached for use in a public project.
      * 
      * @param {Content} content - The string or array of strings/variables to be translated.
-     * @param {string} targetLanguage - The target language code (e.g., 'en', 'fr') for the translation.
+     * @param {string} language - The target language code (e.g., 'en', 'fr') for the translation.
      * @param {{ context?: string, save?: boolean, [key: string]: any }} [metadata] - Additional metadata for the translation request.
      * @param {string} [metadata.context] - Contextual information to assist with the translation.
      * @param {boolean} [metadata.save] - Whether to cache the translation for use in a public project.
      * 
      * @returns {Promise<ContentTranslationResult>} A promise that resolves to the translated content, or an error if the translation fails.
      */
-    async translate(content: Content, targetLanguage: string, metadata?: { 
+    async translate(content: Content, language: string, metadata?: { 
         context?: string,
         save?: boolean, 
         [key: string]: any 
     }): Promise<{ translation: Content, language: string }> {
-        return await _translate(this, content, targetLanguage, { projectID: this.projectID, defaultLanguage: this.defaultLanguage, ...metadata })
+        return await _translate(this, content, language, { projectID: this.projectID, defaultLanguage: this.defaultLanguage, ...metadata })
     }
 
     /**
@@ -88,13 +88,13 @@ class GT {
     * 
     * @param {Object} params - The parameters for the translation.
     * @param {ReactChildrenAsObject} params.children - The React children content to be translated.
-    * @param {string} params.targetLanguage - The target language for the translation.
+    * @param {string} params.language - The target language for the translation.
     * @param {Object} params.metadata - Additional metadata for the translation process.
     * 
     * @returns {Promise<ReactTranslationResult>} - A promise that resolves to the translated content.
     */
-    async translateReact(children: ReactChildrenAsObject, targetLanguage: string, metadata?: { context?: string, save?: boolean, [key: string]: any }): Promise<ReactTranslationResult> {
-        return await _translateReact(this, children, targetLanguage, { projectID: this.projectID, defaultLanguage: this.defaultLanguage, ...metadata });
+    async translateReact(children: ReactChildrenAsObject, language: string, metadata?: { context?: string, save?: boolean, [key: string]: any }): Promise<ReactTranslationResult> {
+        return await _translateReact(this, children, language, { projectID: this.projectID, defaultLanguage: this.defaultLanguage, ...metadata });
     }
 
     /**
@@ -108,7 +108,7 @@ class GT {
 
     /**
     * Pushes updates to a remotely cached translation dictionary.
-    * @param {Update[]} updates - Array of updates with optional targetLanguage.
+    * @param {Update[]} updates - Array of updates.
     * @param {string[]} [languages] - Array of languages to be updated.
     * @param {string} [projectID=this.projectID] - The ID of the project. Defaults to the instance's projectID.
     * @param {boolean} [replace=false] - Whether to replace the existing dictionary. Defaults to false.
