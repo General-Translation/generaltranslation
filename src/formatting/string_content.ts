@@ -1,6 +1,6 @@
 import libraryDefaultLanguage from '../settings/libraryDefaultLanguage';
 import { Content, VariableObject } from '../types/types'
-import { _formatCurrency, _formatDateTime, _formatNum, _formatList } from './format'
+import { _formatCurrency, _formatDateTime, _formatNum, _formatList, _formatRelativeTime } from './format'
 
 // Variable types mapping
 const variableTypeMap: { [key: string]: string } = {

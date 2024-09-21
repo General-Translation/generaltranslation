@@ -169,8 +169,8 @@ export function standardizeLanguageCode(code: string): string {
  * @param {string[]} codes - The BCP 47 language codes to compare.
  * @returns {boolean} True if all BCP 47 codes represent the same language, false otherwise.
  */
-export function isSameLanguage(codes: string[]): boolean {
-    return _isSameLanguage(codes)
+export function isSameLanguage(...codes: (string | string[])[]): boolean {
+    return _isSameLanguage(...codes)
 };
 
 /**

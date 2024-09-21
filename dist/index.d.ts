@@ -110,7 +110,7 @@ export declare function standardizeLanguageCode(code: string): string;
  * @param {string[]} codes - The BCP 47 language codes to compare.
  * @returns {boolean} True if all BCP 47 codes represent the same language, false otherwise.
  */
-export declare function isSameLanguage(codes: string[]): boolean;
+export declare function isSameLanguage(...codes: (string | string[])[]): boolean;
 /**
  * Formats a number according to the specified languages and options.
  * @param {Object} params - The parameters for the number formatting.

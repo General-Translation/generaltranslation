@@ -222,8 +222,12 @@ function standardizeLanguageCode(code) {
  * @param {string[]} codes - The BCP 47 language codes to compare.
  * @returns {boolean} True if all BCP 47 codes represent the same language, false otherwise.
  */
-function isSameLanguage(codes) {
-    return (0, _isSameLanguage_1.default)(codes);
+function isSameLanguage() {
+    var codes = [];
+    for (var _i = 0; _i < arguments.length; _i++) {
+        codes[_i] = arguments[_i];
+    }
+    return _isSameLanguage_1.default.apply(void 0, codes);
 }
 ;
 /**
