@@ -1,5 +1,6 @@
+import libraryDefaultLanguage from '../settings/libraryDefaultLanguage';
 import { Content, VariableObject } from '../types/types'
-import { _formatCurrency, _formatDateTime, _formatNum } from './_format'
+import { _formatCurrency, _formatDateTime, _formatNum, _formatList } from './format'
 
 // Variable types mapping
 const variableTypeMap: { [key: string]: string } = {
@@ -16,6 +17,9 @@ const variableTypeMap: { [key: string]: string } = {
  * @internal
  */
 export function _splitStringToContent(string: string): Content {
+    if (typeof string !== 'string')
+        throw new Error(`splitStringToContent: ${string} is not a string!`)
+
     const result: (string | VariableObject)[] = [];
     const regex = /{([^}]+)}/g;
     let lastIndex = 0;
@@ -68,38 +72,44 @@ export function _splitStringToContent(string: string): Content {
 /** 
 * @internal
 */
-export function _renderContentToString(content: Content, languages: string | string[] = 'en', variables: Record<string, any> = {}, variableOptions: Record<string, any> = {}): string {
-    if (typeof content === 'string') {
+export function _renderContentToString(content: Content, languages: string | string[] = libraryDefaultLanguage, variables: Record<string, any> = {}, variableOptions: Record<string, any> = {}): string {
+    if (typeof content === 'string')
         content = _splitStringToContent(content);
-    }
-    if (typeof content === 'string') {
+    if (typeof content === 'string')
         return content;
-    }
+    if (!Array.isArray(content))
+        throw new Error(`renderContentToString: content ${content} is invalid`);
     return content.map(item => {
         if (typeof item === 'string') return item;
         if (typeof item === 'object') {
             const value = variables[item.key]
             if (!item.variable) return value;
-            if (item.variable === "number") {
+            else if (item.variable === "number") {
                 return _formatNum({
                     value, languages, 
                     options: variableOptions[item.key]
                 })
             }
-            if (item.variable === "currency") {
+            else if (item.variable === "currency") {
                 return _formatCurrency({
                     value, languages, 
                     ...(variableOptions[item.key] && { options: variableOptions[item.key]}),
                     ...(variableOptions[item.key]?.currency && { currency: variableOptions[item.key].currency })
                 })
             }
-            if (item.variable === "datetime") {
+            else if (item.variable === "datetime") {
                 return _formatDateTime({
+                    value, languages, 
+                    ...(variableOptions[item.key] && { options: variableOptions[item.key]}),
+                })
+            }
+            else if (item.variable === "list") {
+                return _formatList({
                     value, languages, 
                     ...(variableOptions[item.key] && { options: variableOptions[item.key]}),
                 })
             }
             return value;
         }
-    }).join('')
+    }).join('') 
 }

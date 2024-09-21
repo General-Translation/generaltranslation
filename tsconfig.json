@@ -16,7 +16,8 @@
     "baseUrl": "./",
     "paths": {
       "generaltranslation": ["src/index.ts"]
-    }
+    },
+    "lib": ["ES2023"]
   },
   "include": ["src/index.ts"],
   "exclude": ["node_modules", "dist"]

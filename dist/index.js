@@ -22,8 +22,8 @@ var __awaiter = (this && this.__awaiter) || function (thisArg, _arguments, P, ge
     });
 };
 var __generator = (this && this.__generator) || function (thisArg, body) {
-    var _ = { label: 0, sent: function() { if (t[0] & 1) throw t[1]; return t[1]; }, trys: [], ops: [] }, f, y, t, g;
-    return g = { next: verb(0), "throw": verb(1), "return": verb(2) }, typeof Symbol === "function" && (g[Symbol.iterator] = function() { return this; }), g;
+    var _ = { label: 0, sent: function() { if (t[0] & 1) throw t[1]; return t[1]; }, trys: [], ops: [] }, f, y, t, g = Object.create((typeof Iterator === "function" ? Iterator : Object).prototype);
+    return g.next = verb(0), g["throw"] = verb(1), g["return"] = verb(2), typeof Symbol === "function" && (g[Symbol.iterator] = function() { return this; }), g;
     function verb(n) { return function (v) { return step([n, v]); }; }
     function step(op) {
         if (f) throw new TypeError("Generator is already executing.");
@@ -52,27 +52,30 @@ var __importDefault = (this && this.__importDefault) || function (mod) {
     return (mod && mod.__esModule) ? mod : { "default": mod };
 };
 Object.defineProperty(exports, "__esModule", { value: true });
-exports.standardizeLanguageCode = exports.isValidLanguageCode = exports.getLanguageDirection = void 0;
-exports.getLanguageObject = getLanguageObject;
-exports.getLanguageCode = getLanguageCode;
+exports.getLanguageDirection = getLanguageDirection;
 exports.getLanguageName = getLanguageName;
+exports.isValidLanguageCode = isValidLanguageCode;
+exports.standardizeLanguageCode = standardizeLanguageCode;
 exports.isSameLanguage = isSameLanguage;
 exports.formatNum = formatNum;
 exports.formatDateTime = formatDateTime;
 exports.formatCurrency = formatCurrency;
+exports.formatList = formatList;
+exports.formatRelativeTime = formatRelativeTime;
 exports.splitStringToContent = splitStringToContent;
 exports.renderContentToString = renderContentToString;
 exports.determineLanguage = determineLanguage;
 // ----- IMPORTS ----- //
-var codes_1 = require("./codes/codes");
-var getLanguageDirection_1 = __importDefault(require("./codes/getLanguageDirection"));
 var _translateBundle_1 = __importDefault(require("./translation/dictionaries/_translateBundle"));
 var _translate_1 = __importDefault(require("./translation/strings/_translate"));
 var _translateReact_1 = __importDefault(require("./translation/react/_translateReact"));
 var _updateProjectDictionary_1 = __importDefault(require("./translation/dictionaries/_updateProjectDictionary"));
-var _format_1 = require("./formatting/_format");
-var _string_content_1 = require("./formatting/_string_content");
-var determineLanguage_1 = __importDefault(require("./codes/determineLanguage"));
+var _determineLanguage_1 = __importDefault(require("./codes/_determineLanguage"));
+var format_1 = require("./formatting/format");
+var string_content_1 = require("./formatting/string_content");
+var codes_1 = require("./codes/codes");
+var _isSameLanguage_1 = __importDefault(require("./codes/_isSameLanguage"));
+var libraryDefaultLanguage_1 = __importDefault(require("./settings/libraryDefaultLanguage"));
 // ----- CORE CLASS ----- // 
 var getDefaultFromEnv = function (VARIABLE) {
     if (typeof process !== 'undefined' && process.env) {
@@ -94,7 +97,7 @@ var GT = /** @class */ (function () {
      * @param {string} [params.baseURL='https://prod.gtx.dev'] - The base URL for the translation service.
      */
     function GT(_a) {
-        var _b = _a === void 0 ? {} : _a, _c = _b.apiKey, apiKey = _c === void 0 ? '' : _c, _d = _b.defaultLanguage, defaultLanguage = _d === void 0 ? 'en' : _d, _e = _b.projectID, projectID = _e === void 0 ? '' : _e, _f = _b.baseURL, baseURL = _f === void 0 ? 'https://prod.gtx.dev' : _f;
+        var _b = _a === void 0 ? {} : _a, _c = _b.apiKey, apiKey = _c === void 0 ? '' : _c, _d = _b.defaultLanguage, defaultLanguage = _d === void 0 ? libraryDefaultLanguage_1.default : _d, _e = _b.projectID, projectID = _e === void 0 ? '' : _e, _f = _b.baseURL, baseURL = _f === void 0 ? 'https://prod.gtx.dev' : _f;
         this.apiKey = apiKey || getDefaultFromEnv('GT_API_KEY');
         this.projectID = projectID || getDefaultFromEnv('GT_PROJECT_ID');
         this.defaultLanguage = defaultLanguage.toLowerCase();
@@ -163,62 +166,64 @@ var GT = /** @class */ (function () {
     * @returns {Promise<string[]>} A promise that resolves to an array of strings indicating the languages which have been updated.
     */
     GT.prototype.updateProjectDictionary = function (updates_1) {
-        return __awaiter(this, arguments, void 0, function (updates, languages, projectID, replace) {
+        return __awaiter(this, arguments, void 0, function (updates, languages, replace) {
             if (languages === void 0) { languages = []; }
-            if (projectID === void 0) { projectID = this.projectID; }
             if (replace === void 0) { replace = false; }
             return __generator(this, function (_a) {
-                return [2 /*return*/, (0, _updateProjectDictionary_1.default)(this, updates, languages, projectID, replace)];
+                return [2 /*return*/, (0, _updateProjectDictionary_1.default)(this, updates, languages, replace)];
             });
         });
     };
     return GT;
 }());
 // ----- EXPORTS ----- //
-// Export the class
 exports.default = GT;
-// Export the functions 
 /**
- * Gets the writing direction for a given BCP 47 language code.
- * @param {string} code - The BCP 47 language code to check.
- * @returns {string} The language direction ('ltr' for left-to-right or 'rtl' for right-to-left).
+ * Get the text direction for a given language code using the Intl.Locale API.
+ *
+ * @param {string} code - The language code to check.
+ * @returns {string} - 'rtl' if the language is right-to-left, otherwise 'ltr'.
  */
-var getLanguageDirection = function (code) { return (0, getLanguageDirection_1.default)(code); };
-exports.getLanguageDirection = getLanguageDirection;
+function getLanguageDirection(code) {
+    return (0, codes_1._getLanguageDirection)(code);
+}
+;
+/**
+ * Retrieves the display name(s) of language code(s) using Intl.DisplayNames.
+ *
+ * @param {string | string[]} code - A language code or an array of codes.
+ * @param {string} [language = 'en'] - The language for display names.
+ * @returns {string | string[]} The display name(s) corresponding to the code(s), or empty string(s) if invalid.
+ */
+function getLanguageName(code, language) {
+    return (0, codes_1._getLanguageName)(code, language);
+}
+;
 /**
  * Checks if a given BCP 47 language code is valid.
  * @param {string} code - The BCP 47 language code to validate.
  * @returns {boolean} True if the BCP 47 code is valid, false otherwise.
  */
-var isValidLanguageCode = function (code) { return (0, codes_1._isValidLanguageCode)(code); };
-exports.isValidLanguageCode = isValidLanguageCode;
+function isValidLanguageCode(code) {
+    return (0, codes_1._isValidLanguageCode)(code);
+}
+;
 /**
  * Standardizes a BCP 47 language code to ensure correct formatting.
  * @param {string} code - The BCP 47 language code to standardize.
  * @returns {string} The standardized BCP 47 language code.
  */
-var standardizeLanguageCode = function (code) { return (0, codes_1._standardizeLanguageCode)(code); };
-exports.standardizeLanguageCode = standardizeLanguageCode;
-function getLanguageObject(codes) {
-    return Array.isArray(codes) ? (0, codes_1._getLanguageObject)(codes) : (0, codes_1._getLanguageObject)(codes);
+function standardizeLanguageCode(code) {
+    return (0, codes_1._standardizeLanguageCode)(code);
 }
-function getLanguageCode(languages) {
-    return (0, codes_1._getLanguageCode)(languages);
-}
-function getLanguageName(codes) {
-    return (0, codes_1._getLanguageName)(codes);
-}
+;
 /**
  * Checks if multiple BCP 47 language codes represent the same language.
  * @param {string[]} codes - The BCP 47 language codes to compare.
  * @returns {boolean} True if all BCP 47 codes represent the same language, false otherwise.
  */
-function isSameLanguage() {
-    var codes = [];
-    for (var _i = 0; _i < arguments.length; _i++) {
-        codes[_i] = arguments[_i];
-    }
-    return codes_1._isSameLanguage.apply(void 0, codes);
+function isSameLanguage(codes) {
+    return (0, _isSameLanguage_1.default)(codes);
 }
 ;
 /**
@@ -229,10 +234,10 @@ function isSameLanguage() {
  * @param {Intl.NumberFormatOptions} [params.options={}] - Additional options for number formatting.
  * @returns {string} The formatted number.
  */
-function formatNum(_a) {
-    var value = _a.value, languages = _a.languages, options = _a.options;
-    return (0, _format_1._formatNum)({ value: value, languages: languages, options: options });
+function formatNum(params) {
+    return (0, format_1._formatNum)(params);
 }
+;
 /**
  * Formats a date according to the specified languages and options.
  * @param {Object} params - The parameters for the date formatting.
@@ -241,10 +246,10 @@ function formatNum(_a) {
  * @param {Intl.DateTimeFormatOptions} [params.options={}] - Additional options for date formatting.
  * @returns {string} The formatted date.
  */
-function formatDateTime(_a) {
-    var value = _a.value, languages = _a.languages, options = _a.options;
-    return (0, _format_1._formatDateTime)({ value: value, languages: languages, options: options });
+function formatDateTime(params) {
+    return (0, format_1._formatDateTime)(params);
 }
+;
 /**
  * Formats a currency value according to the specified languages, currency, and options.
  * @param {Object} params - The parameters for the currency formatting.
@@ -254,50 +259,63 @@ function formatDateTime(_a) {
  * @param {Intl.NumberFormatOptions} [params.options={}] - Additional options for currency formatting.
  * @returns {string} The formatted currency value.
  */
-function formatCurrency(_a) {
-    var value = _a.value, languages = _a.languages, currency = _a.currency, options = _a.options;
-    return (0, _format_1._formatCurrency)({ value: value, languages: languages, currency: currency, options: options });
+function formatCurrency(params) {
+    return (0, format_1._formatCurrency)(params);
 }
+;
+/**
+ * Formats a list of items according to the specified languages and options.
+ * @param {Object} params - The parameters for the list formatting.
+ * @param {Array<string | number>} params.value - The list of items to format.
+ * @param {string | string[]} [params.languages=['en']] - The languages to use for formatting.
+ * @param {Intl.ListFormatOptions} [params.options={}] - Additional options for list formatting.
+ * @returns {string} The formatted list.
+ */
+function formatList(params) {
+    return (0, format_1._formatList)(params);
+}
+;
+/**
+ * Formats a relative time value according to the specified languages and options.
+ * @param {Object} params - The parameters for the relative time formatting.
+ * @param {number} params.value - The relative time value to format.
+ * @param {Intl.RelativeTimeFormatUnit} params.unit - The unit of time (e.g., 'second', 'minute', 'hour', 'day', 'week', 'month', 'year').
+ * @param {string | string[]} [params.languages=['en']] - The languages to use for formatting.
+ * @param {Intl.RelativeTimeFormatOptions} [params.options={}] - Additional options for relative time formatting.
+ * @returns {string} The formatted relative time string.
+ */
+function formatRelativeTime(params) {
+    return (0, format_1._formatRelativeTime)(params);
+}
+;
 /**
  * Splits a string into an array of text and variable objects.
- *
  * @param {string} string - The input string to split.
  * @returns {Content} - An array containing strings and VariableObjects.
  */
 function splitStringToContent(string) {
-    return (0, _string_content_1._splitStringToContent)(string);
+    return (0, string_content_1._splitStringToContent)(string);
 }
+;
 /**
  * Renders content to a string by replacing variables with their formatted values.
- *
- * @param {Content} content - The content to render, which can be a string or an array of strings and VariableObjects.
+ * @param {Content} content - The content to render.
  * @param {string | string[]} [languages='en'] - The language(s) to use for formatting.
- * @param {Record<string, any>} [variables={}] - An object containing variable values keyed by variable names.
- * @param {Record<string, any>} [variableOptions={}] - An object containing options for formatting variables, keyed by variable names.
+ * @param {Record<string, any>} [variables={}] - An object containing variable values.
+ * @param {Record<string, any>} [variableOptions={}] - An object containing options for formatting variables.
  * @returns {string} - The rendered string with variables replaced by their formatted values.
- *
-*/
+ */
 function renderContentToString(content, languages, variables, variableOptions) {
-    return (0, _string_content_1._renderContentToString)(content, languages, variables, variableOptions);
+    return (0, string_content_1._renderContentToString)(content, languages, variables, variableOptions);
 }
+;
 /**
- * Determines the best matching language from the approved languages list based on a provided
- * list of preferred languages. The function prioritizes exact matches, but will also consider
- * dialects of the same language if an exact match is not available.
- *
- * It also respects the order of preference in both the provided languages list and the
- * approved languages list. A dialect match of a higher-preference language is considered better
- * than an exact match of a lower-preference language.
- *
- * For example, if the `languages` list is ['en', 'fr'], and the `approvedLanguages` list is
- * ['fr', 'en-GB'], it will prefer 'en-GB' over 'fr', even though 'fr' has an exact
- * dialect match, because 'en' appears earlier in the `languages` list.
- *
+ * Determines the best matching language from the approved languages list based on a provided list of preferred languages.
  * @param {string | string[]} languages - A single language or an array of languages sorted in preference order.
  * @param {string[]} approvedLanguages - An array of approved languages, also sorted by preference.
- *
  * @returns {string | undefined} - The best matching language from the approvedLanguages list, or undefined if no match is found.
  */
 function determineLanguage(languages, approvedLanguages) {
-    return (0, determineLanguage_1.default)(languages, approvedLanguages);
+    return (0, _determineLanguage_1.default)(languages, approvedLanguages);
 }
+;

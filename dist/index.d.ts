@@ -1,4 +1,3 @@
-import { LanguageObject } from './codes/codes';
 import { Content, Update, Request, ReactChildrenAsObject, ReactTranslationResult, ContentTranslationResult } from './types/types';
 /**
  * Type representing the constructor parameters for the GT class.
@@ -76,69 +75,42 @@ declare class GT {
     * @param {boolean} [replace=false] - Whether to replace the existing dictionary. Defaults to false.
     * @returns {Promise<string[]>} A promise that resolves to an array of strings indicating the languages which have been updated.
     */
-    updateProjectDictionary(updates: Update[], languages?: string[], projectID?: string, replace?: boolean): Promise<string[]>;
+    updateProjectDictionary(updates: Update[], languages?: string[], replace?: boolean): Promise<string[]>;
 }
 export default GT;
 /**
- * Gets the writing direction for a given BCP 47 language code.
- * @param {string} code - The BCP 47 language code to check.
- * @returns {string} The language direction ('ltr' for left-to-right or 'rtl' for right-to-left).
+ * Get the text direction for a given language code using the Intl.Locale API.
+ *
+ * @param {string} code - The language code to check.
+ * @returns {string} - 'rtl' if the language is right-to-left, otherwise 'ltr'.
  */
-export declare const getLanguageDirection: (code: string) => string;
+export declare function getLanguageDirection(code: string): string;
+/**
+ * Retrieves the display name(s) of language code(s) using Intl.DisplayNames.
+ *
+ * @param {string | string[]} code - A language code or an array of codes.
+ * @param {string} [language = 'en'] - The language for display names.
+ * @returns {string | string[]} The display name(s) corresponding to the code(s), or empty string(s) if invalid.
+ */
+export declare function getLanguageName(code: string | string[], language?: string): string | string[];
 /**
  * Checks if a given BCP 47 language code is valid.
  * @param {string} code - The BCP 47 language code to validate.
  * @returns {boolean} True if the BCP 47 code is valid, false otherwise.
  */
-export declare const isValidLanguageCode: (code: string) => boolean;
+export declare function isValidLanguageCode(code: string): boolean;
 /**
  * Standardizes a BCP 47 language code to ensure correct formatting.
  * @param {string} code - The BCP 47 language code to standardize.
  * @returns {string} The standardized BCP 47 language code.
  */
-export declare const standardizeLanguageCode: (code: string) => string;
-/**
- * Gets a language object from a BCP 47 language code.
- * @param {string} code - The BCP 47 language code to convert.
- * @returns {LanguageObject | null} The language object or null if the BCP 47 code is invalid.
- */
-export declare function getLanguageObject(code: string): LanguageObject | null;
-/**
- * Gets language objects from multiple BCP 47 language codes.
- * @param {string[]} codes - The BCP 47 language codes to convert.
- * @returns {(LanguageObject | null)[]} An array of language objects or null for each invalid BCP 47 code.
- */
-export declare function getLanguageObject(codes: string[]): (LanguageObject | null)[];
-/**
- * Gets a BCP 47 language code from a language name.
- * @param {string} language - The language name to convert.
- * @returns {string} The corresponding BCP 47 language code.
- */
-export declare function getLanguageCode(language: string): string;
-/**
- * Gets BCP 47 language codes from multiple language names.
- * @param {string[]} languages - The language names to convert.
- * @returns {string[]} The corresponding BCP 47 language codes.
- */
-export declare function getLanguageCode(languages: string[]): string[];
-/**
- * Gets a language name from a BCP 47 language code.
- * @param {string} code - The BCP 47 language code to convert.
- * @returns {string} The corresponding language name.
- */
-export declare function getLanguageName(code: string): string;
-/**
- * Gets language names from multiple BCP 47 language codes.
- * @param {string[]} codes - The BCP 47 language codes to convert.
- * @returns {string[]} The corresponding language names.
- */
-export declare function getLanguageName(codes: string[]): string[];
+export declare function standardizeLanguageCode(code: string): string;
 /**
  * Checks if multiple BCP 47 language codes represent the same language.
  * @param {string[]} codes - The BCP 47 language codes to compare.
  * @returns {boolean} True if all BCP 47 codes represent the same language, false otherwise.
  */
-export declare function isSameLanguage(...codes: string[]): boolean;
+export declare function isSameLanguage(codes: string[]): boolean;
 /**
  * Formats a number according to the specified languages and options.
  * @param {Object} params - The parameters for the number formatting.
@@ -147,7 +119,7 @@ export declare function isSameLanguage(...codes: string[]): boolean;
  * @param {Intl.NumberFormatOptions} [params.options={}] - Additional options for number formatting.
  * @returns {string} The formatted number.
  */
-export declare function formatNum({ value, languages, options }: {
+export declare function formatNum(params: {
     value: number;
     languages?: string | string[];
     options?: Intl.NumberFormatOptions;
@@ -160,7 +132,7 @@ export declare function formatNum({ value, languages, options }: {
  * @param {Intl.DateTimeFormatOptions} [params.options={}] - Additional options for date formatting.
  * @returns {string} The formatted date.
  */
-export declare function formatDateTime({ value, languages, options }: {
+export declare function formatDateTime(params: {
     value: Date;
     languages?: string | string[];
     options?: Intl.DateTimeFormatOptions;
@@ -174,48 +146,59 @@ export declare function formatDateTime({ value, languages, options }: {
  * @param {Intl.NumberFormatOptions} [params.options={}] - Additional options for currency formatting.
  * @returns {string} The formatted currency value.
  */
-export declare function formatCurrency({ value, languages, currency, options }: {
+export declare function formatCurrency(params: {
     value: number;
+    currency: string;
     languages?: string | string[];
-    currency?: string;
     options?: Intl.NumberFormatOptions;
 }): string;
 /**
+ * Formats a list of items according to the specified languages and options.
+ * @param {Object} params - The parameters for the list formatting.
+ * @param {Array<string | number>} params.value - The list of items to format.
+ * @param {string | string[]} [params.languages=['en']] - The languages to use for formatting.
+ * @param {Intl.ListFormatOptions} [params.options={}] - Additional options for list formatting.
+ * @returns {string} The formatted list.
+ */
+export declare function formatList(params: {
+    value: Array<string | number>;
+    languages?: string | string[];
+    options?: Intl.ListFormatOptions;
+}): string;
+/**
+ * Formats a relative time value according to the specified languages and options.
+ * @param {Object} params - The parameters for the relative time formatting.
+ * @param {number} params.value - The relative time value to format.
+ * @param {Intl.RelativeTimeFormatUnit} params.unit - The unit of time (e.g., 'second', 'minute', 'hour', 'day', 'week', 'month', 'year').
+ * @param {string | string[]} [params.languages=['en']] - The languages to use for formatting.
+ * @param {Intl.RelativeTimeFormatOptions} [params.options={}] - Additional options for relative time formatting.
+ * @returns {string} The formatted relative time string.
+ */
+export declare function formatRelativeTime(params: {
+    value: number;
+    unit: Intl.RelativeTimeFormatUnit;
+    languages?: string | string[];
+    options?: Intl.RelativeTimeFormatOptions;
+}): string;
+/**
  * Splits a string into an array of text and variable objects.
- *
  * @param {string} string - The input string to split.
  * @returns {Content} - An array containing strings and VariableObjects.
  */
 export declare function splitStringToContent(string: string): Content;
 /**
  * Renders content to a string by replacing variables with their formatted values.
- *
- * @param {Content} content - The content to render, which can be a string or an array of strings and VariableObjects.
+ * @param {Content} content - The content to render.
  * @param {string | string[]} [languages='en'] - The language(s) to use for formatting.
- * @param {Record<string, any>} [variables={}] - An object containing variable values keyed by variable names.
- * @param {Record<string, any>} [variableOptions={}] - An object containing options for formatting variables, keyed by variable names.
+ * @param {Record<string, any>} [variables={}] - An object containing variable values.
+ * @param {Record<string, any>} [variableOptions={}] - An object containing options for formatting variables.
  * @returns {string} - The rendered string with variables replaced by their formatted values.
- *
-*/
-export declare function renderContentToString<V extends Record<string, any>>(content: Content, languages?: string | string[], variables?: V, variableOptions?: {
-    [key in keyof V]?: Intl.NumberFormatOptions | Intl.DateTimeFormatOptions;
-}): string;
+ */
+export declare function renderContentToString(content: Content, languages?: string | string[], variables?: Record<string, any>, variableOptions?: Record<string, any>): string;
 /**
- * Determines the best matching language from the approved languages list based on a provided
- * list of preferred languages. The function prioritizes exact matches, but will also consider
- * dialects of the same language if an exact match is not available.
- *
- * It also respects the order of preference in both the provided languages list and the
- * approved languages list. A dialect match of a higher-preference language is considered better
- * than an exact match of a lower-preference language.
- *
- * For example, if the `languages` list is ['en', 'fr'], and the `approvedLanguages` list is
- * ['fr', 'en-GB'], it will prefer 'en-GB' over 'fr', even though 'fr' has an exact
- * dialect match, because 'en' appears earlier in the `languages` list.
- *
+ * Determines the best matching language from the approved languages list based on a provided list of preferred languages.
  * @param {string | string[]} languages - A single language or an array of languages sorted in preference order.
  * @param {string[]} approvedLanguages - An array of approved languages, also sorted by preference.
- *
  * @returns {string | undefined} - The best matching language from the approvedLanguages list, or undefined if no match is found.
  */
 export declare function determineLanguage(languages: string | string[], approvedLanguages: string[]): string | undefined;

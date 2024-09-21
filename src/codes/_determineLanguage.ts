@@ -1,4 +1,4 @@
-import { _isSameLanguage } from './codes'
+import isSameLanguage from './_isSameLanguage'
 
 /**
  * Given a list of language and a list of approved language, sorted in preference order
@@ -14,7 +14,7 @@ export default function _determineLanguage(
     for (const language of languages) {
         const exactMatch = approvedLanguages.find(approvedLanguage => approvedLanguage === language)
         if (exactMatch) return exactMatch;
-        const sameLanguage = approvedLanguages.find(approvedLanguage => _isSameLanguage(approvedLanguage, language));
+        const sameLanguage = approvedLanguages.find(approvedLanguage => isSameLanguage(approvedLanguage, language));
         if (sameLanguage) return sameLanguage;
     }
     return undefined;

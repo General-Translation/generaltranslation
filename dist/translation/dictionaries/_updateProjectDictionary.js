@@ -9,8 +9,8 @@ var __awaiter = (this && this.__awaiter) || function (thisArg, _arguments, P, ge
     });
 };
 var __generator = (this && this.__generator) || function (thisArg, body) {
-    var _ = { label: 0, sent: function() { if (t[0] & 1) throw t[1]; return t[1]; }, trys: [], ops: [] }, f, y, t, g;
-    return g = { next: verb(0), "throw": verb(1), "return": verb(2) }, typeof Symbol === "function" && (g[Symbol.iterator] = function() { return this; }), g;
+    var _ = { label: 0, sent: function() { if (t[0] & 1) throw t[1]; return t[1]; }, trys: [], ops: [] }, f, y, t, g = Object.create((typeof Iterator === "function" ? Iterator : Object).prototype);
+    return g.next = verb(0), g["throw"] = verb(1), g["return"] = verb(2), typeof Symbol === "function" && (g[Symbol.iterator] = function() { return this; }), g;
     function verb(n) { return function (v) { return step([n, v]); }; }
     function step(op) {
         if (f) throw new TypeError("Generator is already executing.");
@@ -40,7 +40,7 @@ exports.default = _updateProjectDictionary;
 /**
  * @internal
  */
-function _updateProjectDictionary(gt, updates, languages, projectID, replace) {
+function _updateProjectDictionary(gt, updates, languages, replace) {
     return __awaiter(this, void 0, void 0, function () {
         var response, _a, _b, _c, result;
         return __generator(this, function (_d) {
@@ -54,7 +54,6 @@ function _updateProjectDictionary(gt, updates, languages, projectID, replace) {
                         body: JSON.stringify({
                             updates: updates,
                             languages: languages,
-                            projectID: projectID,
                             replace: replace
                         })
                     })];
@@ -68,7 +67,7 @@ function _updateProjectDictionary(gt, updates, languages, projectID, replace) {
                 case 3: return [4 /*yield*/, response.json()];
                 case 4:
                     result = _d.sent();
-                    return [2 /*return*/, result.languages];
+                    return [2 /*return*/, result === null || result === void 0 ? void 0 : result.languages];
             }
         });
     });

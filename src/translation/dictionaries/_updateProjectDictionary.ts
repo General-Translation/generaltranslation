@@ -7,7 +7,6 @@ export default async function _updateProjectDictionary(
     gt: { baseURL: string, apiKey: string },
     updates: Update[],
     languages: string[],
-    projectID: string,
     replace: boolean
 ): Promise<string[]> {
     const response = await fetch(`${gt.baseURL}/update`, {
@@ -17,12 +16,12 @@ export default async function _updateProjectDictionary(
             'gtx-api-key': gt.apiKey,
         },
         body: JSON.stringify({
-            updates, languages, projectID, replace
+            updates, languages, replace
         })
     });
     if (!response.ok) {
         throw new Error(`${response.status}: ${await response.text()}`);
     }
     const result = await response.json();
-    return result.languages;
+    return (result as { languages: string[] })?.languages;
 }

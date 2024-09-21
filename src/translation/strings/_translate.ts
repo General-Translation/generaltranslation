@@ -29,6 +29,6 @@ export default async function _translate(
         throw new Error(`${response.status}: ${await response.text()}`);
     }
     const result = await response.json();
-    return result;
+    return result as ContentTranslationResult;
 }
 

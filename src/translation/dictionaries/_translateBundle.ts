@@ -25,5 +25,5 @@ export default async function _translateBundle(
         throw new Error(`${response.status}: ${await response.text()}`);
     }
     const resultArray = await response.json();
-    return resultArray;
+    return resultArray as Array<ReactTranslationResult | ContentTranslationResult>;
 }

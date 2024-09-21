@@ -10,10 +10,14 @@ var __assign = (this && this.__assign) || function () {
     };
     return __assign.apply(this, arguments);
 };
+var __importDefault = (this && this.__importDefault) || function (mod) {
+    return (mod && mod.__esModule) ? mod : { "default": mod };
+};
 Object.defineProperty(exports, "__esModule", { value: true });
 exports._splitStringToContent = _splitStringToContent;
 exports._renderContentToString = _renderContentToString;
-var _format_1 = require("./_format");
+var libraryDefaultLanguage_1 = __importDefault(require("../settings/libraryDefaultLanguage"));
+var format_1 = require("./format");
 // Variable types mapping
 var variableTypeMap = {
     var: "variable",
@@ -70,14 +74,13 @@ function _splitStringToContent(string) {
 * @internal
 */
 function _renderContentToString(content, languages, variables, variableOptions) {
-    if (languages === void 0) { languages = 'en'; }
+    if (languages === void 0) { languages = libraryDefaultLanguage_1.default; }
     if (variables === void 0) { variables = {}; }
     if (variableOptions === void 0) { variableOptions = {}; }
     if (typeof content === 'string')
         content = _splitStringToContent(content);
     if (typeof content === 'string')
         return content;
-    console.log('content:', content);
     if (!Array.isArray(content))
         throw new Error("renderContentToString: content ".concat(content, " is invalid"));
     return content.map(function (item) {
@@ -88,18 +91,21 @@ function _renderContentToString(content, languages, variables, variableOptions) 
             var value = variables[item.key];
             if (!item.variable)
                 return value;
-            if (item.variable === "number") {
-                return (0, _format_1._formatNum)({
+            else if (item.variable === "number") {
+                return (0, format_1._formatNum)({
                     value: value,
                     languages: languages,
                     options: variableOptions[item.key]
                 });
             }
-            if (item.variable === "currency") {
-                return (0, _format_1._formatCurrency)(__assign(__assign({ value: value, languages: languages }, (variableOptions[item.key] && { options: variableOptions[item.key] })), (((_a = variableOptions[item.key]) === null || _a === void 0 ? void 0 : _a.currency) && { currency: variableOptions[item.key].currency })));
+            else if (item.variable === "currency") {
+                return (0, format_1._formatCurrency)(__assign(__assign({ value: value, languages: languages }, (variableOptions[item.key] && { options: variableOptions[item.key] })), (((_a = variableOptions[item.key]) === null || _a === void 0 ? void 0 : _a.currency) && { currency: variableOptions[item.key].currency })));
             }
-            if (item.variable === "datetime") {
-                return (0, _format_1._formatDateTime)(__assign({ value: value, languages: languages }, (variableOptions[item.key] && { options: variableOptions[item.key] })));
+            else if (item.variable === "datetime") {
+                return (0, format_1._formatDateTime)(__assign({ value: value, languages: languages }, (variableOptions[item.key] && { options: variableOptions[item.key] })));
+            }
+            else if (item.variable === "list") {
+                return (0, format_1._formatList)(__assign({ value: value, languages: languages }, (variableOptions[item.key] && { options: variableOptions[item.key] })));
             }
             return value;
         }

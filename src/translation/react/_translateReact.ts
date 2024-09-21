@@ -30,5 +30,5 @@ export default async function _translateReact(
     if (!response.ok) {
         throw new Error(`${response.status}: ${await response.text()}`);
     }
-    return await response.json();
+    return await response.json() as ReactTranslationResult;
 }
