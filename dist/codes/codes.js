@@ -16,7 +16,7 @@ var libraryDefaultLanguage_1 = __importDefault(require("../settings/libraryDefau
 var _isValidLanguageCode = function (code) {
     try {
         var displayNames = new Intl.DisplayNames([libraryDefaultLanguage_1.default], { type: 'language' });
-        return displayNames.of(code) !== code;
+        return displayNames.of(code) !== code.toLowerCase();
     }
     catch (_a) {
         return false;

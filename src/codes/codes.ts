@@ -9,7 +9,7 @@ import libraryDefaultLanguage from "../settings/libraryDefaultLanguage";
 export const _isValidLanguageCode = (code: string): boolean => {
     try {
         const displayNames = new Intl.DisplayNames([libraryDefaultLanguage], { type: 'language' });
-        return displayNames.of(code) !== code;
+        return displayNames.of(code) !== code.toLowerCase();
     } catch {
         return false;
     }
