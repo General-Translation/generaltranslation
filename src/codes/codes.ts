@@ -8,8 +8,18 @@ import libraryDefaultLanguage from "../settings/libraryDefaultLanguage";
  */
 export const _isValidLanguageCode = (code: string): boolean => {
     try {
-        const displayNames = new Intl.DisplayNames([libraryDefaultLanguage], { type: 'language' });
-        return displayNames.of(code) !== code.toLowerCase();
+        const { language, region, script } = new Intl.Locale(code);
+        const displayLanguageNames = new Intl.DisplayNames([libraryDefaultLanguage], { type: 'language' });
+        if (displayLanguageNames.of(language) === language) return false;
+        if (region) {
+            const displayRegionNames = new Intl.DisplayNames([libraryDefaultLanguage], { type: 'region' });
+            if (displayRegionNames.of(region) === region) return false;
+        }
+        if (script) {
+            const displayScriptNames = new Intl.DisplayNames([libraryDefaultLanguage], { type: 'script' });
+            if (displayScriptNames.of(script) === script) return false;
+        }
+        return true;
     } catch {
         return false;
     }

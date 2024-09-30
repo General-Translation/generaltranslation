@@ -15,10 +15,23 @@ var libraryDefaultLanguage_1 = __importDefault(require("../settings/libraryDefau
  */
 var _isValidLanguageCode = function (code) {
     try {
-        var displayNames = new Intl.DisplayNames([libraryDefaultLanguage_1.default], { type: 'language' });
-        return displayNames.of(code) !== code.toLowerCase();
+        var _a = new Intl.Locale(code), language = _a.language, region = _a.region, script = _a.script;
+        var displayLanguageNames = new Intl.DisplayNames([libraryDefaultLanguage_1.default], { type: 'language' });
+        if (displayLanguageNames.of(language) === language)
+            return false;
+        if (region) {
+            var displayRegionNames = new Intl.DisplayNames([libraryDefaultLanguage_1.default], { type: 'region' });
+            if (displayRegionNames.of(region) === region)
+                return false;
+        }
+        if (script) {
+            var displayScriptNames = new Intl.DisplayNames([libraryDefaultLanguage_1.default], { type: 'script' });
+            if (displayScriptNames.of(script) === script)
+                return false;
+        }
+        return true;
     }
-    catch (_a) {
+    catch (_b) {
         return false;
     }
 };
