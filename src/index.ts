@@ -121,10 +121,8 @@ class GT {
 
 }
 
-
 // ----- EXPORTS ----- //
 
-export default GT;
 /**
  * Get the text direction for a given language code using the Intl.Locale API.
  * 
@@ -265,3 +263,7 @@ export function renderContentToString(content: Content, languages?: string | str
 export function determineLanguage(languages: string | string[], approvedLanguages: string[]): string | undefined {
     return _determineLanguage(languages, approvedLanguages);
 };
+
+// DEFAULT EXPORT
+
+export default GT;

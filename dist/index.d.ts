@@ -77,7 +77,6 @@ declare class GT {
     */
     updateProjectDictionary(updates: Update[], languages?: string[], replace?: boolean): Promise<string[]>;
 }
-export default GT;
 /**
  * Get the text direction for a given language code using the Intl.Locale API.
  *
@@ -202,3 +201,4 @@ export declare function renderContentToString(content: Content, languages?: stri
  * @returns {string | undefined} - The best matching language from the approvedLanguages list, or undefined if no match is found.
  */
 export declare function determineLanguage(languages: string | string[], approvedLanguages: string[]): string | undefined;
+export default GT;

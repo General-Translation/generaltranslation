@@ -1,6 +1,6 @@
 {
   "compilerOptions": {
-    "module": "CommonJS",
+    "module": "ESNext",
     "strict": true,
     "esModuleInterop": true,
     "skipLibCheck": true,
@@ -15,10 +15,12 @@
     "rootDir": "./src",
     "baseUrl": "./",
     "paths": {
-      "generaltranslation": ["src/index.ts"]
+      "generaltranslation": ["dist/index.d.ts"],
+      "generaltranslation/internal": ["dist/internal.d.ts"]
     },
     "lib": ["ES2023"]
   },
-  "include": ["src/index.ts"],
+  "include": ["src/**/*.ts"],
   "exclude": ["node_modules", "dist"]
+  
 }
