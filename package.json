@@ -9,9 +9,7 @@
     "dist"
   ],
   "scripts": {
-    "build": "rm -r -f dist; rollup -c",
-    "transpile": "rm -r -f dist; tsc;",
-    "prepublishOnly": "npm run transpile"
+    "build": "rm -r -f dist; rollup -c"
   },
   "repository": {
     "type": "git",
