@@ -4,6 +4,7 @@
 // ----- IMPORTS ----- //
 
 import _translateBundle from './translation/dictionaries/_translateBundle';
+import _requiresTranslation from './codes/_requiresTranslation';
 import _translate from './translation/strings/_translate';
 import _translateReact from './translation/react/_translateReact';
 import _updateProjectDictionary from './translation/dictionaries/_updateProjectDictionary';
@@ -262,6 +263,24 @@ export function renderContentToString(content: Content, languages?: string | str
  */
 export function determineLanguage(languages: string | string[], approvedLanguages: string[]): string | undefined {
     return _determineLanguage(languages, approvedLanguages);
+};
+
+/**
+ * Determines whether a translation is required based on the source and target language.
+ * 
+ * - If the target language is not specified, the function returns `false`, as translation is not needed.
+ * - If the source and target language are the same, returns `false`, indicating that no translation is necessary.
+ * - If the `approvedLanguages` array is provided, and the target language is not within that array, the function also returns `false`.
+ * - Otherwise, it returns `true`, meaning that a translation is required.
+ * 
+ * @param {string} sourceLanguage - The language of the original content (BCP 47 language code).
+ * @param {string} targetLanguage - The language to translate the content into (BCP 47 language code).
+ * @param {string[]} [approvedLanguages] - An optional array of approved target languages.
+ * 
+ * @returns {boolean} - Returns `true` if translation is required, otherwise `false`.
+ */
+export function requiresTranslation(sourceLanguage: string, targetLanguage: string, approvedLanguages?: string[]): boolean {
+    return _requiresTranslation(sourceLanguage, targetLanguage, approvedLanguages);
 };
 
 // DEFAULT EXPORT

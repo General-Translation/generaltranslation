@@ -201,4 +201,19 @@ export declare function renderContentToString(content: Content, languages?: stri
  * @returns {string | undefined} - The best matching language from the approvedLanguages list, or undefined if no match is found.
  */
 export declare function determineLanguage(languages: string | string[], approvedLanguages: string[]): string | undefined;
+/**
+ * Determines whether a translation is required based on the source and target language.
+ *
+ * - If the target language is not specified, the function returns `false`, as translation is not needed.
+ * - If the source and target language are the same, returns `false`, indicating that no translation is necessary.
+ * - If the `approvedLanguages` array is provided, and the target language is not within that array, the function also returns `false`.
+ * - Otherwise, it returns `true`, meaning that a translation is required.
+ *
+ * @param {string} sourceLanguage - The language of the original content (BCP 47 language code).
+ * @param {string} targetLanguage - The language to translate the content into (BCP 47 language code).
+ * @param {string[]} [approvedLanguages] - An optional array of approved target languages.
+ *
+ * @returns {boolean} - Returns `true` if translation is required, otherwise `false`.
+ */
+export declare function requiresTranslation(sourceLanguage: string, targetLanguage: string, approvedLanguages?: string[]): boolean;
 export default GT;
