@@ -113,11 +113,21 @@ class GT {
     * @param {Update[]} updates - Array of updates.
     * @param {string[]} [languages] - Array of languages to be updated.
     * @param {string} [projectID=this.projectID] - The ID of the project. Defaults to the instance's projectID.
-    * @param {boolean} [replace=false] - Whether to replace the existing dictionary. Defaults to false.
+    * @param {Record<string, any>} [object] - Options, such as whether to replace the existing dictionary. Defaults to false.
     * @returns {Promise<string[]>} A promise that resolves to an array of strings indicating the languages which have been updated.
     */
-    async updateProjectDictionary(updates: Update[], languages: string[] = [], replace: boolean = false): Promise<string[]> {
-        return _updateProjectDictionary(this, updates, languages, replace);
+    async updateProjectDictionary(
+        updates: Update[], 
+        languages: string[] = [], 
+        options: {
+            replace: boolean,
+            retranslate: boolean,
+            [key: string]: any
+        } = { 
+            replace: false, retranslate: false
+        }
+    ): Promise<string[]> {
+        return _updateProjectDictionary(this, updates, languages, options);
     }
 
 }
