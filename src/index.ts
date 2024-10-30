@@ -3,11 +3,11 @@
 
 // ----- IMPORTS ----- //
 
-import _translateBundle from './translation/dictionaries/_translateBundle';
+import _translateBatch from './translation/batch/_translateBatch';
 import _requiresTranslation from './codes/_requiresTranslation';
-import _translate from './translation/strings/_translate';
+import _translate from './translation/translate/_translate';
 import _translateReact from './translation/react/_translateReact';
-import _updateProjectDictionary from './translation/dictionaries/_updateProjectDictionary';
+import _updateDictionary from './dictionaries/_updateDictionary';
 import _determineLanguage from './codes/_determineLanguage';
 import { _formatNum, _formatCurrency, _formatList, _formatRelativeTime, _formatDateTime } from './formatting/format';
 import { _splitStringToContent, _renderContentToString } from './formatting/string_content'
@@ -100,12 +100,12 @@ class GT {
     }
 
     /**
-    * Bundles multiple translation requests and sends them to the server.
+    * Batches multiple translation requests and sends them to the server.
     * @param requests - Array of requests to be processed and sent.
     * @returns A promise that resolves to an array of processed results.
     */
-    async translateBundle(requests: Request[]): Promise<Array<ReactTranslationResult | ContentTranslationResult>> {
-        return _translateBundle(this, requests);
+    async translateBatch(requests: Request[]): Promise<Array<ReactTranslationResult | ContentTranslationResult>> {
+        return _translateBatch(this, requests);
     }
 
     /**
@@ -116,7 +116,7 @@ class GT {
     * @param {Record<string, any>} [object] - Options, such as whether to replace the existing dictionary. Defaults to false.
     * @returns {Promise<string[]>} A promise that resolves to an array of strings indicating the languages which have been updated.
     */
-    async updateProjectDictionary(
+    async _updateDictionary(
         updates: Update[], 
         languages: string[] = [], 
         options: {
@@ -127,7 +127,7 @@ class GT {
             replace: false, retranslate: false
         }
     ): Promise<string[]> {
-        return _updateProjectDictionary(this, updates, languages, options);
+        return _updateDictionary(this, updates, languages, options);
     }
 
 }

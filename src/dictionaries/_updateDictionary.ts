@@ -1,15 +1,16 @@
-import { Content, Update } from '../../types/types'
+import { Content, Update } from '../types/types'
+import defaultAPIRoutes from '../settings/defaultAPIRoutes';
 
 /**
  * @internal
  */
-export default async function _updateProjectDictionary(
+export default async function _updateDictionary(
     gt: { baseURL: string, apiKey: string },
     updates: Update[],
     languages: string[],
     options: Record<string, any>
 ): Promise<string[]> {
-    const response = await fetch(`${gt.baseURL}/update`, {
+    const response = await fetch(`${gt.baseURL}${defaultAPIRoutes.updateDictionary}`, {
         method: 'POST',
         headers: {
             'Content-Type': 'application/json',

@@ -1,4 +1,5 @@
 import { ReactChildrenAsObject, ReactTranslationResult } from "src/types/types";
+import defaultAPIRoutes from "../../settings/defaultAPIRoutes";
 
 /**
  * @internal
@@ -14,7 +15,7 @@ export default async function _translateReact(
     if (metadata.timeout) {
         setTimeout(() => controller.abort(), metadata.timeout);
     }
-    const response = await fetch(`${gt.baseURL}/react`, {
+    const response = await fetch(`${gt.baseURL}${defaultAPIRoutes.translateReact}`, {
         method: 'POST',
         headers: {
             'Content-Type': 'application/json',

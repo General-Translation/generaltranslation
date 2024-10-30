@@ -62,11 +62,11 @@ declare class GT {
         [key: string]: any;
     }): Promise<ReactTranslationResult>;
     /**
-    * Bundles multiple translation requests and sends them to the server.
+    * Batches multiple translation requests and sends them to the server.
     * @param requests - Array of requests to be processed and sent.
     * @returns A promise that resolves to an array of processed results.
     */
-    translateBundle(requests: Request[]): Promise<Array<ReactTranslationResult | ContentTranslationResult>>;
+    translateBatch(requests: Request[]): Promise<Array<ReactTranslationResult | ContentTranslationResult>>;
     /**
     * Pushes updates to a remotely cached translation dictionary.
     * @param {Update[]} updates - Array of updates.
@@ -75,7 +75,7 @@ declare class GT {
     * @param {Record<string, any>} [object] - Options, such as whether to replace the existing dictionary. Defaults to false.
     * @returns {Promise<string[]>} A promise that resolves to an array of strings indicating the languages which have been updated.
     */
-    updateProjectDictionary(updates: Update[], languages?: string[], options?: {
+    _updateDictionary(updates: Update[], languages?: string[], options?: {
         replace: boolean;
         retranslate: boolean;
         [key: string]: any;

@@ -1,4 +1,5 @@
 import { Content, ContentTranslationResult } from "src/types/types";
+import defaultAPIRoutes from "../../settings/defaultAPIRoutes";
 
 /**
  * @internal
@@ -14,7 +15,7 @@ export default async function _translate(
     if (metadata.timeout) {
         setTimeout(() => controller.abort(), metadata.timeout);
     }
-    const response = await fetch(`${gt.baseURL}/translate`, {
+    const response = await fetch(`${gt.baseURL}${defaultAPIRoutes.translateContent}`, {
         method: 'POST',
         headers: {
             'Content-Type': 'application/json',

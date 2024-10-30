@@ -1,9 +1,10 @@
 import { ContentTranslationResult, ReactTranslationResult, Request } from '../../types/types'
+import defaultAPIRoutes from '../../settings/defaultAPIRoutes';
 
 /**
  * @internal
  */
-export default async function _translateBundle(
+export default async function _translateBatch(
     gt: { baseURL: string, apiKey: string },
     requests: Request[]
 ): Promise<Array<ReactTranslationResult | ContentTranslationResult>> {
@@ -12,7 +13,7 @@ export default async function _translateBundle(
     if (requests[0]?.data?.metadata?.timeout) {
         setTimeout(() => controller.abort(), requests[0].data.metadata.timeout);
     }
-    const response = await fetch(`${gt.baseURL}/bundle`, {
+    const response = await fetch(`${gt.baseURL}${defaultAPIRoutes.translateBatch}`, {
         method: 'POST',
         headers: {
             'Content-Type': 'application/json',
