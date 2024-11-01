@@ -75,7 +75,7 @@ declare class GT {
     * @param {Record<string, any>} [object] - Options, such as whether to replace the existing dictionary. Defaults to false.
     * @returns {Promise<string[]>} A promise that resolves to an array of strings indicating the languages which have been updated.
     */
-    _updateDictionary(updates: Update[], languages?: string[], options?: {
+    updateDictionary(updates: Update[], languages?: string[], options?: {
         replace: boolean;
         retranslate: boolean;
         [key: string]: any;
