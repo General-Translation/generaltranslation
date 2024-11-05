@@ -76,8 +76,9 @@ declare class GT {
     * @returns {Promise<string[]>} A promise that resolves to an array of strings indicating the languages which have been updated.
     */
     updateDictionary(updates: Update[], languages?: string[], options?: {
-        replace: boolean;
-        retranslate: boolean;
+        replace?: boolean;
+        retranslate?: boolean;
+        projectID?: string;
         [key: string]: any;
     }): Promise<string[]>;
 }

@@ -82,7 +82,7 @@ class GT {
         save?: boolean, 
         [key: string]: any 
     }): Promise<{ translation: Content, language: string }> {
-        return await _translate(this, content, language, { projectID: this.projectID, defaultLanguage: this.defaultLanguage, ...metadata })
+        return await _translate(this, content, language, { defaultLanguage: this.defaultLanguage, ...metadata })
     }
 
     /**
@@ -96,7 +96,7 @@ class GT {
     * @returns {Promise<ReactTranslationResult>} - A promise that resolves to the translated content.
     */
     async translateReact(children: ReactChildrenAsObject, language: string, metadata?: { context?: string, save?: boolean, [key: string]: any }): Promise<ReactTranslationResult> {
-        return await _translateReact(this, children, language, { projectID: this.projectID, defaultLanguage: this.defaultLanguage, ...metadata });
+        return await _translateReact(this, children, language, { defaultLanguage: this.defaultLanguage, ...metadata });
     }
 
     /**
@@ -120,12 +120,11 @@ class GT {
         updates: Update[], 
         languages: string[] = [], 
         options: {
-            replace: boolean,
-            retranslate: boolean,
+            replace?: boolean,
+            retranslate?: boolean,
+            projectID?: string;
             [key: string]: any
-        } = { 
-            replace: false, retranslate: false
-        }
+        } = {}
     ): Promise<string[]> {
         return _updateDictionary(this, updates, languages, options);
     }

@@ -56,8 +56,7 @@ export type ContentTranslationResult = {
     language: string,
     reference?: {
         id: string,
-        key: string,
-        dictionaryName: string
+        key: string
     }
 }
 
@@ -66,7 +65,6 @@ export type ReactTranslationResult = {
     language: string,
     reference?: {
         id: string,
-        key: string,
-        dictionaryName: string
+        key: string
     }
 }
