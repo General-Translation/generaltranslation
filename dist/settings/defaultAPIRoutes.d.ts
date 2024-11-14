@@ -1,7 +1,8 @@
 declare const defaultAPIRoutes: {
-    readonly translateBatch: "/translate/v1/batch";
-    readonly translateReact: "/translate/v1/react";
-    readonly translateContent: "/translate/v1/content";
-    readonly updateDictionary: "/dictionaries/v1/update";
+    readonly translateBatch: "/v1/translate/batch";
+    readonly translateReact: "/v1/translate/react";
+    readonly translateContent: "/v1/translate/content";
+    readonly updateProjectDictionary: "/v1/project/dictionary/update";
+    readonly getProjectLanguages: "/v1/project/languages";
 };
 export default defaultAPIRoutes;

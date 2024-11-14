@@ -8,7 +8,7 @@ import libraryDefaultLanguage from "../settings/libraryDefaultLanguage";
  */
 export const _isValidLanguageCode = (code: string): boolean => {
     try {
-        const { language, region, script } = new Intl.Locale(code);
+        const { language, region, script } = new Intl.Locale(code).maximize();
         const displayLanguageNames = new Intl.DisplayNames([libraryDefaultLanguage], { type: 'language' });
         if (displayLanguageNames.of(language) === language) return false;
         if (region) {
@@ -50,7 +50,7 @@ export const _standardizeLanguageCode = (code: string): string => {
  */
 export function _getLanguageName(code: string | string[], defaultLanguage: string = libraryDefaultLanguage): string | string[] {
     try {
-        const displayNames = new Intl.DisplayNames([defaultLanguage], { type: 'language' });
+        const displayNames = new Intl.DisplayNames([defaultLanguage, libraryDefaultLanguage], { type: 'language' });
         if (typeof code === 'string') {
             // Handle the case where it's a single language code
             const name = displayNames.of(code);

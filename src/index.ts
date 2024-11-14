@@ -7,14 +7,17 @@ import _translateBatch from './translation/batch/_translateBatch';
 import _requiresTranslation from './codes/_requiresTranslation';
 import _translate from './translation/translate/_translate';
 import _translateReact from './translation/react/_translateReact';
-import _updateDictionary from './dictionaries/_updateDictionary';
+import _updateProjectDictionary from './projects/_updateProjectDictionary';
+import _getProjectLanguages from './projects/_getProjectLanguages';
 import _determineLanguage from './codes/_determineLanguage';
 import { _formatNum, _formatCurrency, _formatList, _formatRelativeTime, _formatDateTime } from './formatting/format';
 import { _splitStringToContent, _renderContentToString } from './formatting/string_content'
 import { Content, Update, Request, ReactChildrenAsObject, ReactTranslationResult, ContentTranslationResult } from './types/types'
 import { _getLanguageName, _isValidLanguageCode, _getLanguageDirection, _standardizeLanguageCode } from './codes/codes';
 import _isSameLanguage from './codes/_isSameLanguage'
+import _getLanguageNames from './codes/_getLanguageNames';
 import libraryDefaultLanguage from './settings/libraryDefaultLanguage';
+import _getLanguageEmoji from './codes/emojis';
 
 // ----- CORE CLASS ----- // 
 
@@ -116,7 +119,7 @@ class GT {
     * @param {Record<string, any>} [object] - Options, such as whether to replace the existing dictionary. Defaults to false.
     * @returns {Promise<string[]>} A promise that resolves to an array of strings indicating the languages which have been updated.
     */
-    async updateDictionary(
+    async updateProjectDictionary(
         updates: Update[], 
         languages: string[] = [], 
         options: {
@@ -126,7 +129,18 @@ class GT {
             [key: string]: any
         } = {}
     ): Promise<string[]> {
-        return _updateDictionary(this, updates, languages, options);
+        return _updateProjectDictionary(this, updates, languages, options);
+    }
+
+    /**
+    * Retrieves the languages for a GT project as BCP 47 language tags.
+    * @param projectID - The project ID to retrieve languages for. If not provided, `this.projectID` should be set.
+    * @returns A promise that resolves with an array of languages.
+    */
+    async getProjectLanguages(
+        projectID?: string
+    ): Promise<string[]> {
+        return _getProjectLanguages(this, projectID || this.projectID);
     }
 
 }
@@ -153,6 +167,83 @@ export function getLanguageDirection(code: string): string {
 export function getLanguageName(code: string | string[], language?: string): string | string[] {
     return _getLanguageName(code, language)
 };
+
+/**
+ * Generates language details for a given locale code, providing various language-related properties.
+ *
+ * This function returns information about the language,
+ * script, and region of a given language code both in a standard form and in a maximized form (with likely script and region).
+ * The function provides these names in both your default language and native forms, and an associated emoji.
+ *
+ * @param {string} code - The locale code to get language names for (e.g., "de-AT").
+ * @param {string} [defaultLanguage=libraryDefaultLanguage] - The default language code for display names.
+ * @returns {LanguageNames} - An object containing detailed information about the language.
+ *
+ * @property {string} code - The full locale code, e.g., "de-AT".
+ * @property {string} name - Language name in the default display language, e.g., "Austrian German".
+ * @property {string} nativeName - Language name in the locale's native language, e.g., "Österreichisches Deutsch".
+ * @property {string} languageCode - The base language code, e.g., "de".
+ * @property {string} languageName - The language name in the default display language, e.g., "German".
+ * @property {string} nativeLanguageName - The language name in the native language, e.g., "Deutsch".
+ * @property {string} nameWithRegionCode - Language name with region in the default language, e.g., "German (AT)".
+ * @property {string} nativeNameWithRegionCode - Language name with region in the native language, e.g., "Deutsch (AT)".
+ * @property {string} regionCode - The region code from maximization, e.g., "AT".
+ * @property {string} regionName - The region name in the default display language, e.g., "Austria".
+ * @property {string} nativeRegionName - The region name in the native language, e.g., "Österreich".
+ * @property {string} scriptCode - The script code from maximization, e.g., "Latn".
+ * @property {string} scriptName - The script name in the default display language, e.g., "Latin".
+ * @property {string} nativeScriptName - The script name in the native language, e.g., "Lateinisch".
+ * @property {string} maximizedCode - The maximized locale code, e.g., "de-Latn-AT".
+ * @property {string} maximizedName - Maximized language name with likely script in the default language, e.g., "Austrian German (Latin)".
+ * @property {string} nativeMaximizedName - Maximized language name in the native language, e.g., "Österreichisches Deutsch (Lateinisch)".
+ * @property {string} minimizedCode - Minimized locale code, e.g., "de-AT" (or "de" for "de-DE").
+ * @property {string} minimizedName - Minimized language name in the default language, e.g., "Austrian German".
+ * @property {string} nativeMinimizedName - Minimized language name in the native language, e.g., "Österreichisches Deutsch".
+ * @property {string} emoji - The emoji associated with the locale's region, if applicable.
+*/
+export function getLanguageNames(code: string, language?: string): {
+    // assume code = "de-AT", defaultLanguage = "en"
+    code: string; // "de-AT"
+    name: string; // "Austrian German"
+    nativeName: string; // "Österreichisches Deutsch"
+    languageCode: string; // "de"
+    languageName: string; // "German"
+    nativeLanguageName: string; // "Deutsch"
+    // note that maximize() is NOT called here!
+    nameWithRegionCode: string // "German (AT)"
+    nativeNameWithRegionCode: string // "Deutsch (AT)"
+    // for most likely script and region, maximize() is called
+    regionCode: string // "AT"
+    regionName: string // "Austria"
+    nativeRegionName: string // Österreich
+    scriptCode: string; // "Latn"
+    scriptName: string; // "Latin"
+    nativeScriptName: string; // "Lateinisch"
+    maximizedCode: string // "de-Latn-AT"
+    maximizedName: string // "Austrian German (Latin)"
+    nativeMaximizedName: string; // Österreichisches Deutsch (Lateinisch)
+    minimizedCode: string; // "de-AT", but for "de-DE" it would just be "de"
+    minimizedName: string; // ""Austrian German";
+    nativeMinimizedName: string; // "Österreichisches Deutsch"
+    // Emoji depending on region code
+    // In order not to accidentally spark international conflict, some emojis are hard-coded
+    emoji: string; 
+} {
+    return _getLanguageNames(code, language)
+};
+
+/**
+ * Retrieves an emoji based on a given language code, taking into account region, language, and specific exceptions.
+ * This function uses the language's region (if present) to select an emoji or falls back on default emojis for certain languages.
+ * 
+ * @param code - A string representing the language code (e.g., 'en', 'fr-CA').
+ * @param custom - An optional custom mapping of language codes to emojis.
+ * @returns The emoji representing the language or its region, or a default emoji if no specific match is found.
+*/
+export function getLanguageEmoji(code: string, custom?: Record<string, string>) {
+    return _getLanguageEmoji(code, custom);
+}
+
 
 /**
  * Checks if a given BCP 47 language code is valid.

@@ -1,8 +1,9 @@
 const defaultAPIRoutes = {
-    "translateBatch": "/translate/v1/batch",
-    "translateReact": "/translate/v1/react",
-    "translateContent": "/translate/v1/content",
-    "updateDictionary": "/dictionaries/v1/update"
+    "translateBatch": "/v1/translate/batch",
+    "translateReact": "/v1/translate/react",
+    "translateContent": "/v1/translate/content",
+    "updateProjectDictionary": "/v1/project/dictionary/update",
+    "getProjectLanguages": "/v1/project/languages"
 } as const;
 
 export default defaultAPIRoutes;
