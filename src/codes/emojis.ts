@@ -36,7 +36,7 @@ const asiaAustraliaGlobe = "🌏";
 export const defaultLanguageEmoji = europeAfricaGlobe;
 
 // Exceptions to better reflect linguistic and cultural identities
-const exceptions ={
+const exceptions = {
     "ca": europeAfricaGlobe,
     "eu": europeAfricaGlobe,
     "ku": europeAfricaGlobe,
@@ -297,5 +297,6 @@ const emojis = {
     EH: '🇪🇭', // Western Sahara
     YE: '🇾🇪', // Yemen
     ZM: '🇿🇲', // Zambia
-    ZW: '🇿🇼'  // Zimbabwe
+    ZW: '🇿🇼', // Zimbabwe,
+    EU: '🇪🇺' // European Union (EU)
 } as Record<string, string>;

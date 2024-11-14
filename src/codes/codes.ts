@@ -1,5 +1,14 @@
 import libraryDefaultLanguage from "../settings/libraryDefaultLanguage";
 
+const scriptExceptions = [
+    "Cham",
+    "Jamo",
+    "Kawi",
+    "Lisu",
+    "Toto",
+    "Thai"
+];
+
 /**
  * Checks if a given BCP 47 language code is valid.
  * @param {string} code - The BCP 47 language code to validate.
@@ -8,7 +17,7 @@ import libraryDefaultLanguage from "../settings/libraryDefaultLanguage";
  */
 export const _isValidLanguageCode = (code: string): boolean => {
     try {
-        const { language, region, script } = new Intl.Locale(code).maximize();
+        const { language, region, script } = new Intl.Locale(code);
         const displayLanguageNames = new Intl.DisplayNames([libraryDefaultLanguage], { type: 'language' });
         if (displayLanguageNames.of(language) === language) return false;
         if (region) {
@@ -17,7 +26,7 @@ export const _isValidLanguageCode = (code: string): boolean => {
         }
         if (script) {
             const displayScriptNames = new Intl.DisplayNames([libraryDefaultLanguage], { type: 'script' });
-            if (displayScriptNames.of(script) === script) return false;
+            if (displayScriptNames.of(script) === script && !scriptExceptions.includes(script)) return false;
         }
         return true;
     } catch {
@@ -33,7 +42,7 @@ export const _isValidLanguageCode = (code: string): boolean => {
  */
 export const _standardizeLanguageCode = (code: string): string => {
     try {
-        return new Intl.Locale(code).toString();
+        return Intl.getCanonicalLocales(code)[0];
     } catch {
         // Return empty string instead of throwing an error
         return '';
@@ -47,7 +56,7 @@ export const _standardizeLanguageCode = (code: string): string => {
  * @param {string} [defaultLanguage=libraryDefaultLanguage] - The language for display names.
  * @returns {string | string[]} The display name(s) corresponding to the code(s), or empty string(s) if invalid.
  * @internal
- */
+*/
 export function _getLanguageName(code: string | string[], defaultLanguage: string = libraryDefaultLanguage): string | string[] {
     try {
         const displayNames = new Intl.DisplayNames([defaultLanguage, libraryDefaultLanguage], { type: 'language' });
