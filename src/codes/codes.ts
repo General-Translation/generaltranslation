@@ -52,31 +52,17 @@ export const _standardizeLanguageCode = (code: string): string => {
 /**
  * Retrieves the display name(s) of language code(s) using Intl.DisplayNames.
  *
- * @param {string | string[]} code - A language code or an array of codes.
+ * @param {string} code - A language code.
  * @param {string} [defaultLanguage=libraryDefaultLanguage] - The language for display names.
- * @returns {string | string[]} The display name(s) corresponding to the code(s), or empty string(s) if invalid.
+ * @returns {string} The display name(s) corresponding to the code(s), or empty string(s) if invalid.
  * @internal
 */
-export function _getLanguageName(code: string | string[], defaultLanguage: string = libraryDefaultLanguage): string | string[] {
+export function _getLanguageName(code: string, defaultLanguage: string = libraryDefaultLanguage): string {
     try {
         const displayNames = new Intl.DisplayNames([defaultLanguage, libraryDefaultLanguage], { type: 'language' });
-        if (typeof code === 'string') {
-            // Handle the case where it's a single language code
-            const name = displayNames.of(code);
-            return name || '';
-        } else if (Array.isArray(code)) {
-            // Handle the case where it's an array of language codes
-            return code.map((c) => displayNames.of(c) || '');
-        }
-        // If code is neither string nor array, return empty string
-        return '';
+        return displayNames.of(code) || '';
     } catch {
         // In case Intl.DisplayNames construction fails, return empty string(s)
-        if (typeof code === 'string') {
-            return '';
-        } else if (Array.isArray(code)) {
-            return code.map(() => '');
-        }
         return '';
     }
 }

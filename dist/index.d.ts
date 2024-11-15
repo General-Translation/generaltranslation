@@ -96,13 +96,13 @@ declare class GT {
  */
 export declare function getLanguageDirection(code: string): string;
 /**
- * Retrieves the display name(s) of language code(s) using Intl.DisplayNames.
+ * Retrieves the display name of language code using Intl.DisplayNames.
  *
- * @param {string | string[]} code - A language code or an array of codes.
+ * @param {string} code - A BCP-47 language code.
  * @param {string} [language = 'en'] - The language for display names.
- * @returns {string | string[]} The display name(s) corresponding to the code(s), or empty string(s) if invalid.
+ * @returns {string} The display name corresponding to the code.
  */
-export declare function getLanguageName(code: string | string[], language?: string): string | string[];
+export declare function getLanguageName(code: string, language?: string): string;
 /**
  * Generates language details for a given locale code, providing various language-related properties.
  *
