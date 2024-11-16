@@ -5,7 +5,7 @@ import libraryDefaultLanguage from '../settings/libraryDefaultLanguage'
  * 
  * @param {Object} params - The parameters for the number formatting.
  * @param {number} params.value - The number to format.
- * @param {string | string[]} [params.languages=['en']] - The languages to use for formatting.
+ * @param {string | string[]} [params.languages=['en-US']] - The languages to use for formatting.
  * @param {Intl.NumberFormatOptions} [params.options={}] - Additional options for number formatting.
  * 
  * @returns {string} The formatted number.
@@ -27,7 +27,7 @@ export function _formatNum({
  * 
  * @param {Object} params - The parameters for the date formatting.
  * @param {Date} params.value - The date to format.
- * @param {string | string[]} [params.languages=['en']] - The languages to use for formatting.
+ * @param {string | string[]} [params.languages=['en-US']] - The languages to use for formatting.
  * @param {Intl.DateTimeFormatOptions} [params.options={}] - Additional options for date formatting.
  * 
  * @returns {string} The formatted date.
@@ -50,7 +50,7 @@ export function _formatDateTime({
  * @param {Object} params - The parameters for the currency formatting.
  * @param {number} params.value - The currency value to format.
  * @param {string} params.currency - The currency code (e.g., 'USD').
- * @param {string | string[]} [params.languages=['en']] - The languages to use for formatting.
+ * @param {string | string[]} [params.languages=['en-US']] - The languages to use for formatting.
  * @param {Intl.NumberFormatOptions} [params.options={}] - Additional options for currency formatting.
  * 
  * @returns {string} The formatted currency value.
@@ -76,7 +76,7 @@ export function _formatCurrency({
  * 
  * @param {Object} params - The parameters for the list formatting.
  * @param {Array<string | number>} params.value - The list of items to format.
- * @param {string | string[]} [params.languages=['en']] - The languages to use for formatting.
+ * @param {string | string[]} [params.languages=['en-US']] - The languages to use for formatting.
  * @param {Intl.ListFormatOptions} [params.options={}] - Additional options for list formatting.
  * 
  * @returns {string} The formatted list.
@@ -104,7 +104,7 @@ export function _formatList({
  * @param {Object} params - The parameters for the relative time formatting.
  * @param {number} params.value - The relative time value to format.
  * @param {Intl.RelativeTimeFormatUnit} params.unit - The unit of time (e.g., 'second', 'minute', 'hour', 'day', 'week', 'month', 'year').
- * @param {string | string[]} [params.languages=['en']] - The languages to use for formatting.
+ * @param {string | string[]} [params.languages=['en-US']] - The languages to use for formatting.
  * @param {Intl.RelativeTimeFormatOptions} [params.options={}] - Additional options for relative time formatting.
  * 
  * @returns {string} The formatted relative time string.

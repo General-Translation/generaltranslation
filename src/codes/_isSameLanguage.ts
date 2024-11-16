@@ -12,4 +12,3 @@ export default function _isSameLanguage(...codes: (string | string[])[]): boolea
         return false;
     }
 }
-

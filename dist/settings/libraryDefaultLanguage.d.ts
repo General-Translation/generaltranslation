@@ -1,2 +1,2 @@
-declare const libraryDefaultLanguage = "en";
+declare const libraryDefaultLanguage = "en-US";
 export default libraryDefaultLanguage;

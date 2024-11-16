@@ -4,7 +4,7 @@ import _getLanguageEmoji from "./emojis";
 
 type LanguageNames = {
     
-    // assume code = "de-AT", defaultLanguage = "en"
+    // assume code = "de-AT", defaultLanguage = "en-US"
 
     code: string; // "de-AT"
     name: string; // "Austrian German"

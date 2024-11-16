@@ -1,2 +1,2 @@
-const libraryDefaultLanguage = "en";
+const libraryDefaultLanguage = "en-US";
 export default libraryDefaultLanguage;
