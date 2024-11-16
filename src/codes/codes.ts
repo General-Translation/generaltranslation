@@ -41,12 +41,8 @@ export const _isValidLanguageCode = (code: string): boolean => {
  * @internal
  */
 export const _standardizeLanguageCode = (code: string): string => {
-    try {
-        return Intl.getCanonicalLocales(code)[0];
-    } catch {
-        // Return empty string instead of throwing an error
-        return '';
-    }
+    if (_isValidLanguageCode(code)) return Intl.getCanonicalLocales(code)[0];
+    return '';
 };
 
 /**

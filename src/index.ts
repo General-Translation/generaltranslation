@@ -257,7 +257,7 @@ export function isValidLanguageCode(code: string): boolean {
 /**
  * Standardizes a BCP 47 language code to ensure correct formatting.
  * @param {string} code - The BCP 47 language code to standardize.
- * @returns {string} The standardized BCP 47 language code. 
+ * @returns {string} The standardized BCP 47 language code or an empty string if it is an invalid code.
  */
 export function standardizeLanguageCode(code: string): string {
     return _standardizeLanguageCode(code);
