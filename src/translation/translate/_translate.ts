@@ -7,7 +7,7 @@ import defaultAPIRoutes from "../../settings/defaultAPIRoutes";
 export default async function _translate(
     gt: { baseURL: string; apiKey: string },
     content: Content,
-    targetLanguage: string,
+    targetLocale: string,
     metadata: { [key: string]: any }
 ): Promise<ContentTranslationResult> {
     const controller = new AbortController();
@@ -22,7 +22,7 @@ export default async function _translate(
             'gtx-api-key': gt.apiKey,
         },
         body: JSON.stringify({
-            content, targetLanguage, metadata
+            content, targetLocale, metadata
         }),
         signal
     });

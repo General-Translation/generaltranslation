@@ -1,4 +1,4 @@
-import libraryDefaultLanguage from '../settings/libraryDefaultLanguage';
+import { libraryDefaultLocale } from '../internal';
 import { Content, VariableObject } from '../types/types'
 import { _formatCurrency, _formatDateTime, _formatNum, _formatList, _formatRelativeTime } from './format'
 
@@ -72,7 +72,7 @@ export function _splitStringToContent(string: string): Content {
 /** 
 * @internal
 */
-export function _renderContentToString(content: Content, languages: string | string[] = libraryDefaultLanguage, variables: Record<string, any> = {}, variableOptions: Record<string, any> = {}): string {
+export function _renderContentToString(content: Content, locales: string | string[] = libraryDefaultLocale, variables: Record<string, any> = {}, variableOptions: Record<string, any> = {}): string {
     if (typeof content === 'string')
         content = _splitStringToContent(content);
     if (typeof content === 'string')
@@ -86,26 +86,26 @@ export function _renderContentToString(content: Content, languages: string | str
             if (!item.variable) return value;
             else if (item.variable === "number") {
                 return _formatNum({
-                    value, languages, 
+                    value, locales, 
                     options: variableOptions[item.key]
                 })
             }
             else if (item.variable === "currency") {
                 return _formatCurrency({
-                    value, languages, 
+                    value, locales, 
                     ...(variableOptions[item.key] && { options: variableOptions[item.key]}),
                     ...(variableOptions[item.key]?.currency && { currency: variableOptions[item.key].currency })
                 })
             }
             else if (item.variable === "datetime") {
                 return _formatDateTime({
-                    value, languages, 
+                    value, locales, 
                     ...(variableOptions[item.key] && { options: variableOptions[item.key]}),
                 })
             }
             else if (item.variable === "list") {
                 return _formatList({
-                    value, languages, 
+                    value, locales, 
                     ...(variableOptions[item.key] && { options: variableOptions[item.key]}),
                 })
             }

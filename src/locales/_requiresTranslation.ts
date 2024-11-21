@@ -1,7 +1,7 @@
 import _isSameLanguage from "./_isSameLanguage";
-import { _standardizeLanguageCode, _isValidLanguageCode } from "./codes";
+import { _isValidLocale, _standardizeLocale } from "./_isValidLocale";
 
-function areTwoCodesIdentical(codeA: string, codeB: string) {
+function checkTwoLocalesAreSameDialect(codeA: string, codeB: string) {
     const { language: languageA, region: regionA, script: scriptA } = new Intl.Locale(codeA);
     const { language: languageB, region: regionB, script: scriptB } = new Intl.Locale(codeB);
     if (languageA !== languageB) return false;
@@ -17,15 +17,15 @@ function areTwoCodesIdentical(codeA: string, codeB: string) {
  * "en-GB" and "en-US" would be different.
  * @internal
 */
-export function _isSameDialect(...codes: (string | string[])[]): boolean {
+export function _isSameDialect(...locales: (string | string[])[]): boolean {
     try {
 
         // standardize codes
-        const flattenedCodes = codes.flat().map(_standardizeLanguageCode);
+        const flattenedCodes = locales.flat().map(_standardizeLocale);
         
         for (let i = 0; i < flattenedCodes.length; i++) {
             for (let j = i + 1; j < flattenedCodes.length; j++) {
-                if (!areTwoCodesIdentical(flattenedCodes[i], flattenedCodes[j])) return false;
+                if (!checkTwoLocalesAreSameDialect(flattenedCodes[i], flattenedCodes[j])) return false;
             } 
         }
 
@@ -38,27 +38,27 @@ export function _isSameDialect(...codes: (string | string[])[]): boolean {
 
 
 /**
- * Given a target language and a source language, determines whether a translation is required
- * If the target language and the source language are the same, returns false, otherwise returns true
- * If a translation is not possible due to the target language being outside of the optional approvedLanguages scope, also returns false
+ * Given a target locale and a source locale, determines whether a translation is required
+ * If the target locale and the source locale are the same, returns false, otherwise returns true
+ * If a translation is not possible due to the target locale being outside of the optional approvedLanguages scope, also returns false
 * @internal
 */
 export default function _requiresTranslation(
-    sourceLanguage: string, targetLanguage: string, approvedLanguages?: string[]
+    sourceLocale: string, targetLocale: string, approvedLocales?: string[]
 ): boolean {
 
     // If codes are invalid
-    if (!_isValidLanguageCode(sourceLanguage) ||
-        !_isValidLanguageCode(targetLanguage) || 
-        (approvedLanguages && approvedLanguages.some(approvedLanguage => !_isValidLanguageCode(approvedLanguage)))
+    if (!_isValidLocale(sourceLocale) ||
+        !_isValidLocale(targetLocale) || 
+        (approvedLocales && approvedLocales.some(approvedLocale => !_isValidLocale(approvedLocale)))
     ) return false;
 
     // Check if the languages are identical, if so, a translation is not required
-    if (_isSameDialect(sourceLanguage, targetLanguage)) return false;
+    if (_isSameDialect(sourceLocale, targetLocale)) return false;
     
     // if no translation is possible
     // isSameLanguage rather than isIdenticalDialect so we can show different dialects as a fallback
-    if (approvedLanguages && !approvedLanguages.some(approvedLanguage => _isSameLanguage(targetLanguage, approvedLanguage))) return false;
+    if (approvedLocales && !approvedLocales.some(approvedLocale => _isSameLanguage(targetLocale, approvedLocale))) return false;
     
     // otherwise, a translation is required!
     return true;

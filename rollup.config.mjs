@@ -38,7 +38,44 @@ export default [
     plugins: [dts()],
   },
 
-  // Bundling for the internal module (internal.ts)
+  // Bundling for the id module (id.ts)
+  {
+    input: 'src/id.ts',
+    output: [
+      {
+        file: 'dist/id.cjs.min.cjs',
+        format: 'cjs',
+        exports: 'auto',
+        sourcemap: true,
+      },
+      {
+        file: 'dist/id.esm.min.mjs',
+        format: 'es',
+        exports: 'named',
+        sourcemap: true,
+      },
+    ],
+    plugins: [
+      typescript({ tsconfig: './tsconfig.json' }),
+      commonjs(),
+      terser(),
+    ],
+    external: ['xxhashjs'] // External dependencies not bundled in
+  },
+
+  // TypeScript declarations for the id module
+  {
+    input: 'src/id.ts',
+    output: {
+      file: 'dist/id.d.ts',
+      format: 'es',
+    },
+    plugins: [
+      dts()
+    ]
+  },
+
+  // Bundling for the internal module
   {
     input: 'src/internal.ts',
     output: [
@@ -59,8 +96,7 @@ export default [
       typescript({ tsconfig: './tsconfig.json' }),
       commonjs(),
       terser(),
-    ],
-    external: ['xxhashjs'] // External dependencies not bundled in
+    ]
   },
 
   // TypeScript declarations for the internal module

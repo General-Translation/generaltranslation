@@ -3,11 +3,11 @@ import defaultAPIRoutes from '../settings/defaultAPIRoutes';
 /**
  * @internal
  */
-export default async function _getProjectLanguages(
+export default async function _getProjectLocales(
     gt: { baseURL: string, apiKey: string },
     projectID: string
-): Promise<string[]> {
-    const response = await fetch(`${gt.baseURL}${defaultAPIRoutes.getProjectLanguages}?projectID=${projectID}`, {
+): Promise<{ locales: string[] }> {
+    const response = await fetch(`${gt.baseURL}${defaultAPIRoutes.getProjectLocales}?projectID=${projectID}`, {
         method: 'GET',
         headers: {
             'Content-Type': 'application/json',
@@ -17,6 +17,6 @@ export default async function _getProjectLanguages(
     if (!response.ok) {
         throw new Error(`${response.status}: ${await response.text()}`);
     }
-    const result = await response.json();
-    return (result as { languages: string[] })?.languages;
+    const result = await response.json() as any;
+    return result;
 }

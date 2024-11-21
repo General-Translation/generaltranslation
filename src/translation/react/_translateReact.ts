@@ -7,7 +7,7 @@ import defaultAPIRoutes from "../../settings/defaultAPIRoutes";
 export default async function _translateReact(
     gt: { baseURL: string, apiKey: string },
     content: ReactChildrenAsObject,
-    targetLanguage: string,
+    targetLocale: string,
     metadata: { [key: string]: any }
 ): Promise<ReactTranslationResult> {
     const controller = new AbortController();
@@ -23,7 +23,7 @@ export default async function _translateReact(
         },
         body: JSON.stringify({
             children: content,
-            targetLanguage: targetLanguage,
+            targetLocale,
             metadata: metadata
         }),
         signal

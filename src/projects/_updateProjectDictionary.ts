@@ -7,7 +7,7 @@ import defaultAPIRoutes from '../settings/defaultAPIRoutes';
 export default async function _updateProjectDictionary(
     gt: { baseURL: string, apiKey: string },
     updates: Update[],
-    languages: string[],
+    locales: string[],
     options: Record<string, any>
 ): Promise<string[]> {
     const response = await fetch(`${gt.baseURL}${defaultAPIRoutes.updateProjectDictionary}`, {
@@ -17,12 +17,12 @@ export default async function _updateProjectDictionary(
             'gtx-api-key': gt.apiKey,
         },
         body: JSON.stringify({
-            updates, languages, options
+            updates, locales, options
         })
     });
     if (!response.ok) {
         throw new Error(`${response.status}: ${await response.text()}`);
     }
     const result = await response.json();
-    return (result as { languages: string[] })?.languages;
+    return (result as { locales: string[] })?.locales;
 }

@@ -39,21 +39,21 @@ export type Request = {
     type: 'string';
     data: {
         content: Content;
-        targetLanguage: string;
+        targetLocale: string;
         metadata: Record<string, any>
     }
 } | {
     type: 'react';
     data: {
         children: any;
-        targetLanguage: string;
+        targetLocale: string;
         metadata: Record<string, any>
     }
 };
 
 export type ContentTranslationResult = {
     translation: Content,
-    language: string,
+    locale: string,
     reference?: {
         id: string,
         key: string
@@ -61,8 +61,8 @@ export type ContentTranslationResult = {
 }
 
 export type ReactTranslationResult = {
-    translation: Content,
-    language: string,
+    translation: ReactChildrenAsObject,
+    locale: string,
     reference?: {
         id: string,
         key: string

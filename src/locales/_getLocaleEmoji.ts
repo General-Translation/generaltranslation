@@ -1,39 +1,39 @@
-import { _isValidLanguageCode } from "./codes";
+import { _isValidLocale, _standardizeLocale } from "./_isValidLocale";
 
 /**
 * @internal
 */
-export default function _getLanguageEmoji(
-    code: string, 
-    custom: Record<string, string> = {}
+export default function _getLocaleEmoji(
+    locale: string, 
+    customMapping: Record<string, string> = {}
 ): string {
-    if (!_isValidLanguageCode(code))
-        return defaultLanguageEmoji;
+    if (!_isValidLocale(locale))
+        return defaultEmoji;
 
-    const locale = new Intl.Locale(code);
-    code = locale.toString();
+    locale = _standardizeLocale(locale)
 
-    if (custom[code]) return custom[code];
+    if (customMapping[locale]) return customMapping[locale];
     
     // if a region is specified, use it!
-    const { region } = locale;
+    const localeObject = new Intl.Locale(locale);
+    const { region } = localeObject;
     if (region && emojis[region]) return emojis[region];
  
     // if not, attempt to extrapolate
-    const extrapolated = locale.maximize();
+    const extrapolated = localeObject.maximize();
     const extrapolatedRegion = extrapolated.region || '';
 
     return (
         exceptions[extrapolated.language] || 
         emojis[extrapolatedRegion] || 
-        defaultLanguageEmoji
+        defaultEmoji
     );
 }
 
 // Default language emoji for when none else can be found
 const europeAfricaGlobe = "🌍";
 const asiaAustraliaGlobe = "🌏";
-export const defaultLanguageEmoji = europeAfricaGlobe;
+export const defaultEmoji = europeAfricaGlobe;
 
 // Exceptions to better reflect linguistic and cultural identities
 const exceptions = {

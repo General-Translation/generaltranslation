@@ -1,6 +1,6 @@
 {
   "name": "generaltranslation",
-  "version": "3.3.3",
+  "version": "4.0.0",
   "description": "A language toolkit for AI developers",
   "main": "dist/index.cjs.min.cjs",
   "module": "dist/index.esm.min.mjs",
@@ -21,6 +21,7 @@
     "internationalization",
     "localization",
     "translate",
+    "locale",
     "i18n",
     "toolkit"
   ],
@@ -53,6 +54,11 @@
       "require": "./dist/index.cjs.min.cjs",
       "import": "./dist/index.esm.min.mjs"
     },
+    "./id": {
+      "types": "./dist/id.d.ts",
+      "require": "./dist/id.cjs.min.cjs",
+      "import": "./dist/id.esm.min.mjs"
+    },
     "./internal": {
       "types": "./dist/internal.d.ts",
       "require": "./dist/internal.cjs.min.cjs",
@@ -63,6 +69,9 @@
     "*": {
       "internal": [
         "./dist/internal.d.ts"
+      ],
+      "id": [
+        "./dist/id.d.ts"
       ]
     }
   },
@@ -71,6 +80,9 @@
     "paths": {
       "generaltranslation/internal": [
         "/dist/internal"
+      ],
+      "generaltranslation/id": [
+        "/dist/id"
       ]
     }
   }
