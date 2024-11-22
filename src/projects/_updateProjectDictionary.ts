@@ -9,7 +9,7 @@ export default async function _updateProjectDictionary(
     updates: Update[],
     locales: string[],
     options: Record<string, any>
-): Promise<string[]> {
+): Promise<{ locales?: string[] }> {
     const response = await fetch(`${gt.baseURL}${defaultAPIRoutes.updateProjectDictionary}`, {
         method: 'POST',
         headers: {
@@ -24,5 +24,5 @@ export default async function _updateProjectDictionary(
         throw new Error(`${response.status}: ${await response.text()}`);
     }
     const result = await response.json();
-    return (result as { locales: string[] })?.locales;
+    return result as any;
 }

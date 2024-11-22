@@ -79,7 +79,9 @@ declare class GT {
         retranslate?: boolean;
         projectID?: string;
         [key: string]: any;
-    }): Promise<string[]>;
+    }): Promise<{
+        locales?: string[];
+    }>;
     /**
     * Retrieves the locales for a GT project as BCP 47 locale tags.
     * @param projectID - The project ID to retrieve locales for. If not provided, `this.projectID` should be set.

@@ -130,8 +130,8 @@ class GT {
             projectID?: string;
             [key: string]: any
         } = {}
-    ): Promise<string[]> {
-        return _updateProjectDictionary(this, updates, locales, options);
+    ): Promise<{ locales?: string[] }> {
+        return await _updateProjectDictionary(this, updates, locales, options);
     }
 
     /**
