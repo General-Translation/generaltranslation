@@ -1,9 +1,9 @@
-/**
- * Calculates a unique hash for a given string using xxhash.
- *
- * @param {string} string - The string to be hashed.
- * @returns {string} - The resulting hash as a hexadecimal string.
- */
-declare function hashString(string: string): string;
+declare const libraryDefaultLocale: "en-US";
+declare const localeCookieName: "generaltranslation.locale";
+declare const pluralForms: readonly ["singular", "plural", "dual", "zero", "one", "two", "few", "many", "other"];
+declare const defaultCacheURL: "https://cache.gtx.dev";
+declare const defaultAPIURL: "https://prod.gtx.dev";
+declare const localeHeaderName = "x-generaltranslation-locale";
+declare function isAcceptedPluralForm(form: string): form is (typeof pluralForms)[number];
 
-export { hashString };
+export { defaultAPIURL, defaultCacheURL, isAcceptedPluralForm, libraryDefaultLocale, localeCookieName, localeHeaderName, pluralForms };

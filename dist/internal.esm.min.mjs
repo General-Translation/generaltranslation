@@ -1,2 +1,2 @@
-import t from"xxhashjs";function r(r){return t.h64().update(r).digest().toString(16)}export{r as hashString};
+var e="en-US",t="generaltranslation.locale",a=["singular","plural","dual","zero","one","two","few","many","other"],n="https://cache.gtx.dev",l="https://prod.gtx.dev",r="x-generaltranslation-locale";function o(e){return a.includes(e)}export{l as defaultAPIURL,n as defaultCacheURL,o as isAcceptedPluralForm,e as libraryDefaultLocale,t as localeCookieName,r as localeHeaderName,a as pluralForms};
 //# sourceMappingURL=internal.esm.min.mjs.map

@@ -4,25 +4,25 @@ import defaultAPIRoutes from '../settings/defaultAPIRoutes';
 /**
  * @internal
  */
-export default async function _updateProjectDictionary(
+export default async function _updateProjectTranslations(
     gt: { baseURL: string, apiKey: string },
     updates: Update[],
-    languages: string[],
+    locales: string[],
     options: Record<string, any>
-): Promise<string[]> {
-    const response = await fetch(`${gt.baseURL}${defaultAPIRoutes.updateProjectDictionary}`, {
+): Promise<{ locales?: string[] }> {
+    const response = await fetch(`${gt.baseURL}${defaultAPIRoutes.updateProjectTranslations}`, {
         method: 'POST',
         headers: {
             'Content-Type': 'application/json',
             'gtx-api-key': gt.apiKey,
         },
         body: JSON.stringify({
-            updates, languages, options
+            updates, locales, options
         })
     });
     if (!response.ok) {
         throw new Error(`${response.status}: ${await response.text()}`);
     }
     const result = await response.json();
-    return (result as { languages: string[] })?.languages;
+    return result as any;
 }

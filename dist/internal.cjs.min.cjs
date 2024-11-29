@@ -1,2 +1,2 @@
-"use strict";var t=require("xxhashjs");exports.hashString=function(r){return t.h64().update(r).digest().toString(16)};
+"use strict";var e=["singular","plural","dual","zero","one","two","few","many","other"];exports.defaultAPIURL="https://prod.gtx.dev",exports.defaultCacheURL="https://cache.gtx.dev",exports.isAcceptedPluralForm=function(a){return e.includes(a)},exports.libraryDefaultLocale="en-US",exports.localeCookieName="generaltranslation.locale",exports.localeHeaderName="x-generaltranslation-locale",exports.pluralForms=e;
 //# sourceMappingURL=internal.cjs.min.cjs.map
