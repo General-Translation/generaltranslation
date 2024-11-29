@@ -67,14 +67,14 @@ declare class GT {
     */
     translateBatch(requests: Request[]): Promise<Array<ReactTranslationResult | ContentTranslationResult>>;
     /**
-    * Pushes updates to a remotely cached translation dictionary.
+    * Pushes updates to a remotely cached translations.
     * @param {Update[]} updates - Array of updates.
     * @param {string[]} [locales] - Array of locales to create translations into.
     * @param {string} [projectID=this.projectID] - The ID of the project. Defaults to the instance's projectID.
-    * @param {Record<string, any>} [object] - Options, such as whether to replace the existing dictionary. Defaults to false.
+    * @param {Record<string, any>} [object] - Options, such as whether to replace the existing remote translations. Defaults to false.
     * @returns {Promise<string[]>} A promise that resolves to an array of strings indicating the locales which have been updated.
     */
-    updateProjectDictionary(updates: Update[], locales?: string[], options?: {
+    updateProjectTranslations(updates: Update[], locales?: string[], options?: {
         replace?: boolean;
         retranslate?: boolean;
         projectID?: string;

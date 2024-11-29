@@ -1,4 +1,3 @@
-import { standardizeLocale } from "src";
 import { libraryDefaultLocale } from "../internal";
 import _getLocale from "./_getLocaleEmoji";
 import { _isValidLocale, _standardizeLocale } from "./_isValidLocale";
@@ -52,7 +51,7 @@ export default function _getLocaleProperties(
 ): LocaleProperties {
     try {
 
-        locale = standardizeLocale(locale); // "de-AT"
+        locale = _standardizeLocale(locale); // "de-AT"
 
         const localeObject = new Intl.Locale(locale);
         const languageCode = localeObject.language; // "de"

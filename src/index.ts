@@ -7,7 +7,7 @@ import _translateBatch from './translation/batch/_translateBatch';
 import _requiresTranslation, { _isSameDialect } from './locales/_requiresTranslation';
 import _translate from './translation/translate/_translate';
 import _translateReact from './translation/react/_translateReact';
-import _updateProjectDictionary from './projects/_updateProjectDictionary';
+import _updateProjectTranslations from './projects/_updateProjectTranslations';
 import _getProjectLocales from './projects/_getProjectLocales';
 import _determineLocale from './locales/_determineLocale';
 import { _formatNum, _formatCurrency, _formatList, _formatRelativeTime, _formatDateTime } from './formatting/format';
@@ -114,14 +114,14 @@ class GT {
     }
 
     /**
-    * Pushes updates to a remotely cached translation dictionary.
+    * Pushes updates to a remotely cached translations.
     * @param {Update[]} updates - Array of updates.
     * @param {string[]} [locales] - Array of locales to create translations into.
     * @param {string} [projectID=this.projectID] - The ID of the project. Defaults to the instance's projectID.
-    * @param {Record<string, any>} [object] - Options, such as whether to replace the existing dictionary. Defaults to false.
+    * @param {Record<string, any>} [object] - Options, such as whether to replace the existing remote translations. Defaults to false.
     * @returns {Promise<string[]>} A promise that resolves to an array of strings indicating the locales which have been updated.
     */
-    async updateProjectDictionary(
+    async updateProjectTranslations(
         updates: Update[], 
         locales: string[] = [], 
         options: {
@@ -131,7 +131,7 @@ class GT {
             [key: string]: any
         } = {}
     ): Promise<{ locales?: string[] }> {
-        return await _updateProjectDictionary(this, updates, locales, options);
+        return await _updateProjectTranslations(this, updates, locales, options);
     }
 
     /**
