@@ -6,7 +6,7 @@ export type Content = string | Array<string | VariableObject>;
 export type ElementAsObject = {
     type: string;
     props: {
-        'data-generaltranslation'?: {
+        'data-_gt'?: {
             id: number;
             [key: string]: any;
         };

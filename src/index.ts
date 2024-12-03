@@ -36,7 +36,7 @@ const getDefaultFromEnv = (VARIABLE: string): string => {
 type GTConstructorParams = {
     apiKey?: string;
     defaultLocale?: string;
-    projectID?: string;
+    projectId?: string;
     baseURL?: string;
 };
 
@@ -46,7 +46,7 @@ type GTConstructorParams = {
 class GT {
     apiKey: string;
     defaultLocale: string;
-    projectID: string;
+    projectId: string;
     baseURL: string;
 
     /**
@@ -55,17 +55,17 @@ class GT {
      * @param {GTConstructorParams} [params] - The parameters for initializing the GT instance.
      * @param {string} [params.apiKey=''] - The API key for accessing the translation service.
      * @param {string} [params.defaultLocale='en-US'] - The default locale for translations.
-     * @param {string} [params.projectID=''] - The project ID for the translation service.
+     * @param {string} [params.projectId=''] - The project ID for the translation service.
      * @param {string} [params.baseURL='https://prod.gtx.dev'] - The base URL for the translation service.
      */
     constructor({
         apiKey = '',
         defaultLocale = libraryDefaultLocale,
-        projectID = '',
+        projectId = '',
         baseURL = defaultAPIURL
     }: GTConstructorParams = {}) {
         this.apiKey = apiKey || getDefaultFromEnv('GT_API_KEY');
-        this.projectID = projectID || getDefaultFromEnv('GT_PROJECT_ID');
+        this.projectId = projectId || getDefaultFromEnv('GT_PROJECT_ID');
         this.defaultLocale = _standardizeLocale(defaultLocale) || libraryDefaultLocale;
         this.baseURL = baseURL;
     }
@@ -117,7 +117,7 @@ class GT {
     * Pushes updates to a remotely cached translations.
     * @param {Update[]} updates - Array of updates.
     * @param {string[]} [locales] - Array of locales to create translations into.
-    * @param {string} [projectID=this.projectID] - The ID of the project. Defaults to the instance's projectID.
+    * @param {string} [projectId=this.projectId] - The ID of the project. Defaults to the instance's projectId.
     * @param {Record<string, any>} [object] - Options, such as whether to replace the existing remote translations. Defaults to false.
     * @returns {Promise<string[]>} A promise that resolves to an array of strings indicating the locales which have been updated.
     */
@@ -127,7 +127,7 @@ class GT {
         options: {
             replace?: boolean,
             retranslate?: boolean,
-            projectID?: string;
+            projectId?: string;
             [key: string]: any
         } = {}
     ): Promise<{ locales?: string[] }> {
@@ -136,13 +136,13 @@ class GT {
 
     /**
     * Retrieves the locales for a GT project as BCP 47 locale tags.
-    * @param projectID - The project ID to retrieve locales for. If not provided, `this.projectID` should be set.
+    * @param projectId - The project ID to retrieve locales for. If not provided, `this.projectId` should be set.
     * @returns A promise that resolves with an object containing an array of locale codes.
     */
     async getProjectLocales(
-        projectID?: string
+        projectId?: string
     ): Promise<{ locales: string[] }> {
-        return _getProjectLocales(this, projectID || this.projectID);
+        return _getProjectLocales(this, projectId || this.projectId);
     }
 
 }
