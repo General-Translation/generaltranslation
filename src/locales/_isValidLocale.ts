@@ -18,6 +18,12 @@ const scriptExceptions = [
 export const _isValidLocale = (locale: string): boolean => {
     try {
         const { language, region, script } = new Intl.Locale(locale);
+        if (locale.split('-').length !== (() => {
+            let partCount = 1;
+            if (region) partCount += 1;
+            if (script) partCount += 1;
+            return partCount;  
+        })()) return false;
         const displayLanguageNames = new Intl.DisplayNames([libraryDefaultLocale], { type: 'language' });
         if (displayLanguageNames.of(language) === language) return false;
         if (region) {
