@@ -1,5 +1,6 @@
 import { Content, ContentTranslationResult } from "src/types/types";
-import defaultAPIRoutes from "../../settings/defaultAPIRoutes";
+import { maxTimeout } from "../../settings/settings";
+import { translateContentURL } from "src/settings/defaultURLs";
 
 /**
  * @internal
@@ -12,10 +13,11 @@ export default async function _translate(
 ): Promise<ContentTranslationResult> {
     const controller = new AbortController();
     const signal = controller.signal;
-    if (metadata.timeout) {
-        setTimeout(() => controller.abort(), metadata.timeout);
-    }
-    const response = await fetch(`${gt.baseURL}${defaultAPIRoutes.translateContent}`, {
+    
+    const timeout = metadata?.timeout || maxTimeout;
+    if (timeout) setTimeout(() => controller.abort(), timeout);
+
+    const response = await fetch(`${gt.baseURL}${translateContentURL}`, {
         method: 'POST',
         headers: {
             'Content-Type': 'application/json',

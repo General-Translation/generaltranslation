@@ -1,5 +1,5 @@
+import { updateProjectTranslationsURL } from 'src/settings/defaultURLs';
 import { Content, Update } from '../types/types'
-import defaultAPIRoutes from '../settings/defaultAPIRoutes';
 
 /**
  * @internal
@@ -10,7 +10,7 @@ export default async function _updateProjectTranslations(
     locales: string[],
     options: Record<string, any>
 ): Promise<{ locales?: string[] }> {
-    const response = await fetch(`${gt.baseURL}${defaultAPIRoutes.updateProjectTranslations}`, {
+    const response = await fetch(`${gt.baseURL}${updateProjectTranslationsURL}`, {
         method: 'POST',
         headers: {
             'Content-Type': 'application/json',

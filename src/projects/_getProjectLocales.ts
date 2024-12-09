@@ -1,4 +1,4 @@
-import defaultAPIRoutes from '../settings/defaultAPIRoutes';
+import { getProjectLocalesURL } from "src/settings/defaultURLs";
 
 /**
  * @internal
@@ -7,7 +7,7 @@ export default async function _getProjectLocales(
     gt: { baseURL: string, apiKey: string },
     projectId: string
 ): Promise<{ locales: string[] }> {
-    const response = await fetch(`${gt.baseURL}${defaultAPIRoutes.getProjectLocales}?projectId=${projectId}`, {
+    const response = await fetch(`${gt.baseURL}${getProjectLocalesURL}?projectId=${projectId}`, {
         method: 'GET',
         headers: {
             'Content-Type': 'application/json',

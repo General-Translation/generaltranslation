@@ -1,13 +1,13 @@
 import { ContentTranslationResult, ReactTranslationResult, Request } from '../../types/types'
-import { translateBatchURL } from '../../settings/defaultURLs';
-import { maxTimeout } from '../../settings/settings';
+import { defaultBaseURL, maxTimeout } from '../../settings/settings';
+import { _translateReactBatchFromClientURL } from 'src/settings/defaultURLs';
 
 /**
- * @internal
+ * Translates where a translation already exists in another language, used for updating websites with a new language in real-time.
  */
-export default async function _translateBatch(
-    gt: { baseURL: string, apiKey: string },
-    requests: Request[]
+export async function _translateReactBatchFromClient(
+    requests: Request[],
+    baseURL: string = defaultBaseURL,
 ): Promise<Array<ReactTranslationResult | ContentTranslationResult>> {
     
     const controller = new AbortController();
@@ -17,11 +17,10 @@ export default async function _translateBatch(
     const timeout = Math.min(...requests.map(request => request?.data?.metadata?.timeout || maxTimeout))
     if (timeout) setTimeout(() => controller.abort(), timeout);
 
-    const response = await fetch(`${gt.baseURL}${translateBatchURL}`, {
+    const response = await fetch(`${baseURL}${_translateReactBatchFromClientURL}`, {
         method: 'POST',
         headers: {
             'Content-Type': 'application/json',
-            'gtx-api-key': gt.apiKey,
         },
         body: JSON.stringify(requests),
         signal

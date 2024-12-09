@@ -19,7 +19,7 @@ import _getLocaleEmoji from './locales/_getLocaleEmoji';
 import { _isValidLocale, _standardizeLocale } from './locales/_isValidLocale';
 import { _getLocaleName } from './locales/_getLocaleName';
 import { _getLocaleDirection } from './locales/_getLocaleDirection';
-import { defaultAPIURL, libraryDefaultLocale } from './internal';
+import { defaultBaseURL, libraryDefaultLocale } from './internal';
 
 // ----- CORE CLASS ----- // 
 
@@ -62,7 +62,7 @@ class GT {
         apiKey = '',
         defaultLocale = libraryDefaultLocale,
         projectId = '',
-        baseURL = defaultAPIURL
+        baseURL = defaultBaseURL
     }: GTConstructorParams = {}) {
         this.apiKey = apiKey || getDefaultFromEnv('GT_API_KEY');
         this.projectId = projectId || getDefaultFromEnv('GT_PROJECT_ID');
