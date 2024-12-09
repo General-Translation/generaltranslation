@@ -4,7 +4,7 @@ export const pluralForms = ["singular", "plural", "dual", "zero", "one", "two", 
 export const defaultCacheURL = "https://cache.gtx.dev" as const;
 export const defaultBaseURL = "https://prod.gtx.dev" as const;
 export const localeHeaderName = "x-generaltranslation-locale";
-export const maxTimeout = 60;
+export const maxTimeout = 60000;
 export function isAcceptedPluralForm(
     form: string
   ): form is (typeof pluralForms)[number] {
