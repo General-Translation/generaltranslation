@@ -61,3 +61,7 @@ export type JsxTranslationResult = {
         key: string;
     };
 };
+export type TranslationError = {
+    error: string;
+    code: number;
+};

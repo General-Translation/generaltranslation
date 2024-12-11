@@ -1,4 +1,4 @@
-import { _standardizeLocale } from './_isValidLocale';
+import { _isValidLocale, _standardizeLocale } from './_isValidLocale';
 import _isSameLanguage from './_isSameLanguage';
 import { _isSameDialect } from './_requiresTranslation';
 
@@ -12,8 +12,11 @@ export default function _determineLocale(
 ): string | undefined {
     if (typeof locales === 'string')
         locales = [locales];
+    locales = locales.filter(_isValidLocale);
+    approvedLocales = approvedLocales.filter(_isValidLocale);
     if (!approvedLocales) return locales[0];
     for (const locale of locales) {
+        if (!_isValidLocale(locale)) continue;
         const currentLocale = _standardizeLocale(locale)
         const candidates: string[] = [];
         for (const approvedLocale of approvedLocales) {

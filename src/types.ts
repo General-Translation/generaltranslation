@@ -1,51 +1,52 @@
-export type VariableObject = {
+export type Variable = {
     variable?: string;
+    id?: string | number;
     key: string
 }
 
-export type Content = string | Array<string | VariableObject>;
+export type Content = string | Array<string | Variable>;
 
-export type ElementAsObject = {
+export type JsxElement = {
     type: string,
     props: {
         'data-_gt'?: {
             id: number
             [key: string]: any
         }
-        children?: ReactChildrenAsObject
+        children?: JsxChildren
         [key: string]: any
     }
 }
 
-export type ReactChildAsObject = string | ElementAsObject | VariableObject;
+export type JsxChild = string | JsxElement | Variable;
 
-export type ReactChildrenAsObject = ReactChildAsObject | ReactChildAsObject[];
+export type JsxChildren = JsxChild | JsxChild[];
 
 export type Update = {
-    type: 'react';
+    type: 'content';
     data: {
-        children: any,
+        source: Content,
         metadata: Record<string, any>
     };
 } | {
-    type: 'string';
+    type: 'jsx';
     data: {
-        content: Content,
+        source: JsxChildren,
         metadata: Record<string, any>
     };
-}
+};
 
 export type Request = {
-    type: 'string';
+    type: 'content';
     data: {
-        content: Content;
+        source: Content;
         targetLocale: string;
         metadata: Record<string, any>
     }
 } | {
-    type: 'react';
+    type: 'jsx';
     data: {
-        children: any;
+        source: JsxChildren;
         targetLocale: string;
         metadata: Record<string, any>
     }
@@ -60,11 +61,16 @@ export type ContentTranslationResult = {
     }
 }
 
-export type ReactTranslationResult = {
-    translation: ReactChildrenAsObject,
+export type JsxTranslationResult = {
+    translation: JsxChildren,
     locale: string,
     reference?: {
         id: string,
         key: string
     }
+}
+
+export type TranslationError = {
+    error: string,
+    code: number
 }

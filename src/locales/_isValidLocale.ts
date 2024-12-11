@@ -47,5 +47,9 @@ export const _isValidLocale = (locale: string): boolean => {
  * @internal
  */
 export const _standardizeLocale = (locale: string): string => {
-    return Intl.getCanonicalLocales(locale)[0];
+    try {
+        return Intl.getCanonicalLocales(locale)[0];
+    } catch {
+        return locale;
+    }
 };

@@ -1,13 +1,13 @@
-import { Content, ContentTranslationResult } from "src/types/types";
+import { Content, ContentTranslationResult } from "src/types";
 import { maxTimeout } from "../../settings/settings";
-import { translateContentURL } from "src/settings/defaultURLs";
+import { translateContentUrl } from "../../settings/defaultUrls";
 
 /**
  * @internal
 **/
 export default async function _translate(
-    gt: { baseURL: string; apiKey: string },
-    content: Content,
+    gt: { baseUrl: string; apiKey?: string, devApiKey?: string },
+    source: Content,
     targetLocale: string,
     metadata: { [key: string]: any }
 ): Promise<ContentTranslationResult> {
@@ -17,14 +17,15 @@ export default async function _translate(
     const timeout = metadata?.timeout || maxTimeout;
     if (timeout) setTimeout(() => controller.abort(), timeout);
 
-    const response = await fetch(`${gt.baseURL}${translateContentURL}`, {
+    const response = await fetch(`${gt.baseUrl}${translateContentUrl}`, {
         method: 'POST',
         headers: {
             'Content-Type': 'application/json',
-            'gtx-api-key': gt.apiKey,
+            ...(gt.apiKey && { 'x-gt-api-key': gt.apiKey }),
+            ...(gt.devApiKey && { 'x-gt-dev-api-key': gt.devApiKey })
         },
         body: JSON.stringify({
-            content, targetLocale, metadata
+            source, targetLocale, metadata
         }),
         signal
     });

@@ -1,20 +1,21 @@
-import { updateProjectTranslationsURL } from 'src/settings/defaultURLs';
-import { Content, Update } from '../types/types'
+import { updateProjectTranslationsUrl } from 'src/settings/defaultUrls';
+import { Content, Update } from '../types'
 
 /**
  * @internal
  */
 export default async function _updateProjectTranslations(
-    gt: { baseURL: string, apiKey: string },
+    gt: { baseUrl: string, apiKey?: string, devApiKey?: string },
     updates: Update[],
     locales: string[],
     options: Record<string, any>
 ): Promise<{ locales?: string[] }> {
-    const response = await fetch(`${gt.baseURL}${updateProjectTranslationsURL}`, {
+    const response = await fetch(`${gt.baseUrl}${updateProjectTranslationsUrl}`, {
         method: 'POST',
         headers: {
             'Content-Type': 'application/json',
-            'gtx-api-key': gt.apiKey,
+            ...(gt.apiKey && { 'x-gt-api-key': gt.apiKey }),
+            ...(gt.devApiKey && { 'x-gt-dev-api-key': gt.devApiKey })
         },
         body: JSON.stringify({
             updates, locales, options

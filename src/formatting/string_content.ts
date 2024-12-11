@@ -1,5 +1,5 @@
 import { libraryDefaultLocale } from '../internal';
-import { Content, VariableObject } from '../types/types'
+import { Content, Variable } from '../types'
 import { _formatCurrency, _formatDateTime, _formatNum, _formatList, _formatRelativeTime } from './format'
 
 // Variable types mapping
@@ -20,7 +20,7 @@ export function _splitStringToContent(string: string): Content {
     if (typeof string !== 'string')
         throw new Error(`splitStringToContent: ${string} is not a string!`)
 
-    const result: (string | VariableObject)[] = [];
+    const result: (string | Variable)[] = [];
     const regex = /{([^}]+)}/g;
     let lastIndex = 0;
     let match: RegExpExecArray | null;
@@ -51,7 +51,7 @@ export function _splitStringToContent(string: string): Content {
         const key = parts[0];
         const variableType = parts[1] ? variableTypeMap[parts[1]] : undefined;
 
-        const variableObject: VariableObject = {
+        const variableObject: Variable = {
             key,
             ...(variableType && { variable: variableType })
         };

@@ -2,9 +2,8 @@ export {
   libraryDefaultLocale, 
   localeCookieName,
   pluralForms,
-  defaultBaseURL,
-  defaultCacheURL,
+  defaultBaseUrl,
+  defaultCacheUrl,
   localeHeaderName,
   isAcceptedPluralForm
-} from './settings/settings'
-export { _translateReactBatchFromClient as translateReactBatchFromClient } from './translation/batch/_translateReactBatchFromClient'
+} from './settings/settings';
