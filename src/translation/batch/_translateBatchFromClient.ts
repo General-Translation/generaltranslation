@@ -1,14 +1,16 @@
 import { ContentTranslationResult, JsxTranslationResult, Request } from '../../types'
-import { translateBatchUrl } from '../../settings/defaultUrls';
 import { maxTimeout } from '../../settings/settings';
+import { _translateJsxBatchFromClientUrl } from 'src/settings/defaultUrls';
 
 /**
- * @internal
+ * Translates where a translation already exists in another language, used for updating websites with a new language in real-time.
  */
-export default async function _translateBatch(
-    gt: { baseUrl: string, apiKey?: string, devApiKey?: string },
-    requests: Request[]
-): Promise<Array<JsxTranslationResult | ContentTranslationResult>> {
+export async function _translateBatchFromClient(
+    gt: { baseUrl: string, devApiKey?: string },
+    requests: Request[],
+): Promise<Array<
+    JsxTranslationResult | ContentTranslationResult
+>> {
     
     const controller = new AbortController();
     const signal = controller.signal;
@@ -17,11 +19,10 @@ export default async function _translateBatch(
     const timeout = Math.min(...requests.map(request => request?.data?.metadata?.timeout || maxTimeout))
     if (timeout) setTimeout(() => controller.abort(), timeout);
 
-    const response = await fetch(`${gt.baseUrl}${translateBatchUrl}`, {
+    const response = await fetch(`${gt.baseUrl}${_translateJsxBatchFromClientUrl}`, {
         method: 'POST',
         headers: {
             'Content-Type': 'application/json',
-            ...(gt.apiKey && { 'x-gt-api-key': gt.apiKey }),
             ...(gt.devApiKey && { 'x-gt-dev-api-key': gt.devApiKey })
         },
         body: JSON.stringify(requests),

@@ -5,7 +5,7 @@
  * @returns {string} - 'rtl' if the language is right-to-left, otherwise 'ltr'.
  * @internal
  */
-export function _getLocaleDirection(code: string): string {
+export function _getLocaleDirection(code: string): 'ltr' | 'rtl' {
     try {
         const locale = new Intl.Locale(code);
         // Return 'rtl' if the text direction of the language is right-to-left, otherwise 'ltr'

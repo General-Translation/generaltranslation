@@ -6,22 +6,23 @@
 import _translateBatch from './translation/batch/_translateBatch';
 import _requiresTranslation, { _isSameDialect } from './locales/_requiresTranslation';
 import _translate from './translation/translate/_translate';
-import _translateReact from './translation/react/_translateReact';
+import _translateJsx from './translation/jsx/_translateJsx';
 import _updateProjectTranslations from './projects/_updateProjectTranslations';
 import _getProjectLocales from './projects/_getProjectLocales';
 import _determineLocale from './locales/_determineLocale';
 import { _formatNum, _formatCurrency, _formatList, _formatRelativeTime, _formatDateTime } from './formatting/format';
 import { _splitStringToContent, _renderContentToString } from './formatting/string_content'
-import { Content, Update, Request, ReactChildrenAsObject, ReactTranslationResult, ContentTranslationResult } from './types/types'
+import { Content, Update, Request, JsxChildren, JsxTranslationResult, ContentTranslationResult } from './types'
 import _isSameLanguage from './locales/_isSameLanguage'
 import _getLocaleProperties from './locales/_getLocaleProperties';
 import _getLocaleEmoji from './locales/_getLocaleEmoji';
 import { _isValidLocale, _standardizeLocale } from './locales/_isValidLocale';
 import { _getLocaleName } from './locales/_getLocaleName';
 import { _getLocaleDirection } from './locales/_getLocaleDirection';
-import { defaultAPIURL, libraryDefaultLocale } from './internal';
+import { defaultBaseUrl, libraryDefaultLocale } from './internal';
+import { _translateBatchFromClient } from './translation/batch/_translateBatchFromClient';
 
-// ----- CORE CLASS ----- // 
+// ----- HELPER FUNCTIONS ----- //
 
 const getDefaultFromEnv = (VARIABLE: string): string => {
     if (typeof process !== 'undefined' && process.env) {
@@ -30,14 +31,19 @@ const getDefaultFromEnv = (VARIABLE: string): string => {
     return '';
 }
 
+// ----- CORE CLASS ----- // 
+
+
+
 /**
  * Type representing the constructor parameters for the GT class.
  */
 type GTConstructorParams = {
     apiKey?: string;
+    devApiKey?: string;
     defaultLocale?: string;
     projectId?: string;
-    baseURL?: string;
+    baseUrl?: string;
 };
 
 /**
@@ -45,9 +51,10 @@ type GTConstructorParams = {
  */
 class GT {
     apiKey: string;
+    devApiKey: string;
     defaultLocale: string;
     projectId: string;
-    baseURL: string;
+    baseUrl: string;
 
     /**
      * Constructs an instance of the GT class.
@@ -56,52 +63,52 @@ class GT {
      * @param {string} [params.apiKey=''] - The API key for accessing the translation service.
      * @param {string} [params.defaultLocale='en-US'] - The default locale for translations.
      * @param {string} [params.projectId=''] - The project ID for the translation service.
-     * @param {string} [params.baseURL='https://prod.gtx.dev'] - The base URL for the translation service.
+     * @param {string} [params.baseUrl='https://prod.gtx.dev'] - The base URL for the translation service.
      */
     constructor({
         apiKey = '',
+        devApiKey = '',
         defaultLocale = libraryDefaultLocale,
         projectId = '',
-        baseURL = defaultAPIURL
+        baseUrl = defaultBaseUrl
     }: GTConstructorParams = {}) {
         this.apiKey = apiKey || getDefaultFromEnv('GT_API_KEY');
+        this.devApiKey = devApiKey || getDefaultFromEnv('GT_DEV_API_KEY');
         this.projectId = projectId || getDefaultFromEnv('GT_PROJECT_ID');
         this.defaultLocale = _standardizeLocale(defaultLocale) || libraryDefaultLocale;
-        this.baseURL = baseURL;
+        this.baseUrl = baseUrl;
     }
 
     /**
      * Translates a string or an array of strings/variables into a target locale.
      * If `metadata.save` is provided, the translation is cached for use in a public project.
      * 
-     * @param {Content} content - The string or array of strings/variables to be translated.
+     * @param {Content} source - The string or array of strings/variables to be translated.
      * @param {string} locale - The target locale code (e.g., 'en-US', 'fr') for the translation.
-     * @param {{ context?: string, save?: boolean, [key: string]: any }} [metadata] - Additional metadata for the translation request.
+     * @param {{ context?: string, [key: string]: any }} [metadata] - Additional metadata for the translation request.
      * @param {string} [metadata.context] - Contextual information to assist with the translation.
-     * @param {boolean} [metadata.save] - Whether to cache the translation for use in a public project.
      * 
      * @returns {Promise<ContentTranslationResult>} A promise that resolves to the translated content, or an error if the translation fails.
      */
-    async translate(content: Content, locale: string, metadata?: { 
+    async translate(source: Content, locale: string, metadata?: { 
         context?: string,
-        save?: boolean, 
         [key: string]: any 
-    }): Promise<{ translation: Content, locale: string }> {
-        return await _translate(this, content, locale, { defaultLocale: this.defaultLocale, ...metadata })
+    }): Promise<ContentTranslationResult> {
+        return await _translate(this, source, locale, { defaultLocale: this.defaultLocale, ...metadata })
     }
 
     /**
-    * Translates the content of React children elements.
+    * Translates JSX elements into a given locale.
     * 
     * @param {Object} params - The parameters for the translation.
-    * @param {ReactChildrenAsObject} params.children - The React children content to be translated.
+    * @param {JsxChildren} params.source - The JSX children content to be translated.
     * @param {string} params.locale - The target locale for the translation.
     * @param {Object} params.metadata - Additional metadata for the translation process.
     * 
-    * @returns {Promise<ReactTranslationResult>} - A promise that resolves to the translated content.
+    * @returns {Promise<JsxTranslationResult>} - A promise that resolves to the translated content.
     */
-    async translateReact(children: ReactChildrenAsObject, locale: string, metadata?: { context?: string, [key: string]: any }): Promise<ReactTranslationResult> {
-        return await _translateReact(this, children, locale, { defaultLocale: this.defaultLocale, ...metadata });
+    async translateJsx(source: JsxChildren, locale: string, metadata?: { context?: string, [key: string]: any }): Promise<JsxTranslationResult> {
+        return await _translateJsx(this, source, locale, { defaultLocale: this.defaultLocale, ...metadata });
     }
 
     /**
@@ -109,7 +116,7 @@ class GT {
     * @param requests - Array of requests to be processed and sent.
     * @returns A promise that resolves to an array of processed results.
     */
-    async translateBatch(requests: Request[]): Promise<Array<ReactTranslationResult | ContentTranslationResult>> {
+    async translateBatch(requests: Request[]): Promise<Array<JsxTranslationResult | ContentTranslationResult>> {
         return _translateBatch(this, requests);
     }
 
@@ -145,6 +152,16 @@ class GT {
         return _getProjectLocales(this, projectId || this.projectId);
     }
 
+    /**
+    * Batches multiple translation requests and sends them directly to GT.
+    * Intended for use in a client-side app, where api keys are not present.
+    * @param requests - Array of requests to be processed and sent.
+    * @returns A promise that resolves to an array of processed results.
+    */
+    async translateBatchFromClient(requests: Request[]): Promise<Array<JsxTranslationResult | ContentTranslationResult>> {
+        return _translateBatchFromClient(this, requests)
+    }
+
 }
 
 // ----- EXPORTS ----- //
@@ -155,7 +172,7 @@ class GT {
  * @param {string} locale - The locale code to check.
  * @returns {string} - 'rtl' if the locale is right-to-left, otherwise 'ltr'.
  */
-export function getLocaleDirection(locale: string): string {
+export function getLocaleDirection(locale: string): 'ltr' | 'rtl'  {
     return _getLocaleDirection(locale);
 };
 
@@ -362,7 +379,7 @@ export function formatRelativeTime(params: { value: number; unit: Intl.RelativeT
 /**
  * Splits a string into an array of text and variable objects.
  * @param {string} string - The input string to split.
- * @returns {Content} - An array containing strings and VariableObjects.
+ * @returns {Content} - An array containing strings and variables.
  */
 export function splitStringToContent(string: string): Content {
     return _splitStringToContent(string);

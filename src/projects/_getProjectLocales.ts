@@ -1,17 +1,18 @@
-import defaultAPIRoutes from '../settings/defaultAPIRoutes';
+import { getProjectLocalesUrl } from "src/settings/defaultUrls";
 
 /**
  * @internal
  */
 export default async function _getProjectLocales(
-    gt: { baseURL: string, apiKey: string },
+    gt: { baseUrl: string, apiKey?: string, devApiKey?: string },
     projectId: string
 ): Promise<{ locales: string[] }> {
-    const response = await fetch(`${gt.baseURL}${defaultAPIRoutes.getProjectLocales}?projectId=${projectId}`, {
+    const response = await fetch(`${gt.baseUrl}${getProjectLocalesUrl}?projectId=${projectId}`, {
         method: 'GET',
         headers: {
             'Content-Type': 'application/json',
-            'gtx-api-key': gt.apiKey,
+            ...(gt.apiKey && { 'x-gt-api-key': gt.apiKey }),
+            ...(gt.devApiKey && { 'x-gt-dev-api-key': gt.devApiKey })
         }
     });
     if (!response.ok) {
