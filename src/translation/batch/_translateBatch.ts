@@ -1,5 +1,5 @@
 import { ContentTranslationResult, JsxTranslationResult, Request } from '../../types'
-import { translateBatchUrl } from '../../settings/defaultUrls';
+import { translateBatchUrl } from '../../settings/defaultURLs';
 import { maxTimeout } from '../../settings/settings';
 
 /**
@@ -9,7 +9,7 @@ export default async function _translateBatch(
     gt: { baseUrl: string, apiKey?: string, devApiKey?: string },
     requests: Request[]
 ): Promise<Array<JsxTranslationResult | ContentTranslationResult>> {
-    
+
     const controller = new AbortController();
     const signal = controller.signal;
 

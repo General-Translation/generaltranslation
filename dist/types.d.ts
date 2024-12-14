@@ -65,3 +65,7 @@ export type TranslationError = {
     error: string;
     code: number;
 };
+export type RenderSettings = {
+    method: 'skeleton' | 'replace' | 'hang' | 'subtle';
+    timeout: number | null;
+};

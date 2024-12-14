@@ -1,4 +1,4 @@
-import { updateProjectTranslationsUrl } from 'src/settings/defaultUrls';
+import { updateProjectTranslationsUrl } from 'src/settings/defaultURLs';
 import { Content, Update } from '../types'
 
 /**

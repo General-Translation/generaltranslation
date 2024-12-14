@@ -1,6 +1,6 @@
 import { Content, ContentTranslationResult } from "src/types";
 import { maxTimeout } from "../../settings/settings";
-import { translateContentUrl } from "../../settings/defaultUrls";
+import { translateContentUrl } from "../../settings/defaultURLs";
 
 /**
  * @internal

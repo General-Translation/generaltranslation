@@ -1,6 +1,6 @@
 import { JsxChildren, JsxTranslationResult } from "src/types";
 import { maxTimeout } from "../../settings/settings";
-import { translateJsxUrl } from "../../settings/defaultUrls";
+import { translateJsxUrl } from "../../settings/defaultURLs";
 
 /**
  * @internal
