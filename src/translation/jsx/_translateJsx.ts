@@ -1,6 +1,6 @@
-import { JsxChildren, JsxTranslationResult } from "src/types";
+import { JsxChildren, JsxTranslationResult, TranslationError } from "src/types";
 import { maxTimeout } from "../../settings/settings";
-import { translateJsxUrl } from "../../settings/defaultUrls";
+import { translateJsxUrl } from "../../settings/defaultURLs";
 
 /**
  * @internal
@@ -10,7 +10,7 @@ export default async function _translateJsx(
     source: JsxChildren,
     targetLocale: string,
     metadata: { [key: string]: any }
-): Promise<JsxTranslationResult> {
+): Promise<JsxTranslationResult | TranslationError> {
     const controller = new AbortController();
     const signal = controller.signal;
 
@@ -32,5 +32,5 @@ export default async function _translateJsx(
     if (!response.ok) {
         throw new Error(`${response.status}: ${await response.text()}`);
     }
-    return await response.json() as JsxTranslationResult;
+    return await response.json() as JsxTranslationResult | TranslationError;
 }

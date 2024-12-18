@@ -1,6 +1,6 @@
-import { Content, ContentTranslationResult } from "src/types";
+import { Content, ContentTranslationResult, TranslationError } from "src/types";
 import { maxTimeout } from "../../settings/settings";
-import { translateContentUrl } from "../../settings/defaultUrls";
+import { translateContentUrl } from "../../settings/defaultURLs";
 
 /**
  * @internal
@@ -10,7 +10,7 @@ export default async function _translate(
     source: Content,
     targetLocale: string,
     metadata: { [key: string]: any }
-): Promise<ContentTranslationResult> {
+): Promise<ContentTranslationResult | TranslationError> {
     const controller = new AbortController();
     const signal = controller.signal;
     
@@ -33,6 +33,6 @@ export default async function _translate(
         throw new Error(`${response.status}: ${await response.text()}`);
     }
     const result = await response.json();
-    return result as ContentTranslationResult;
+    return result as ContentTranslationResult | TranslationError;
 }
 

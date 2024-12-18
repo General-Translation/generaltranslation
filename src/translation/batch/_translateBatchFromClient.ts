@@ -1,6 +1,6 @@
-import { ContentTranslationResult, JsxTranslationResult, Request } from '../../types'
+import { ContentTranslationResult, JsxTranslationResult, Request, TranslationError } from '../../types'
 import { maxTimeout } from '../../settings/settings';
-import { _translateJsxBatchFromClientUrl } from 'src/settings/defaultUrls';
+import { _translateJsxBatchFromClientUrl } from 'src/settings/defaultURLs';
 
 /**
  * Translates where a translation already exists in another language, used for updating websites with a new language in real-time.
@@ -9,7 +9,7 @@ export async function _translateBatchFromClient(
     gt: { baseUrl: string, devApiKey?: string },
     requests: Request[],
 ): Promise<Array<
-    JsxTranslationResult | ContentTranslationResult
+    JsxTranslationResult | ContentTranslationResult | TranslationError
 >> {
     
     const controller = new AbortController();
@@ -34,5 +34,5 @@ export async function _translateBatchFromClient(
     }
 
     const resultArray = await response.json();
-    return resultArray as Array<JsxTranslationResult | ContentTranslationResult>;
+    return resultArray as Array<JsxTranslationResult | ContentTranslationResult | TranslationError>;
 }

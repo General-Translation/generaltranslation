@@ -1,6 +1,6 @@
-import { ContentTranslationResult, JsxTranslationResult, Request } from '../../types'
-import { translateBatchUrl } from '../../settings/defaultUrls';
+import { ContentTranslationResult, JsxTranslationResult, Request, TranslationError } from '../../types'
 import { maxTimeout } from '../../settings/settings';
+import { translateBatchUrl } from 'src/settings/defaultURLs';
 
 /**
  * @internal
@@ -8,7 +8,7 @@ import { maxTimeout } from '../../settings/settings';
 export default async function _translateBatch(
     gt: { baseUrl: string, apiKey?: string, devApiKey?: string },
     requests: Request[]
-): Promise<Array<JsxTranslationResult | ContentTranslationResult>> {
+): Promise<Array<JsxTranslationResult | ContentTranslationResult | TranslationError>> {
     
     const controller = new AbortController();
     const signal = controller.signal;
@@ -33,5 +33,5 @@ export default async function _translateBatch(
     }
 
     const resultArray = await response.json();
-    return resultArray as Array<JsxTranslationResult | ContentTranslationResult>;
+    return resultArray as Array<JsxTranslationResult | ContentTranslationResult | TranslationError>;
 }
