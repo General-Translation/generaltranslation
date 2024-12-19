@@ -17,16 +17,25 @@ export default async function _translateBatch(
     const timeout = Math.min(...requests.map(request => request?.data?.metadata?.timeout || maxTimeout))
     if (timeout) setTimeout(() => controller.abort(), timeout);
 
-    const response = await fetch(`${gt.baseUrl}${translateBatchUrl}`, {
-        method: 'POST',
-        headers: {
-            'Content-Type': 'application/json',
-            ...(gt.apiKey && { 'x-gt-api-key': gt.apiKey }),
-            ...(gt.devApiKey && { 'x-gt-dev-api-key': gt.devApiKey })
-        },
-        body: JSON.stringify(requests),
-        signal
-    });
+    let response;
+    try {
+        response = await fetch(`${gt.baseUrl}${translateBatchUrl}`, {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json',
+                ...(gt.apiKey && { 'x-gt-api-key': gt.apiKey }),
+                ...(gt.devApiKey && { 'x-gt-dev-api-key': gt.devApiKey })
+            },
+            body: JSON.stringify(requests),
+            signal
+        });
+    } catch (error: any) {
+        if (error?.name === 'AbortError') {
+            console.error('Translation request timed out');
+            return [];
+        }
+        throw error;
+    }
 
     if (!response.ok) {
         throw new Error(`${response.status}: ${await response.text()}`);
