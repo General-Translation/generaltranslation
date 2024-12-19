@@ -1,4 +1,4 @@
-import { getProjectLocalesUrl } from "src/settings/defaultUrls";
+import { getProjectLocalesUrl } from "src/settings/defaultURLs";
 
 /**
  * @internal

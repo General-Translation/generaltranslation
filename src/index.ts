@@ -21,6 +21,8 @@ import { _getLocaleName } from './locales/_getLocaleName';
 import { _getLocaleDirection } from './locales/_getLocaleDirection';
 import { defaultBaseUrl, libraryDefaultLocale } from './internal';
 import { _translateBatchFromClient } from './translation/batch/_translateBatchFromClient';
+import _isResultError from './translationProcessing/_isResultError';
+import _isResultSuccessful from './translationProcessing/_isResultSuccessful';
 
 // ----- HELPER FUNCTIONS ----- //
 
@@ -160,6 +162,25 @@ class GT {
     */
     async translateBatchFromClient(requests: Request[]): Promise<Array<JsxTranslationResult | ContentTranslationResult | TranslationError>> {
         return _translateBatchFromClient(this, requests)
+    }
+
+    /**
+    * Returns true if the result is a successful translation result.
+    * @param result - The result to check.
+    * @returns True if the result is a successful translation result, false otherwise.
+    */
+    isResultSuccessful(result: JsxTranslationResult | ContentTranslationResult | TranslationError): result is JsxTranslationResult | ContentTranslationResult {
+        return _isResultSuccessful(result);
+    }
+
+    /**
+    * Returns true if the result is a translation error.
+    * @description This typically occurs when there has been an error in the input provided for the translation.
+    * @param result The result to check.
+    * @returns True if the result is a translation error, false otherwise.
+     */
+    isResultError(result: JsxTranslationResult | ContentTranslationResult | TranslationError): result is TranslationError {
+        return _isResultError(result);
     }
 
 }
