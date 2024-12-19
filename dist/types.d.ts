@@ -63,5 +63,5 @@ export type JsxTranslationResult = {
 };
 export type TranslationError = {
     error: string;
-    code: number;
+    code: 400 | 403 | 408 | 500;
 };
