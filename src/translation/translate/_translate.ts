@@ -14,7 +14,7 @@ export default async function _translate(
     const controller = new AbortController();
     const signal = controller.signal;
     
-    const timeout = metadata?.timeout || maxTimeout;
+    const timeout = Math.min(metadata?.timeout || maxTimeout, maxTimeout);
     if (timeout) setTimeout(() => controller.abort(), timeout);
 
     let response;
@@ -33,12 +33,11 @@ export default async function _translate(
         });
     } catch (error: any) {
         if (error?.name === 'AbortError') {
-            console.error('Translation request timed out');
-            return { error: 'Translation request timed out', code: 408 };
+            throw new Error('Translation request timed out. This has either occured due to the translation of an unusually large request or a translation failure in the API.');
         }
         throw error;
     }
-    
+
     if (!response.ok) {
         throw new Error(`${response.status}: ${await response.text()}`);
     }

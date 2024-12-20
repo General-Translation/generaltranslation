@@ -16,7 +16,7 @@ export async function _translateBatchFromClient(
     const signal = controller.signal;
 
     // timeout with the lowest request
-    const timeout = Math.min(...requests.map(request => request?.data?.metadata?.timeout || maxTimeout))
+    const timeout = Math.min(...requests.map(request => request?.data?.metadata?.timeout || maxTimeout), maxTimeout)
     if (timeout) setTimeout(() => controller.abort(), timeout);
 
     let response;
@@ -32,8 +32,7 @@ export async function _translateBatchFromClient(
         });
     } catch (error: any) {
         if (error?.name === 'AbortError') {
-            console.error('Translation request timed out');
-            return [];
+            throw new Error('Translation request timed out. This has either occured due to the translation of an unusually large request or a translation failure in the API.');
         }
         throw error;
     }
@@ -43,6 +42,6 @@ export async function _translateBatchFromClient(
         throw new Error(`${response.status}: ${await response.text()}`);
     }
 
-    const resultArray = await response.json();
+    const resultArray = await response.json()
     return resultArray as Array<JsxTranslationResult | ContentTranslationResult | TranslationError>;
 }

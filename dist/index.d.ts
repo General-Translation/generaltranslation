@@ -94,19 +94,6 @@ declare class GT {
     * @returns A promise that resolves to an array of processed results.
     */
     translateBatchFromClient(requests: Request[]): Promise<Array<JsxTranslationResult | ContentTranslationResult | TranslationError>>;
-    /**
-    * Returns true if the result is a successful translation result.
-    * @param result - The result to check.
-    * @returns True if the result is a successful translation result, false otherwise.
-    */
-    isResultSuccessful(result: JsxTranslationResult | ContentTranslationResult | TranslationError): result is JsxTranslationResult | ContentTranslationResult;
-    /**
-    * Returns true if the result is a translation error.
-    * @description This typically occurs when there has been an error in the input provided for the translation.
-    * @param result The result to check.
-    * @returns True if the result is a translation error, false otherwise.
-     */
-    isResultError(result: JsxTranslationResult | ContentTranslationResult | TranslationError): result is TranslationError;
 }
 /**
  * Get the text direction for a given locale code using the Intl.Locale API.
