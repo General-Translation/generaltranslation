@@ -1,4 +1,4 @@
-import { Content, Update, Request, JsxChildren, JsxTranslationResult, ContentTranslationResult } from './types';
+import { Content, Update, Request, JsxChildren, JsxTranslationResult, ContentTranslationResult, TranslationError } from './types';
 /**
  * Type representing the constructor parameters for the GT class.
  */
@@ -37,12 +37,12 @@ declare class GT {
      * @param {{ context?: string, [key: string]: any }} [metadata] - Additional metadata for the translation request.
      * @param {string} [metadata.context] - Contextual information to assist with the translation.
      *
-     * @returns {Promise<ContentTranslationResult>} A promise that resolves to the translated content, or an error if the translation fails.
+     * @returns {Promise<ContentTranslationResult | TranslationError>} A promise that resolves to the translated content, or an error if the translation fails.
      */
     translate(source: Content, locale: string, metadata?: {
         context?: string;
         [key: string]: any;
-    }): Promise<ContentTranslationResult>;
+    }): Promise<ContentTranslationResult | TranslationError>;
     /**
     * Translates JSX elements into a given locale.
     *
@@ -51,18 +51,18 @@ declare class GT {
     * @param {string} params.locale - The target locale for the translation.
     * @param {Object} params.metadata - Additional metadata for the translation process.
     *
-    * @returns {Promise<JsxTranslationResult>} - A promise that resolves to the translated content.
+    * @returns {Promise<JsxTranslationResult | TranslationError>} - A promise that resolves to the translated content.
     */
     translateJsx(source: JsxChildren, locale: string, metadata?: {
         context?: string;
         [key: string]: any;
-    }): Promise<JsxTranslationResult>;
+    }): Promise<JsxTranslationResult | TranslationError>;
     /**
     * Batches multiple translation requests and sends them to the server.
     * @param requests - Array of requests to be processed and sent.
     * @returns A promise that resolves to an array of processed results.
     */
-    translateBatch(requests: Request[]): Promise<Array<JsxTranslationResult | ContentTranslationResult>>;
+    translateBatch(requests: Request[]): Promise<Array<JsxTranslationResult | ContentTranslationResult | TranslationError>>;
     /**
     * Pushes updates to a remotely cached translations.
     * @param {Update[]} updates - Array of updates.
@@ -93,7 +93,7 @@ declare class GT {
     * @param requests - Array of requests to be processed and sent.
     * @returns A promise that resolves to an array of processed results.
     */
-    translateBatchFromClient(requests: Request[]): Promise<Array<JsxTranslationResult | ContentTranslationResult>>;
+    translateBatchFromClient(requests: Request[]): Promise<Array<JsxTranslationResult | ContentTranslationResult | TranslationError>>;
 }
 /**
  * Get the text direction for a given locale code using the Intl.Locale API.

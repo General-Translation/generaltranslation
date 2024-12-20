@@ -12,7 +12,7 @@ import _getProjectLocales from './projects/_getProjectLocales';
 import _determineLocale from './locales/_determineLocale';
 import { _formatNum, _formatCurrency, _formatList, _formatRelativeTime, _formatDateTime } from './formatting/format';
 import { _splitStringToContent, _renderContentToString } from './formatting/string_content'
-import { Content, Update, Request, JsxChildren, JsxTranslationResult, ContentTranslationResult } from './types'
+import { Content, Update, Request, JsxChildren, JsxTranslationResult, ContentTranslationResult, TranslationError } from './types'
 import _isSameLanguage from './locales/_isSameLanguage'
 import _getLocaleProperties from './locales/_getLocaleProperties';
 import _getLocaleEmoji from './locales/_getLocaleEmoji';
@@ -88,12 +88,12 @@ class GT {
      * @param {{ context?: string, [key: string]: any }} [metadata] - Additional metadata for the translation request.
      * @param {string} [metadata.context] - Contextual information to assist with the translation.
      * 
-     * @returns {Promise<ContentTranslationResult>} A promise that resolves to the translated content, or an error if the translation fails.
+     * @returns {Promise<ContentTranslationResult | TranslationError>} A promise that resolves to the translated content, or an error if the translation fails.
      */
     async translate(source: Content, locale: string, metadata?: { 
         context?: string,
         [key: string]: any 
-    }): Promise<ContentTranslationResult> {
+    }): Promise<ContentTranslationResult | TranslationError> {
         return await _translate(this, source, locale, { defaultLocale: this.defaultLocale, ...metadata })
     }
 
@@ -105,9 +105,9 @@ class GT {
     * @param {string} params.locale - The target locale for the translation.
     * @param {Object} params.metadata - Additional metadata for the translation process.
     * 
-    * @returns {Promise<JsxTranslationResult>} - A promise that resolves to the translated content.
+    * @returns {Promise<JsxTranslationResult | TranslationError>} - A promise that resolves to the translated content.
     */
-    async translateJsx(source: JsxChildren, locale: string, metadata?: { context?: string, [key: string]: any }): Promise<JsxTranslationResult> {
+    async translateJsx(source: JsxChildren, locale: string, metadata?: { context?: string, [key: string]: any }): Promise<JsxTranslationResult | TranslationError> {
         return await _translateJsx(this, source, locale, { defaultLocale: this.defaultLocale, ...metadata });
     }
 
@@ -116,7 +116,7 @@ class GT {
     * @param requests - Array of requests to be processed and sent.
     * @returns A promise that resolves to an array of processed results.
     */
-    async translateBatch(requests: Request[]): Promise<Array<JsxTranslationResult | ContentTranslationResult>> {
+    async translateBatch(requests: Request[]): Promise<Array<JsxTranslationResult | ContentTranslationResult | TranslationError>> {
         return _translateBatch(this, requests);
     }
 
@@ -158,10 +158,9 @@ class GT {
     * @param requests - Array of requests to be processed and sent.
     * @returns A promise that resolves to an array of processed results.
     */
-    async translateBatchFromClient(requests: Request[]): Promise<Array<JsxTranslationResult | ContentTranslationResult>> {
+    async translateBatchFromClient(requests: Request[]): Promise<Array<JsxTranslationResult | ContentTranslationResult | TranslationError>> {
         return _translateBatchFromClient(this, requests)
     }
-
 }
 
 // ----- EXPORTS ----- //
