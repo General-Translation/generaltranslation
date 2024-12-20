@@ -41,7 +41,7 @@ const getDefaultFromEnv = (VARIABLE: string): string => {
 type GTConstructorParams = {
     apiKey?: string;
     devApiKey?: string;
-    defaultLocale?: string;
+    sourceLocale?: string;
     projectId?: string;
     baseUrl?: string;
 };
@@ -52,7 +52,7 @@ type GTConstructorParams = {
 class GT {
     apiKey: string;
     devApiKey: string;
-    defaultLocale: string;
+    sourceLocale: string;
     projectId: string;
     baseUrl: string;
 
@@ -61,21 +61,21 @@ class GT {
      * 
      * @param {GTConstructorParams} [params] - The parameters for initializing the GT instance.
      * @param {string} [params.apiKey=''] - The API key for accessing the translation service.
-     * @param {string} [params.defaultLocale='en-US'] - The default locale for translations.
+     * @param {string} [params.sourceLocale='en-US'] - The default locale for translations.
      * @param {string} [params.projectId=''] - The project ID for the translation service.
      * @param {string} [params.baseUrl='https://prod.gtx.dev'] - The base URL for the translation service.
      */
     constructor({
         apiKey = '',
         devApiKey = '',
-        defaultLocale = libraryDefaultLocale,
+        sourceLocale = '',
         projectId = '',
         baseUrl = defaultBaseUrl
     }: GTConstructorParams = {}) {
         this.apiKey = apiKey || getDefaultFromEnv('GT_API_KEY');
         this.devApiKey = devApiKey || getDefaultFromEnv('GT_DEV_API_KEY');
         this.projectId = projectId || getDefaultFromEnv('GT_PROJECT_ID');
-        this.defaultLocale = _standardizeLocale(defaultLocale) || libraryDefaultLocale;
+        this.sourceLocale = _standardizeLocale(sourceLocale) || '';
         this.baseUrl = baseUrl;
     }
 
@@ -90,11 +90,19 @@ class GT {
      * 
      * @returns {Promise<ContentTranslationResult>} A promise that resolves to the translated content, or an error if the translation fails.
      */
-    async translate(source: Content, locale: string, metadata?: { 
-        context?: string,
-        [key: string]: any 
-    }): Promise<ContentTranslationResult> {
-        return await _translate(this, source, locale, { defaultLocale: this.defaultLocale, ...metadata })
+    async translate(
+        source: Content, 
+        locale: string, 
+        metadata?: { 
+            context?: string,
+            id?: string,
+            publish?: boolean,
+            fast?: boolean,
+            sourceLocale?: string,
+            [key: string]: any
+        }
+    ): Promise<ContentTranslationResult> {
+        return await _translate(this, source, locale, { sourceLocale: this.sourceLocale, ...metadata })
     }
 
     /**
@@ -107,8 +115,19 @@ class GT {
     * 
     * @returns {Promise<JsxTranslationResult>} - A promise that resolves to the translated content.
     */
-    async translateJsx(source: JsxChildren, locale: string, metadata?: { context?: string, [key: string]: any }): Promise<JsxTranslationResult> {
-        return await _translateJsx(this, source, locale, { defaultLocale: this.defaultLocale, ...metadata });
+    async translateJsx(
+        source: JsxChildren, 
+        locale: string, 
+        metadata?: { 
+            context?: string,
+            id?: string,
+            publish?: boolean,
+            fast?: boolean,
+            sourceLocale?: string,
+            [key: string]: any
+        }
+    ): Promise<JsxTranslationResult> {
+        return await _translateJsx(this, source, locale, { sourceLocale: this.sourceLocale, ...metadata });
     }
 
     /**

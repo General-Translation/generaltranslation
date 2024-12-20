@@ -1,6 +1,6 @@
 import { ContentTranslationResult, JsxTranslationResult, Request } from '../../types'
 import { maxTimeout } from '../../settings/settings';
-import { _translateJsxBatchFromClientUrl } from 'src/settings/defaultUrls';
+import { _translateJsxBatchFromClientUrl } from '../../settings/defaultUrls';
 
 /**
  * Translates where a translation already exists in another language, used for updating websites with a new language in real-time.

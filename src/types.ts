@@ -22,17 +22,21 @@ export type JsxChild = string | JsxElement | Variable;
 
 export type JsxChildren = JsxChild | JsxChild[];
 
+type Metadata = {
+    [key: string]: any
+}
+
 export type Update = {
     type: 'content';
     data: {
         source: Content,
-        metadata: Record<string, any>
+        metadata: Metadata 
     };
 } | {
     type: 'jsx';
     data: {
         source: JsxChildren,
-        metadata: Record<string, any>
+        metadata: Metadata 
     };
 };
 
@@ -41,14 +45,14 @@ export type Request = {
     data: {
         source: Content;
         targetLocale: string;
-        metadata: Record<string, any>
+        metadata: Metadata 
     }
 } | {
     type: 'jsx';
     data: {
         source: JsxChildren;
         targetLocale: string;
-        metadata: Record<string, any>
+        metadata: Metadata 
     }
 };
 

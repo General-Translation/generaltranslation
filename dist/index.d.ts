@@ -5,7 +5,7 @@ import { Content, Update, Request, JsxChildren, JsxTranslationResult, ContentTra
 type GTConstructorParams = {
     apiKey?: string;
     devApiKey?: string;
-    defaultLocale?: string;
+    sourceLocale?: string;
     projectId?: string;
     baseUrl?: string;
 };
@@ -15,7 +15,7 @@ type GTConstructorParams = {
 declare class GT {
     apiKey: string;
     devApiKey: string;
-    defaultLocale: string;
+    sourceLocale: string;
     projectId: string;
     baseUrl: string;
     /**
@@ -23,11 +23,11 @@ declare class GT {
      *
      * @param {GTConstructorParams} [params] - The parameters for initializing the GT instance.
      * @param {string} [params.apiKey=''] - The API key for accessing the translation service.
-     * @param {string} [params.defaultLocale='en-US'] - The default locale for translations.
+     * @param {string} [params.sourceLocale='en-US'] - The default locale for translations.
      * @param {string} [params.projectId=''] - The project ID for the translation service.
      * @param {string} [params.baseUrl='https://prod.gtx.dev'] - The base URL for the translation service.
      */
-    constructor({ apiKey, devApiKey, defaultLocale, projectId, baseUrl }?: GTConstructorParams);
+    constructor({ apiKey, devApiKey, sourceLocale, projectId, baseUrl }?: GTConstructorParams);
     /**
      * Translates a string or an array of strings/variables into a target locale.
      * If `metadata.save` is provided, the translation is cached for use in a public project.
@@ -41,6 +41,10 @@ declare class GT {
      */
     translate(source: Content, locale: string, metadata?: {
         context?: string;
+        id?: string;
+        publish?: boolean;
+        fast?: boolean;
+        sourceLocale?: string;
         [key: string]: any;
     }): Promise<ContentTranslationResult>;
     /**
@@ -55,6 +59,10 @@ declare class GT {
     */
     translateJsx(source: JsxChildren, locale: string, metadata?: {
         context?: string;
+        id?: string;
+        publish?: boolean;
+        fast?: boolean;
+        sourceLocale?: string;
         [key: string]: any;
     }): Promise<JsxTranslationResult>;
     /**

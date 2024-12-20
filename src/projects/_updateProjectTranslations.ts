@@ -1,5 +1,5 @@
-import { updateProjectTranslationsUrl } from 'src/settings/defaultUrls';
-import { Content, Update } from '../types'
+import { updateProjectTranslationsUrl } from '../settings/defaultUrls';
+import { Update } from '../types'
 
 /**
  * @internal
