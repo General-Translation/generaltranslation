@@ -22,7 +22,7 @@ export async function _translateBatchFromClient({
     const signal = controller.signal;
 
     // timeout with the lowest request
-    const timeout = Math.min(...requests.map(request => request?.data?.metadata?.timeout || maxTimeout))
+    const timeout = Math.min(...requests.map(request => request?.data?.metadata?.timeout || maxTimeout), maxTimeout)
     if (timeout) setTimeout(() => controller.abort(), timeout);
 
     const response = await fetch(`${url}/${projectId}`, {
@@ -39,6 +39,6 @@ export async function _translateBatchFromClient({
         throw new Error(`${response.status}: ${await response.text()}`);
     }
 
-    const resultArray = await response.json();
-    return resultArray as Array<JsxTranslationResult | ContentTranslationResult>;
+    const resultArray = await response.json()
+    return resultArray as Array<JsxTranslationResult | ContentTranslationResult | TranslationError>;
 }

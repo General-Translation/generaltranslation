@@ -76,5 +76,9 @@ export type JsxTranslationResult = {
 
 export type TranslationError = {
     error: string,
-    code: number
+    code: number,
+    reference?: {
+        id: string,
+        key: string
+    }
 }
