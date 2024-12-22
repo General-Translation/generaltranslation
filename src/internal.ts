@@ -4,6 +4,7 @@ export {
   pluralForms,
   defaultBaseUrl,
   defaultCacheUrl,
+  defaultClientApiUrl,
   localeHeaderName,
   isAcceptedPluralForm
 } from './settings/settings';

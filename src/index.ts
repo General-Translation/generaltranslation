@@ -3,10 +3,10 @@
 
 // ----- IMPORTS ----- //
 
-import _translateBatch from './translation/batch/_translateBatch';
+import _translateBatch from './api/batch/_translateBatch';
 import _requiresTranslation, { _isSameDialect } from './locales/_requiresTranslation';
-import _translate from './translation/translate/_translate';
-import _translateJsx from './translation/jsx/_translateJsx';
+import _translate from './api/translate/_translate';
+import _translateJsx from './api/jsx/_translateJsx';
 import _updateProjectTranslations from './projects/_updateProjectTranslations';
 import _getProjectLocales from './projects/_getProjectLocales';
 import _determineLocale from './locales/_determineLocale';
@@ -20,7 +20,7 @@ import { _isValidLocale, _standardizeLocale } from './locales/_isValidLocale';
 import { _getLocaleName } from './locales/_getLocaleName';
 import { _getLocaleDirection } from './locales/_getLocaleDirection';
 import { defaultBaseUrl, libraryDefaultLocale } from './internal';
-import { _translateBatchFromClient } from './translation/batch/_translateBatchFromClient';
+import { _translateBatchFromClient } from './client/_translateBatchFromClient';
 
 // ----- HELPER FUNCTIONS ----- //
 
@@ -170,17 +170,6 @@ class GT {
     ): Promise<{ locales: string[] }> {
         return _getProjectLocales(this, projectId || this.projectId);
     }
-
-    /**
-    * Batches multiple translation requests and sends them directly to GT.
-    * Intended for use in a client-side app, where api keys are not present.
-    * @param requests - Array of requests to be processed and sent.
-    * @returns A promise that resolves to an array of processed results.
-    */
-    async translateBatchFromClient(requests: Request[]): Promise<Array<JsxTranslationResult | ContentTranslationResult>> {
-        return _translateBatchFromClient(this, requests)
-    }
-
 }
 
 // ----- EXPORTS ----- //
