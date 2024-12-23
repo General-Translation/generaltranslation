@@ -3,6 +3,7 @@ export {
   localeCookieName,
   pluralForms,
   defaultBaseUrl,
+  defaultClientBaseUrl,
   defaultCacheUrl,
   localeHeaderName,
   isAcceptedPluralForm

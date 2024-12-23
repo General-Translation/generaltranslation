@@ -1,6 +1,6 @@
 import { ContentTranslationResult, JsxTranslationResult, Request, TranslationError } from '../../types'
 import { maxTimeout } from '../../settings/settings';
-import { _translateJsxBatchFromClientUrl } from 'src/settings/defaultURLs';
+import { translateBatchUrl } from 'src/settings/defaultURLs';
 
 /**
  * Translates where a translation already exists in another language, used for updating websites with a new language in real-time.
@@ -21,7 +21,7 @@ export async function _translateBatchFromClient(
 
     let response;
     try {
-        response = await fetch(`${gt.baseUrl}${_translateJsxBatchFromClientUrl}`, {
+        response = await fetch(`${gt.baseUrl}${translateBatchUrl}`, {
             method: 'POST',
             headers: {
                 'Content-Type': 'application/json',
