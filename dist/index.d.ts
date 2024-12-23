@@ -95,13 +95,6 @@ declare class GT {
     getProjectLocales(projectId?: string): Promise<{
         locales: string[];
     }>;
-    /**
-    * Batches multiple translation requests and sends them directly to GT.
-    * Intended for use in a client-side app, where api keys are not present.
-    * @param requests - Array of requests to be processed and sent.
-    * @returns A promise that resolves to an array of processed results.
-    */
-    translateBatchFromClient(requests: Request[]): Promise<Array<JsxTranslationResult | ContentTranslationResult | TranslationError>>;
 }
 /**
  * Get the text direction for a given locale code using the Intl.Locale API.

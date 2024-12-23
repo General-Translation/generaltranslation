@@ -1,6 +1,6 @@
 import { ContentTranslationResult, JsxTranslationResult, Request, TranslationError } from '../../types'
 import { maxTimeout } from '../../settings/settings';
-import { translateBatchUrl } from 'src/settings/defaultURLs';
+import { translateBatchUrl } from '../../settings/settingsUrls';
 
 /**
  * @internal

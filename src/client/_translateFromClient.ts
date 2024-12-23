@@ -1,10 +1,11 @@
 import { ContentTranslationResult, JsxTranslationResult, Request, TranslationError } from '../types'
-import { defaultClientApiUrl, maxTimeout } from '../settings/settings';
+import { maxTimeout } from '../settings/settings';
+import { defaultClientApiUrl } from '../settings/settingsUrls';
 
 /**
  * Translates where a translation already exists in another language, used for updating websites with a new language in real-time.
  */
-export async function _translateBatchFromClient({
+export async function _translateFromClient({
     requests,
     projectId,
     url = defaultClientApiUrl, 
@@ -25,15 +26,23 @@ export async function _translateBatchFromClient({
     const timeout = Math.min(...requests.map(request => request?.data?.metadata?.timeout || maxTimeout), maxTimeout)
     if (timeout) setTimeout(() => controller.abort(), timeout);
 
-    const response = await fetch(`${url}/${projectId}`, {
-        method: 'POST',
-        headers: {
-            'Content-Type': 'application/json',
-            ...(devApiKey && { 'x-gt-dev-api-key': devApiKey })
-        },
-        body: JSON.stringify(requests),
-        signal
-    });
+    let response;
+    try {
+        response = await fetch(`${url}/${projectId}`, {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json',
+                ...(devApiKey && { 'x-gt-dev-api-key': devApiKey })
+            },
+            body: JSON.stringify(requests),
+            signal
+        });
+    } catch (error: any) {
+        if (error?.name === 'AbortError') {
+            throw new Error('Translation request timed out. This has either occured due to the translation of an unusually large request or a translation failure in the API.');
+        }
+        throw error;
+    }
 
     if (!response.ok) {
         throw new Error(`${response.status}: ${await response.text()}`);

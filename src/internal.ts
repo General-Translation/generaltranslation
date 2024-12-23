@@ -1,10 +1,13 @@
+export { _translateFromClient } from './client/_translateFromClient';
+export {
+  defaultBaseUrl,
+  defaultCacheUrl,
+  defaultClientApiUrl
+} from './settings/settingsUrls'
 export {
   libraryDefaultLocale, 
   localeCookieName,
   pluralForms,
-  defaultBaseUrl,
-  defaultCacheUrl,
-  defaultClientApiUrl,
   localeHeaderName,
-  isAcceptedPluralForm
+  isAcceptedPluralForm,
 } from './settings/settings';

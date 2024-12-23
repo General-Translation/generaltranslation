@@ -20,7 +20,6 @@ import { _isValidLocale, _standardizeLocale } from './locales/_isValidLocale';
 import { _getLocaleName } from './locales/_getLocaleName';
 import { _getLocaleDirection } from './locales/_getLocaleDirection';
 import { defaultBaseUrl, libraryDefaultLocale } from './internal';
-import { _translateBatchFromClient } from './client/_translateBatchFromClient';
 
 // ----- HELPER FUNCTIONS ----- //
 
@@ -101,7 +100,7 @@ class GT {
             sourceLocale?: string,
             [key: string]: any
         }
-    ): Promise<ContentTranslationResult> {
+    ): Promise<ContentTranslationResult | TranslationError> {
         return await _translate(this, source, locale, { sourceLocale: this.sourceLocale, ...metadata })
     }
 
@@ -126,7 +125,7 @@ class GT {
             sourceLocale?: string,
             [key: string]: any
         }
-    ): Promise<JsxTranslationResult> {
+    ): Promise<JsxTranslationResult | TranslationError> {
         return await _translateJsx(this, source, locale, { sourceLocale: this.sourceLocale, ...metadata });
     }
 
