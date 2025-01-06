@@ -1,4 +1,4 @@
-import { _isValidLocale, _standardizeLocale } from "./_isValidLocale";
+import { _isValidLocale, _standardizeLocale } from "./isValidLocale";
 
 /**
 * @internal

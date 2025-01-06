@@ -1,4 +1,4 @@
-import { Content, Update, Request, JsxChildren, JsxTranslationResult, ContentTranslationResult, TranslationError } from './types';
+import { Content, JsxChildren, JsxTranslationResult, ContentTranslationResult, TranslationError } from './types';
 /**
  * Type representing the constructor parameters for the GT class.
  */
@@ -25,7 +25,7 @@ declare class GT {
      * @param {string} [params.apiKey=''] - The API key for accessing the translation service.
      * @param {string} [params.sourceLocale='en-US'] - The default locale for translations.
      * @param {string} [params.projectId=''] - The project ID for the translation service.
-     * @param {string} [params.baseUrl='https://prod.gtx.dev'] - The base URL for the translation service.
+     * @param {string} [params.baseUrl='https://api.gtx.dev'] - The base URL for the translation service.
      */
     constructor({ apiKey, devApiKey, sourceLocale, projectId, baseUrl }?: GTConstructorParams);
     /**
@@ -65,36 +65,6 @@ declare class GT {
         sourceLocale?: string;
         [key: string]: any;
     }): Promise<JsxTranslationResult | TranslationError>;
-    /**
-    * Batches multiple translation requests and sends them to the server.
-    * @param requests - Array of requests to be processed and sent.
-    * @returns A promise that resolves to an array of processed results.
-    */
-    translateBatch(requests: Request[]): Promise<Array<JsxTranslationResult | ContentTranslationResult | TranslationError>>;
-    /**
-    * Pushes updates to a remotely cached translations.
-    * @param {Update[]} updates - Array of updates.
-    * @param {string[]} [locales] - Array of locales to create translations into.
-    * @param {string} [projectId=this.projectId] - The ID of the project. Defaults to the instance's projectId.
-    * @param {Record<string, any>} [object] - Options, such as whether to replace the existing remote translations. Defaults to false.
-    * @returns {Promise<string[]>} A promise that resolves to an array of strings indicating the locales which have been updated.
-    */
-    updateProjectTranslations(updates: Update[], locales?: string[], options?: {
-        replace?: boolean;
-        retranslate?: boolean;
-        projectId?: string;
-        [key: string]: any;
-    }): Promise<{
-        locales?: string[];
-    }>;
-    /**
-    * Retrieves the locales for a GT project as BCP 47 locale tags.
-    * @param projectId - The project ID to retrieve locales for. If not provided, `this.projectId` should be set.
-    * @returns A promise that resolves with an object containing an array of locale codes.
-    */
-    getProjectLocales(projectId?: string): Promise<{
-        locales: string[];
-    }>;
 }
 /**
  * Get the text direction for a given locale code using the Intl.Locale API.

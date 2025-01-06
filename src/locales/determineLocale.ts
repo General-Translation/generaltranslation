@@ -1,6 +1,6 @@
-import { _isValidLocale, _standardizeLocale } from './_isValidLocale';
-import _isSameLanguage from './_isSameLanguage';
-import { _isSameDialect } from './_requiresTranslation';
+import { _isValidLocale, _standardizeLocale } from './isValidLocale';
+import _isSameLanguage from './isSameLanguage';
+import { _isSameDialect } from './requiresTranslation';
 
 /**
  * Given a list of locales and a list of approved locales, sorted in preference order

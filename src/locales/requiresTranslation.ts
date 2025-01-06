@@ -1,5 +1,5 @@
-import _isSameLanguage from "./_isSameLanguage";
-import { _isValidLocale, _standardizeLocale } from "./_isValidLocale";
+import _isSameLanguage from "./isSameLanguage";
+import { _isValidLocale, _standardizeLocale } from "./isValidLocale";
 
 function checkTwoLocalesAreSameDialect(codeA: string, codeB: string) {
     const { language: languageA, region: regionA, script: scriptA } = new Intl.Locale(codeA);

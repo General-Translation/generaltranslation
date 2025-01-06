@@ -19,7 +19,6 @@ export type JsxElement = {
 }
 
 export type JsxChild = string | JsxElement | Variable;
-
 export type JsxChildren = JsxChild | JsxChild[];
 
 type Metadata = {

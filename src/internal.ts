@@ -1,8 +1,7 @@
-export { _translateFromClient } from './client/_translateFromClient';
 export {
   defaultBaseUrl,
   defaultCacheUrl,
-  defaultClientApiUrl
+  defaultRuntimeApiUrl
 } from './settings/settingsUrls'
 export {
   libraryDefaultLocale, 
