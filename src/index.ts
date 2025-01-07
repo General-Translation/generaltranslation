@@ -3,24 +3,23 @@
 
 // ----- IMPORTS ----- //
 
-import _translateBatch from './translation/batch/_translateBatch';
-import _requiresTranslation, { _isSameDialect } from './locales/_requiresTranslation';
-import _translate from './translation/translate/_translate';
-import _translateJsx from './translation/jsx/_translateJsx';
-import _updateProjectTranslations from './projects/_updateProjectTranslations';
-import _getProjectLocales from './projects/_getProjectLocales';
-import _determineLocale from './locales/_determineLocale';
+import _translateBatch from './api/batch/translateBatch';
+import _requiresTranslation, { _isSameDialect } from './locales/requiresTranslation';
+import _translate from './api/translate/translate';
+import _translateJsx from './api/jsx/translateJsx';
+import _updateProjectTranslations from './projects/updateProjectTranslations';
+import _getProjectLocales from './projects/getProjectLocales';
+import _determineLocale from './locales/determineLocale';
 import { _formatNum, _formatCurrency, _formatList, _formatRelativeTime, _formatDateTime } from './formatting/format';
 import { _splitStringToContent, _renderContentToString } from './formatting/string_content'
 import { Content, Update, Request, JsxChildren, JsxTranslationResult, ContentTranslationResult, TranslationError } from './types'
-import _isSameLanguage from './locales/_isSameLanguage'
-import _getLocaleProperties from './locales/_getLocaleProperties';
-import _getLocaleEmoji from './locales/_getLocaleEmoji';
-import { _isValidLocale, _standardizeLocale } from './locales/_isValidLocale';
-import { _getLocaleName } from './locales/_getLocaleName';
-import { _getLocaleDirection } from './locales/_getLocaleDirection';
+import _isSameLanguage from './locales/isSameLanguage';
+import _getLocaleProperties from './locales/getLocaleProperties';
+import _getLocaleEmoji from './locales/getLocaleEmoji';
+import { _isValidLocale, _standardizeLocale } from './locales/isValidLocale';
+import { _getLocaleName } from './locales/getLocaleName';
+import { _getLocaleDirection } from './locales/getLocaleDirection';
 import { defaultBaseUrl, libraryDefaultLocale } from './internal';
-import { _translateBatchFromClient } from './translation/batch/_translateBatchFromClient';
 
 // ----- HELPER FUNCTIONS ----- //
 
@@ -41,7 +40,7 @@ const getDefaultFromEnv = (VARIABLE: string): string => {
 type GTConstructorParams = {
     apiKey?: string;
     devApiKey?: string;
-    defaultLocale?: string;
+    sourceLocale?: string;
     projectId?: string;
     baseUrl?: string;
 };
@@ -52,7 +51,7 @@ type GTConstructorParams = {
 class GT {
     apiKey: string;
     devApiKey: string;
-    defaultLocale: string;
+    sourceLocale: string;
     projectId: string;
     baseUrl: string;
 
@@ -61,21 +60,21 @@ class GT {
      * 
      * @param {GTConstructorParams} [params] - The parameters for initializing the GT instance.
      * @param {string} [params.apiKey=''] - The API key for accessing the translation service.
-     * @param {string} [params.defaultLocale='en-US'] - The default locale for translations.
+     * @param {string} [params.sourceLocale='en-US'] - The default locale for translations.
      * @param {string} [params.projectId=''] - The project ID for the translation service.
-     * @param {string} [params.baseUrl='https://prod.gtx.dev'] - The base URL for the translation service.
+     * @param {string} [params.baseUrl='https://api.gtx.dev'] - The base URL for the translation service.
      */
     constructor({
         apiKey = '',
         devApiKey = '',
-        defaultLocale = libraryDefaultLocale,
+        sourceLocale = '',
         projectId = '',
         baseUrl = defaultBaseUrl
     }: GTConstructorParams = {}) {
         this.apiKey = apiKey || getDefaultFromEnv('GT_API_KEY');
         this.devApiKey = devApiKey || getDefaultFromEnv('GT_DEV_API_KEY');
         this.projectId = projectId || getDefaultFromEnv('GT_PROJECT_ID');
-        this.defaultLocale = _standardizeLocale(defaultLocale) || libraryDefaultLocale;
+        this.sourceLocale = _standardizeLocale(sourceLocale) || '';
         this.baseUrl = baseUrl;
     }
 
@@ -90,11 +89,19 @@ class GT {
      * 
      * @returns {Promise<ContentTranslationResult | TranslationError>} A promise that resolves to the translated content, or an error if the translation fails.
      */
-    async translate(source: Content, locale: string, metadata?: { 
-        context?: string,
-        [key: string]: any 
-    }): Promise<ContentTranslationResult | TranslationError> {
-        return await _translate(this, source, locale, { defaultLocale: this.defaultLocale, ...metadata })
+    async translate(
+        source: Content, 
+        locale: string, 
+        metadata?: { 
+            context?: string,
+            id?: string,
+            publish?: boolean,
+            fast?: boolean,
+            sourceLocale?: string,
+            [key: string]: any
+        }
+    ): Promise<ContentTranslationResult | TranslationError> {
+        return await _translate(this, source, locale, { sourceLocale: this.sourceLocale, ...metadata })
     }
 
     /**
@@ -107,59 +114,19 @@ class GT {
     * 
     * @returns {Promise<JsxTranslationResult | TranslationError>} - A promise that resolves to the translated content.
     */
-    async translateJsx(source: JsxChildren, locale: string, metadata?: { context?: string, [key: string]: any }): Promise<JsxTranslationResult | TranslationError> {
-        return await _translateJsx(this, source, locale, { defaultLocale: this.defaultLocale, ...metadata });
-    }
-
-    /**
-    * Batches multiple translation requests and sends them to the server.
-    * @param requests - Array of requests to be processed and sent.
-    * @returns A promise that resolves to an array of processed results.
-    */
-    async translateBatch(requests: Request[]): Promise<Array<JsxTranslationResult | ContentTranslationResult | TranslationError>> {
-        return _translateBatch(this, requests);
-    }
-
-    /**
-    * Pushes updates to a remotely cached translations.
-    * @param {Update[]} updates - Array of updates.
-    * @param {string[]} [locales] - Array of locales to create translations into.
-    * @param {string} [projectId=this.projectId] - The ID of the project. Defaults to the instance's projectId.
-    * @param {Record<string, any>} [object] - Options, such as whether to replace the existing remote translations. Defaults to false.
-    * @returns {Promise<string[]>} A promise that resolves to an array of strings indicating the locales which have been updated.
-    */
-    async updateProjectTranslations(
-        updates: Update[], 
-        locales: string[] = [], 
-        options: {
-            replace?: boolean,
-            retranslate?: boolean,
-            projectId?: string;
+    async translateJsx(
+        source: JsxChildren, 
+        locale: string, 
+        metadata?: { 
+            context?: string,
+            id?: string,
+            publish?: boolean,
+            fast?: boolean,
+            sourceLocale?: string,
             [key: string]: any
-        } = {}
-    ): Promise<{ locales?: string[] }> {
-        return await _updateProjectTranslations(this, updates, locales, options);
-    }
-
-    /**
-    * Retrieves the locales for a GT project as BCP 47 locale tags.
-    * @param projectId - The project ID to retrieve locales for. If not provided, `this.projectId` should be set.
-    * @returns A promise that resolves with an object containing an array of locale codes.
-    */
-    async getProjectLocales(
-        projectId?: string
-    ): Promise<{ locales: string[] }> {
-        return _getProjectLocales(this, projectId || this.projectId);
-    }
-
-    /**
-    * Batches multiple translation requests and sends them directly to GT.
-    * Intended for use in a client-side app, where api keys are not present.
-    * @param requests - Array of requests to be processed and sent.
-    * @returns A promise that resolves to an array of processed results.
-    */
-    async translateBatchFromClient(requests: Request[]): Promise<Array<JsxTranslationResult | ContentTranslationResult | TranslationError>> {
-        return _translateBatchFromClient(this, requests)
+        }
+    ): Promise<JsxTranslationResult | TranslationError> {
+        return await _translateJsx(this, source, locale, { sourceLocale: this.sourceLocale, ...metadata });
     }
 }
 

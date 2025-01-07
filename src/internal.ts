@@ -1,9 +1,12 @@
 export {
+  defaultBaseUrl,
+  defaultCacheUrl,
+  defaultRuntimeApiUrl
+} from './settings/settingsUrls'
+export {
   libraryDefaultLocale, 
   localeCookieName,
   pluralForms,
-  defaultBaseUrl,
-  defaultCacheUrl,
   localeHeaderName,
-  isAcceptedPluralForm
+  isAcceptedPluralForm,
 } from './settings/settings';

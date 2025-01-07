@@ -1,7 +1,7 @@
 import { libraryDefaultLocale } from "../internal";
-import _getLocale from "./_getLocaleEmoji";
-import { _isValidLocale, _standardizeLocale } from "./_isValidLocale";
-import _getLocaleEmoji from "./_getLocaleEmoji";
+import _getLocale from "./getLocaleEmoji";
+import { _isValidLocale, _standardizeLocale } from "./isValidLocale";
+import _getLocaleEmoji from "./getLocaleEmoji";
 
 type LocaleProperties = {
     
