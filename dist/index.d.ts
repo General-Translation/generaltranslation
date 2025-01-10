@@ -1,4 +1,5 @@
 import { Content, JsxChildren, JsxTranslationResult, ContentTranslationResult, TranslationError } from './types';
+import { PluralType } from './formatting/getPluralForm';
 /**
  * Type representing the constructor parameters for the GT class.
  */
@@ -290,4 +291,12 @@ export declare function determineLocale(locales: string | string[], approvedLoca
  * @returns {boolean} - Returns `true` if translation is required, otherwise `false`.
  */
 export declare function requiresTranslation(sourceLocale: string, targetLocale: string, approvedLocales?: string[]): boolean;
+/**
+* Given a number and a list of allowed plural forms, return the plural form that best fits the number.
+*
+* @param {number} n - The number to determine the plural form for.
+* @param {locales[]} forms - The allowed plural forms.
+* @returns {PluralType} The determined plural form, or an empty string if none fit.
+*/
+export declare function getPluralForm(n: number, forms?: PluralType[], locales?: string[]): PluralType | "";
 export default GT;

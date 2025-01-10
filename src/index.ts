@@ -20,6 +20,7 @@ import { _isValidLocale, _standardizeLocale } from './locales/isValidLocale';
 import { _getLocaleName } from './locales/getLocaleName';
 import { _getLocaleDirection } from './locales/getLocaleDirection';
 import { defaultBaseUrl, libraryDefaultLocale } from './internal';
+import _getPluralForm, { PluralType } from './formatting/getPluralForm';
 
 // ----- HELPER FUNCTIONS ----- //
 
@@ -389,6 +390,17 @@ export function determineLocale(locales: string | string[], approvedLocales: str
  */
 export function requiresTranslation(sourceLocale: string, targetLocale: string, approvedLocales?: string[]): boolean {
     return _requiresTranslation(sourceLocale, targetLocale, approvedLocales);
+};
+
+/**
+* Given a number and a list of allowed plural forms, return the plural form that best fits the number.
+* 
+* @param {number} n - The number to determine the plural form for.
+* @param {locales[]} forms - The allowed plural forms.
+* @returns {PluralType} The determined plural form, or an empty string if none fit.
+*/
+export function getPluralForm(n: number, forms?: PluralType[], locales?: string[]): PluralType | "" {
+    return _getPluralForm(n, forms, locales);
 };
 
 // DEFAULT EXPORT
