@@ -9,6 +9,6 @@ export declare function hashString(string: string): string;
  * Calculates a unique ID for the given children objects by hashing their sanitized JSON string representation.
  *
  * @param {any} childrenAsObjects - The children objects to be hashed.
- * @returns {string} - A promise that resolves to the unique ID.
+ * @returns {string} - The unique has of the children.
  */
 export declare function hashJsxChildren(childrenAsObjects: any): string;

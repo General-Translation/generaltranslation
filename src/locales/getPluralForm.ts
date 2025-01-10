@@ -1,17 +1,5 @@
-import { libraryDefaultLocale } from "src/internal";
-
-const pluralForms = [
-    "singular",
-    "plural",
-    "dual",
-    "zero",
-    "one",
-    "two",
-    "few",
-    "many",
-    "other"
-] as const;
-export type PluralType = typeof pluralForms[number];
+import { pluralForms, PluralType } from "../settings/plurals";
+import { libraryDefaultLocale } from "../settings/settings";
 
 /**
  * Given a number and a list of allowed plural forms, return the plural form that best fits the number.
@@ -19,7 +7,6 @@ export type PluralType = typeof pluralForms[number];
  * @param {number} n - The number to determine the plural form for.
  * @param {locales[]} forms - The allowed plural forms.
  * @returns {PluralType} The determined plural form, or an empty string if none fit.
- * @internal
  */
 export default function _getPluralForm(
     n: number, 
