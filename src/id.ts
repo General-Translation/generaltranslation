@@ -1,6 +1,7 @@
 // Functions provided to other GT libraries
 
 import XXH from 'xxhashjs';
+import { JsxChildren } from './types';
 
 /**
  * Calculates a unique hash for a given string using xxhash.
@@ -18,7 +19,13 @@ export function hashString(string: string): string {
  * @param {any} childrenAsObjects - The children objects to be hashed.
  * @returns {string} - The unique has of the children.
  */
-export function hashJsxChildren(childrenAsObjects: any): string {
+export function hashJsxChildren(childrenAsObjects: JsxChildren | [JsxChildren, string]): string {
+    if (Array.isArray(childrenAsObjects)) {
+        const [children, context] = childrenAsObjects;
+        const sanitizedChildren = sanitizeJsxChildren(children);
+        const unhashedKey = JSON.stringify([sanitizedChildren, context]);
+        return hashString(unhashedKey);
+    }
     const unhashedKey = JSON.stringify(sanitizeJsxChildren(childrenAsObjects));
     return hashString(unhashedKey);
 }
@@ -26,24 +33,31 @@ export function hashJsxChildren(childrenAsObjects: any): string {
 function sanitizeJsxChildren(childrenAsObjects: any) {
     const sanitizeChild = (child: any): any => {
         if (child && typeof child === 'object' && child.props) {
-            if (child?.props?.['data-_gt']?.branches) {
-                child.props['data-_gt'].branches = Object.fromEntries(
-                    Object.entries(child.props['data-_gt'].branches).map(([key, value]) => [key, sanitizeChildren(value)])
-                );
+            const newChild: {
+                'data-_gt'?: {
+                    branches?: Record<string, any>,
+                    id?: number
+                },
+                children?: any
+            } = {};
+            const dataGt = child?.props?.['data-_gt'];
+            if (dataGt?.id) {
+                newChild['data-_gt'] = {
+                    id: dataGt.id
+                }
+            }
+            if (dataGt?.branches) {
+                newChild['data-_gt'] = {
+                    ...newChild['data-_gt'],
+                    branches: Object.fromEntries(
+                        Object.entries(dataGt.branches).map(([key, value]) => [key, sanitizeChildren(value)])
+                    )
+                }
             }
             if (child?.props?.children) {
-                const { type, ...rest } = child;
-                return {
-                    ...rest,
-                    props: {
-                        ...child.props,
-                        children: sanitizeChildren(child.props.children)
-                    }
-                }
-            } else {
-                const { type, ...rest } = child;
-                return rest;
+                newChild.children = sanitizeChildren(child.props.children)
             }
+            return newChild;
         }
         return child;
     }
