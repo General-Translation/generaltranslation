@@ -1,7 +1,7 @@
 // Functions provided to other GT libraries
 
 import XXH from 'xxhashjs';
-import { JsxChildren } from './types';
+import { JsxChild, JsxChildren, Variable } from './types';
 
 /**
  * Calculates a unique hash for a given string using xxhash.
@@ -30,38 +30,36 @@ export function hashJsxChildren(childrenAsObjects: JsxChildren | [JsxChildren, s
     return hashString(unhashedKey);
 }
 
-function sanitizeJsxChildren(childrenAsObjects: any) {
-    const sanitizeChild = (child: any): any => {
-        if (child && typeof child === 'object' && child.props) {
-            const newChild: {
-                'data-_gt'?: {
-                    branches?: Record<string, any>,
-                    id?: number
-                },
-                children?: any
-            } = {};
+type SanitizedElement = {
+    branches?: {
+        [k: string]: SanitizedChildren
+    },
+    children?: SanitizedChildren
+};
+type SanitizedChild = SanitizedElement | Variable | string;
+type SanitizedChildren = SanitizedChild | SanitizedChild[];
+
+function sanitizeJsxChildren(childrenAsObjects: JsxChildren): SanitizedChild[] | SanitizedChild {
+    const sanitizeChild = (child: JsxChild) => {
+        if (child && typeof child === 'object' && 'props' in child) {
+            const newChild: SanitizedChild = {};
             const dataGt = child?.props?.['data-_gt'];
-            if (dataGt?.id) {
-                newChild['data-_gt'] = {
-                    id: dataGt.id
-                }
-            }
             if (dataGt?.branches) {
-                newChild['data-_gt'] = {
-                    ...newChild['data-_gt'],
-                    branches: Object.fromEntries(
-                        Object.entries(dataGt.branches).map(([key, value]) => [key, sanitizeChildren(value)])
+                newChild.branches = Object.fromEntries(
+                    Object.entries(dataGt.branches).map(([key, value]) => 
+                        [key, sanitizeChildren(value as JsxChildren)]
                     )
-                }
+                );
             }
             if (child?.props?.children) {
-                newChild.children = sanitizeChildren(child.props.children)
+                newChild.children = 
+                    sanitizeChildren(child.props.children)
             }
             return newChild;
         }
         return child;
     }
-    const sanitizeChildren = (children: any): any => {
+    const sanitizeChildren = (children: JsxChildren) => {
         return Array.isArray(children) ? children.map(sanitizeChild) : sanitizeChild(children)
     }
     return sanitizeChildren(childrenAsObjects);
