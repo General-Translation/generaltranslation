@@ -41,21 +41,31 @@ type SanitizedChildren = SanitizedChild | SanitizedChild[];
 
 function sanitizeJsxChildren(childrenAsObjects: JsxChildren): SanitizedChild[] | SanitizedChild {
     const sanitizeChild = (child: JsxChild) => {
-        if (child && typeof child === 'object' && 'props' in child) {
-            const newChild: SanitizedChild = {};
-            const dataGt = child?.props?.['data-_gt'];
-            if (dataGt?.branches) {
-                newChild.branches = Object.fromEntries(
-                    Object.entries(dataGt.branches).map(([key, value]) => 
-                        [key, sanitizeChildren(value as JsxChildren)]
-                    )
-                );
+        if (child && typeof child === 'object') {
+            if ('props' in child) {
+                const newChild: SanitizedChild = {};
+                const dataGt = child?.props?.['data-_gt'];
+                if (dataGt?.branches) {
+                    newChild.branches = Object.fromEntries(
+                        Object.entries(dataGt.branches).map(([key, value]) => 
+                            [key, sanitizeChildren(value as JsxChildren)]
+                        )
+                    );
+                }
+                if (child?.props?.children) {
+                    newChild.children = 
+                        sanitizeChildren(child.props.children)
+                }
+                return newChild;
             }
-            if (child?.props?.children) {
-                newChild.children = 
-                    sanitizeChildren(child.props.children)
+            if ('key' in child) {
+                return {
+                    key: child.key,
+                    ...(child.variable && {
+                        variable: child.variable
+                    })
+                }
             }
-            return newChild;
         }
         return child;
     }
