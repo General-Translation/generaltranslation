@@ -1,7 +1,7 @@
 // Functions provided to other GT libraries
 
 import crypto from "crypto";
-import { JsxChildren, Variable } from "./types";
+import { JsxChild, JsxChildren, Variable } from "./types";
 import stringify from "fast-json-stable-stringify";
 
 /**
@@ -27,95 +27,65 @@ export function hashJsxChildren({
   source: JsxChildren;
   context?: string;
 }): string {
-  if (context) {
-    const sanitizedChildren = sanitizeJsxChildren(source);
-    const unhashedKey = stringify([sanitizedChildren, context]);
-    return hashString(unhashedKey);
-  }
-  const unhashedKey = stringify(sanitizeJsxChildren(source));
+  const unhashedKey = stringify({
+    source: sanitizeJsxChildren(source),
+    ...(context && { context }),
+  });
   return hashString(unhashedKey);
 }
 
-type DataGT = {
-  transformation?: string;
-  branches?: Record<string, SanitizedChildren>;
-};
-
 type SanitizedVariable = Omit<Variable, "id">;
+
 type SanitizedElement = {
-  props?: {
-    "data-_gt"?: DataGT;
-    children?: SanitizedChildren;
+  branches?: {
+    [k: string]: SanitizedChildren;
   };
+  children?: SanitizedChildren;
+  transformation?: string;
 };
 type SanitizedChild = SanitizedElement | SanitizedVariable | string;
 type SanitizedChildren = SanitizedChild | SanitizedChild[];
 
+const sanitizeChild = (child: JsxChild): SanitizedChild => {
+  if (child && typeof child === "object") {
+    if ("props" in child) {
+      const newChild: SanitizedChild = {};
+      const dataGt = child?.props?.["data-_gt"];
+      if (dataGt?.branches) {
+        // The only thing that prevents sanitizeJsx from being stable is
+        // the order of the keys in the branches object.
+        // We don't sort them because stable-stringify sorts them anyways
+        newChild.branches = Object.fromEntries(
+          Object.entries(dataGt.branches).map(([key, value]) => [
+            key,
+            sanitizeJsxChildren(value as JsxChildren),
+          ])
+        );
+      }
+      if (child?.props?.children) {
+        newChild.children = sanitizeJsxChildren(child.props.children);
+      }
+      if (child?.props?.["data-_gt"]?.transformation) {
+        newChild.transformation = child.props["data-_gt"].transformation;
+      }
+      return newChild;
+    }
+    if ("key" in child) {
+      return {
+        key: child.key,
+        ...(child.variable && {
+          variable: child.variable,
+        }),
+      };
+    }
+  }
+  return child;
+};
+
 function sanitizeJsxChildren(
   childrenAsObjects: JsxChildren
 ): SanitizedChildren {
-  if (!childrenAsObjects) {
-    return childrenAsObjects;
-  }
-
-  // Handle array of children
-  if (Array.isArray(childrenAsObjects)) {
-    return childrenAsObjects.map(
-      (child) => sanitizeJsxChildren(child) as SanitizedChild
-    );
-  }
-
-  // Handle string literals
-  if (typeof childrenAsObjects === "string") {
-    return childrenAsObjects;
-  }
-
-  // Handle Variable objects
-  if ("variable" in childrenAsObjects) {
-    const { id, ...sanitizedVar } = childrenAsObjects;
-    return sanitizedVar;
-  }
-
-  // Handle JsxElement objects
-  if ("props" in childrenAsObjects) {
-    const { type, ...rest } = childrenAsObjects;
-    const sanitizedElement: SanitizedElement = {};
-    const props: any = {};
-
-    // Copy all props except type
-    if (rest.props) {
-      if (rest.props.children) {
-        props.children = sanitizeJsxChildren(rest.props.children);
-      }
-
-      if (rest.props["data-_gt"]) {
-        const dataGt: DataGT = {};
-
-        if (rest.props["data-_gt"].transformation) {
-          dataGt.transformation = rest.props["data-_gt"].transformation;
-        }
-
-        if (rest.props["data-_gt"].branches) {
-          dataGt.branches = Object.fromEntries(
-            Object.entries(rest.props["data-_gt"].branches).map(
-              ([key, value]) => [key, sanitizeJsxChildren(value)]
-            )
-          );
-        }
-
-        // Only include data-_gt if it has properties
-        if (Object.keys(dataGt).length > 0) {
-          props["data-_gt"] = dataGt;
-        }
-      }
-
-      if (Object.keys(props).length > 0) {
-        sanitizedElement.props = props;
-      }
-    }
-
-    return sanitizedElement;
-  }
-
-  return childrenAsObjects;
+  return Array.isArray(childrenAsObjects)
+    ? childrenAsObjects.map(sanitizeChild)
+    : sanitizeChild(childrenAsObjects);
 }
