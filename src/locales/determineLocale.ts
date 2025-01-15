@@ -1,6 +1,6 @@
 import { _isValidLocale, _standardizeLocale } from './isValidLocale';
 import _isSameLanguage from './isSameLanguage';
-import { _isSameDialect } from './requiresTranslation';
+import _isSameDialect from './isSameDialect';
 
 /**
  * Given a list of locales and a list of approved locales, sorted in preference order
