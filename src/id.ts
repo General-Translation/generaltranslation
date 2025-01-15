@@ -1,17 +1,17 @@
 // Functions provided to other GT libraries
 
-import XXH from "xxhashjs";
-import { JsxChild, JsxChildren, Variable } from "./types";
+import crypto from "crypto";
+import { JsxChildren, Variable } from "./types";
 import stringify from "fast-json-stable-stringify";
 
 /**
- * Calculates a unique hash for a given string using xxhash.
+ * Calculates a unique hash for a given string using sha256.
  *
  * @param {string} string - The string to be hashed.
  * @returns {string} - The resulting hash as a hexadecimal string.
  */
 export function hashString(string: string): string {
-  return XXH.h64().update(string).digest().toString(16);
+  return crypto.createHash("sha256").update(string).digest("hex");
 }
 
 /**

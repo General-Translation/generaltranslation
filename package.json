@@ -1,6 +1,6 @@
 {
   "name": "generaltranslation",
-  "version": "6.0.0",
+  "version": "6.1.0",
   "description": "A language toolkit for AI developers",
   "main": "dist/index.cjs.min.cjs",
   "module": "dist/index.esm.min.mjs",
@@ -36,7 +36,6 @@
     "@rollup/plugin-terser": "^0.4.4",
     "@rollup/plugin-typescript": "^12.1.1",
     "@types/node": "^20.14.9",
-    "@types/xxhashjs": "^0.2.4",
     "rollup": "^4.24.0",
     "rollup-plugin-dts": "^6.1.1",
     "tslib": "^2.8.0",
@@ -46,8 +45,7 @@
     "definition": "dist/index.d.ts"
   },
   "dependencies": {
-    "fast-json-stable-stringify": "^2.1.0",
-    "xxhashjs": "^0.2.2"
+    "fast-json-stable-stringify": "^2.1.0"
   },
   "exports": {
     ".": {
