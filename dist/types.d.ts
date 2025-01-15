@@ -7,12 +7,12 @@ export type Content = string | Array<string | Variable>;
 export type JsxElement = {
     type: string;
     props: {
-        'data-_gt'?: {
+        "data-_gt"?: {
             id: number;
-            [key: string]: any;
+            transformation?: string;
+            branches?: Record<string, JsxChildren>;
         };
         children?: JsxChildren;
-        [key: string]: any;
     };
 };
 export type JsxChild = string | JsxElement | Variable;
@@ -21,27 +21,27 @@ type Metadata = {
     [key: string]: any;
 };
 export type Update = {
-    type: 'content';
+    type: "content";
     data: {
         source: Content;
         metadata: Metadata;
     };
 } | {
-    type: 'jsx';
+    type: "jsx";
     data: {
         source: JsxChildren;
         metadata: Metadata;
     };
 };
 export type Request = {
-    type: 'content';
+    type: "content";
     data: {
         source: Content;
         targetLocale: string;
         metadata: Metadata;
     };
 } | {
-    type: 'jsx';
+    type: "jsx";
     data: {
         source: JsxChildren;
         targetLocale: string;

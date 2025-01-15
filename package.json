@@ -1,6 +1,6 @@
 {
   "name": "generaltranslation",
-  "version": "5.0.7",
+  "version": "6.0.0",
   "description": "A language toolkit for AI developers",
   "main": "dist/index.cjs.min.cjs",
   "module": "dist/index.esm.min.mjs",
@@ -46,6 +46,7 @@
     "definition": "dist/index.d.ts"
   },
   "dependencies": {
+    "fast-json-stable-stringify": "^2.1.0",
     "xxhashjs": "^0.2.2"
   },
   "exports": {
