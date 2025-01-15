@@ -1,6 +1,6 @@
 import { JsxChildren } from "./types";
 /**
- * Calculates a unique hash for a given string using xxhash.
+ * Calculates a unique hash for a given string using sha256.
  *
  * @param {string} string - The string to be hashed.
  * @returns {string} - The resulting hash as a hexadecimal string.
