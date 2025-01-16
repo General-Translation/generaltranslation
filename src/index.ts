@@ -21,6 +21,7 @@ import { _getLocaleName } from './locales/getLocaleName';
 import { _getLocaleDirection } from './locales/getLocaleDirection';
 import { defaultBaseUrl, libraryDefaultLocale } from './internal';
 import _isSameDialect from './locales/isSameDialect';
+import { _requiresRegionalTranslation } from './locales/requiresRegionalTranslation';
 
 // ----- HELPER FUNCTIONS ----- //
 
@@ -393,7 +394,7 @@ export function determineLocale(locales: string | string[], approvedLocales: str
  * @returns {boolean} - Returns `true` if a regional translation is required, otherwise `false`.
  */
 export function requiresRegionalTranslation(sourceLocale: string, targetLocale: string, approvedLocales?: string[]): boolean {
-    return _requiresTranslation(sourceLocale, targetLocale, approvedLocales);
+    return _requiresRegionalTranslation(sourceLocale, targetLocale, approvedLocales);
 }
 
 /**
