@@ -1,8 +1,9 @@
 // Functions provided to other GT libraries
 
-import crypto from "crypto";
 import { JsxChild, JsxChildren, Variable } from "./types";
 import stringify from "fast-json-stable-stringify";
+import CryptoJS from "crypto-js";
+
 
 /**
  * Calculates a unique hash for a given string using sha256.
@@ -11,27 +12,31 @@ import stringify from "fast-json-stable-stringify";
  * @returns {string} - The resulting hash as a hexadecimal string.
  */
 export function hashString(string: string): string {
-  return crypto.createHash("sha256").update(string).digest("hex");
+  return CryptoJS.SHA256(string).toString(CryptoJS.enc.Hex);
 }
 
 /**
  * Calculates a unique ID for the given children objects by hashing their sanitized JSON string representation.
  *
  * @param {any} childrenAsObjects - The children objects to be hashed.
+ * @param {string} context - The context for the children
+ * @param {function} hashFunction custom hash function
  * @returns {string} - The unique has of the children.
  */
 export function hashJsxChildren({
   source,
   context,
+  hashFunction = hashString,
 }: {
   source: JsxChildren;
   context?: string;
+  hashFunction?: (string: string) => string;
 }): string {
   const unhashedKey = stringify({
     source: sanitizeJsxChildren(source),
     ...(context && { context }),
   });
-  return hashString(unhashedKey);
+  return hashFunction(unhashedKey);
 }
 
 type SanitizedVariable = Omit<Variable, "id">;
