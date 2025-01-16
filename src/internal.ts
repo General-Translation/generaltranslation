@@ -13,4 +13,5 @@ export {
   isAcceptedPluralForm
 } from './settings/plurals'
 import _getPluralForm from './locales/getPluralForm';
-export { _getPluralForm as getPluralForm };
+import { JsxChildren } from './types';
+export { _getPluralForm as getPluralForm, JsxChildren };

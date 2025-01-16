@@ -4,7 +4,11 @@ import { JsxChild, JsxChildren, Variable } from "./types";
 import stringify from "fast-json-stable-stringify";
 import CryptoJS from "crypto-js";
 
+// ----- TYPES ----- //
 
+export { JsxChildren };
+
+// ----- FUNCTIONS ----- //
 /**
  * Calculates a unique hash for a given string using sha256.
  *
