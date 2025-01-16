@@ -1,4 +1,5 @@
 import { JsxChildren } from "./types";
+export { JsxChildren };
 /**
  * Calculates a unique hash for a given string using sha256.
  *

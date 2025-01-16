@@ -5,7 +5,7 @@
   "main": "dist/index.cjs.min.cjs",
   "module": "dist/index.esm.min.mjs",
   "types": "dist/index.d.ts",
-  "files": [
+  "files": [ 
     "dist"
   ],
   "scripts": {

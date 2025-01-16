@@ -19,4 +19,23 @@ declare function isAcceptedPluralForm(form: string): form is PluralType;
  */
 declare function _getPluralForm(n: number, forms?: PluralType[], locales?: string[]): PluralType | "";
 
-export { defaultBaseUrl, defaultCacheUrl, defaultRuntimeApiUrl, _getPluralForm as getPluralForm, isAcceptedPluralForm, libraryDefaultLocale, localeCookieName, localeHeaderName, pluralForms };
+type Variable = {
+    variable?: string;
+    id?: string | number;
+    key: string;
+};
+type JsxElement = {
+    type: string;
+    props: {
+        "data-_gt"?: {
+            id: number;
+            transformation?: string;
+            branches?: Record<string, JsxChildren>;
+        };
+        children?: JsxChildren;
+    };
+};
+type JsxChild = string | JsxElement | Variable;
+type JsxChildren = JsxChild | JsxChild[];
+
+export { type JsxChildren, defaultBaseUrl, defaultCacheUrl, defaultRuntimeApiUrl, _getPluralForm as getPluralForm, isAcceptedPluralForm, libraryDefaultLocale, localeCookieName, localeHeaderName, pluralForms };
