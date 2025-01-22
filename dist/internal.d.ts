@@ -24,6 +24,7 @@ type Variable = {
     id?: string | number;
     key: string;
 };
+type Content = string | Array<string | Variable>;
 type JsxElement = {
     type: string;
     props: {
@@ -38,4 +39,4 @@ type JsxElement = {
 type JsxChild = string | JsxElement | Variable;
 type JsxChildren = JsxChild | JsxChild[];
 
-export { type JsxChildren, defaultBaseUrl, defaultCacheUrl, defaultRuntimeApiUrl, _getPluralForm as getPluralForm, isAcceptedPluralForm, libraryDefaultLocale, localeCookieName, localeHeaderName, pluralForms };
+export { type Content, type JsxChild, type JsxChildren, type JsxElement, defaultBaseUrl, defaultCacheUrl, defaultRuntimeApiUrl, _getPluralForm as getPluralForm, isAcceptedPluralForm, libraryDefaultLocale, localeCookieName, localeHeaderName, pluralForms };

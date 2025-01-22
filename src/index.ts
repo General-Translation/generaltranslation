@@ -21,7 +21,6 @@ import { _getLocaleName } from './locales/getLocaleName';
 import { _getLocaleDirection } from './locales/getLocaleDirection';
 import { defaultBaseUrl, libraryDefaultLocale } from './internal';
 import _isSameDialect from './locales/isSameDialect';
-import { _requiresRegionalTranslation } from './locales/requiresRegionalTranslation';
 
 // ----- HELPER FUNCTIONS ----- //
 
@@ -374,28 +373,6 @@ export function renderContentToString(content: Content, locales?: string | strin
 export function determineLocale(locales: string | string[], approvedLocales: string[]): string | undefined {
     return _determineLocale(locales, approvedLocales);
 };
-
-/**
- * Determines whether a regional translation is required, (ie en-US to en-GB).
- * 
- * - If the target locale is not specified, the function returns `false`, as translation is not needed.
- * - If the source and target language is the same, but the region is different return `true`.
- * - If the `approvedLocales` array is provided, and the target locale is not within that array, the function also returns `false`.
- * 
- * @example `en-US` -> `en-GB` returns `true`
- * @example `en-US` -> `en` returns `false`
- * @example `en-GB` -> `en` returns `false`
- * @example `en-US` -> `fr-FR` returns `false`
- * 
- * @param {string} sourceLocale - The locale code for the original content (BCP 47 locale code).
- * @param {string} targetLocale - The locale code of the language to translate the content into (BCP 47 locale code).
- * @param {string[]} [approvedLocale] - An optional array of approved target locales.
- * 
- * @returns {boolean} - Returns `true` if a regional translation is required, otherwise `false`.
- */
-export function requiresRegionalTranslation(sourceLocale: string, targetLocale: string, approvedLocales?: string[]): boolean {
-    return _requiresRegionalTranslation(sourceLocale, targetLocale, approvedLocales);
-}
 
 /**
  * Determines whether a translation is required based on the source and target locales.
